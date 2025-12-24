@@ -1,4 +1,4 @@
-package org.example.distr.entity;
+package org.example.distr.entity.enums;
 
 public enum ReleaseType {
     SINGLE,

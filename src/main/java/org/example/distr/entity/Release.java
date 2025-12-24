@@ -1,8 +1,9 @@
 package org.example.distr.entity;
 
-import org.example.distr.entity.*;
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.distr.entity.enums.ModerationState;
+import org.example.distr.entity.enums.ReleaseType;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
