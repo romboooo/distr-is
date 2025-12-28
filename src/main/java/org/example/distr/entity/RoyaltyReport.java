@@ -1,6 +1,5 @@
 package org.example.distr.entity;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "\"Royalty_report\"")
+@Table(name = "royalty_report")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,7 +27,7 @@ public class RoyaltyReport {
     @JoinColumn(name = "\"platform_id\"", nullable = false)
     private Platform platform;
 
-    // Обратные связи
+    @Builder.Default
     @OneToMany(mappedBy = "report", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Royalty> royalties = new ArrayList<>();
 }

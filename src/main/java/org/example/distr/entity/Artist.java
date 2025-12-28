@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "\"Artist\"")
+@Table(name = "artist")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,7 +36,7 @@ public class Artist {
     @JoinColumn(name = "\"user_id\"", nullable = false, unique = true)
     private User user;
 
-    // Обратные связи
+    @Builder.Default
     @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Release> releases = new ArrayList<>();
 }

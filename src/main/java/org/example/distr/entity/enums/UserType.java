@@ -4,5 +4,6 @@ public enum UserType{
     ARTIST,
     LABEL,
     MODERATOR,
-    ADMIN
+    ADMIN,
+    PLATFORM
 }

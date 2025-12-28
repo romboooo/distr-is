@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "\"Platform\"")
+@Table(name = "platform")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,10 +22,11 @@ public class Platform {
     @Column(name = "\"name\"", nullable = false, unique = true, length = 100)
     private String name;
 
-    // Обратные связи
+    @Builder.Default
     @OneToMany(mappedBy = "platform", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<RoyaltyReport> royaltyReports = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "platform", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Royalty> royalties = new ArrayList<>();
 }

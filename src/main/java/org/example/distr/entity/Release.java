@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "\"Release\"")
+@Table(name = "release")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -52,13 +52,15 @@ public class Release {
     @JoinColumn(name = "\"label_id\"", nullable = false)
     private Label label;
 
-    // Обратные связи
+    @Builder.Default
     @OneToMany(mappedBy = "release", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Song> songs = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "release", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OnModeration> moderationRecords = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "release", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<RoyaltyReport> royaltyReports = new ArrayList<>();
 }

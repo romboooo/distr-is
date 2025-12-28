@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "\"Song\"")
+@Table(name = "song")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,6 +36,7 @@ public class Song {
     @Column(name = "\"parental_advisory\"", nullable = false)
     private Boolean parentalAdvisory;
 
+    @Builder.Default
     @Column(name = "\"streams\"", nullable = false)
     private Long streams = 0L;
 
@@ -52,6 +53,7 @@ public class Song {
     @Column(name = "\"song_length_seconds\"", nullable = false)
     private Integer songLengthSeconds;
 
+    @Builder.Default
     @OneToMany(mappedBy = "song", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Royalty> royalties = new ArrayList<>();
 }

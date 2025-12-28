@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "\"Label\"")
+@Table(name = "label")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,12 +32,15 @@ public class Label {
     @JoinColumn(name = "\"user_id\"", nullable = false, unique = true)
     private User user;
 
+    @Builder.Default
     @OneToMany(mappedBy = "label", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Artist> artists = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "label", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Release> releases = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "label", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Royalty> royalties = new ArrayList<>();
 }

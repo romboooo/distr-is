@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "\"Moderators\"")
+@Table(name = "moderators")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,6 +26,7 @@ public class Moderator {
     @JoinColumn(name = "\"user_id\"", nullable = false, unique = true)
     private User user;
 
+    @Builder.Default
     @OneToMany(mappedBy = "moderator", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OnModeration> moderationRecords = new ArrayList<>();
 }

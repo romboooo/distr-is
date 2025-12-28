@@ -7,7 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "\"On_moderation\"")
+@Table(name = "on_moderation")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
