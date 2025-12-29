@@ -380,6 +380,16 @@ MIXTAPE      - Микстейп
 }
 ```
 
+## Pagination:
+
+```shell
+url + "?pageNumber=[integerStartedWithZero]&pageSize=[integer]"
+```
+
+**Response (200):**
+```json
+{"content":[],"currentPage":x,"totalPages":x,"totalElements":x,"pageSize":x}    
+```
 
 ### HTTP Коды 
 
@@ -398,3 +408,4 @@ MIXTAPE      - Микстейп
     409 Conflict: Конфликт (например, дублирование уникальных данных)
 
     500 Internal Server Error: Внутренняя ошибка сервера
+
