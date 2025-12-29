@@ -8,6 +8,7 @@ import org.example.distr.entity.enums.UserType;
 import org.example.distr.exception.ResourceAlreadyExistsException;
 import org.example.distr.exception.ResourceNotFoundException;
 import org.example.distr.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public UserResponse createUser(UserRequest request) {
@@ -26,7 +28,7 @@ public class UserService {
 
         User user = new User();
         user.setLogin(request.getLogin());
-        user.setPassword(request.getPassword()); // В реальном приложении нужно хеширование!
+        user.setPassword(passwordEncoder.encode(request.getPassword())); // Хеширование пароля
         user.setType(request.getType());
 
         User saved = userRepository.save(user);
@@ -43,6 +45,11 @@ public class UserService {
         User user = userRepository.findByLogin(login)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with login: " + login));
         return mapToResponse(user);
+    }
+
+    public User getUserEntityByLogin(String login) {
+        return userRepository.findByLogin(login)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with login: " + login));
     }
 
     public List<UserResponse> getUsersByType(UserType type) {
@@ -65,7 +72,7 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    private UserResponse mapToResponse(User user) {
+    UserResponse mapToResponse(User user) {
         UserResponse response = new UserResponse();
         response.setId(user.getId());
         response.setLogin(user.getLogin());
