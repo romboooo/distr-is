@@ -388,7 +388,7 @@ url + "?pageNumber=[integerStartedWithZero]&pageSize=[integer]"
 
 **Response (200):**
 ```json
-{"content":[],"currentPage":x,"totalPages":x,"totalElements":x,"pageSize":x}    
+{"content":[],"currentPage":"x","totalPages":"x","totalElements":"x","pageSize":"x"}    
 ```
 
 ### HTTP Коды 
