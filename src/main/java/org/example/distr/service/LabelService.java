@@ -3,11 +3,15 @@ package org.example.distr.service;
 import lombok.RequiredArgsConstructor;
 import org.example.distr.dto.request.LabelRequest;
 import org.example.distr.dto.response.LabelResponse;
+import org.example.distr.dto.response.PageResponse;
 import org.example.distr.entity.Label;
 import org.example.distr.entity.User;
 import org.example.distr.exception.ResourceNotFoundException;
 import org.example.distr.repository.LabelRepository;
 import org.example.distr.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,6 +59,24 @@ public class LabelService {
         response.setPhone(label.getPhone());
         response.setUserId(label.getUser().getId());
         response.setUserLogin(label.getUser().getLogin());
+        return response;
+    }
+
+    public PageResponse<LabelResponse> getAllLabels(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Label> labelPage = labelRepository.findAll(pageable);
+
+        List<LabelResponse> content = labelPage.getContent().stream()
+                .map(this::mapToResponse)
+                .toList();
+
+        PageResponse<LabelResponse> response = new PageResponse<>();
+        response.setContent(content);
+        response.setCurrentPage(labelPage.getNumber());
+        response.setTotalPages(labelPage.getTotalPages());
+        response.setTotalElements(labelPage.getTotalElements());
+        response.setPageSize(labelPage.getSize());
+
         return response;
     }
 }

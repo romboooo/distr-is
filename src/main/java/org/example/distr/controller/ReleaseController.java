@@ -3,6 +3,7 @@ package org.example.distr.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.distr.dto.request.ReleaseRequest;
+import org.example.distr.dto.response.PageResponse;
 import org.example.distr.dto.response.ReleaseResponse;
 import org.example.distr.service.ReleaseService;
 import org.springframework.http.HttpStatus;
@@ -30,8 +31,10 @@ public class ReleaseController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ReleaseResponse>> getAllReleases() {
-        List<ReleaseResponse> response = releaseService.getAllReleases();
+    public ResponseEntity<PageResponse<ReleaseResponse>> getAllReleases(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize) {
+        PageResponse<ReleaseResponse> response = releaseService.getAllReleases(pageNumber, pageSize);
         return ResponseEntity.ok(response);
     }
 }

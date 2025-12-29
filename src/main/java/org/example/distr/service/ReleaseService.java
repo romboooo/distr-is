@@ -7,14 +7,16 @@ import org.example.distr.entity.Release;
 import org.example.distr.entity.Artist;
 import org.example.distr.entity.Label;
 import org.example.distr.entity.enums.ModerationState;
-import org.example.distr.entity.enums.ReleaseType;
 import org.example.distr.exception.ResourceNotFoundException;
 import org.example.distr.repository.ReleaseRepository;
 import org.example.distr.repository.ArtistRepository;
 import org.example.distr.repository.LabelRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.example.distr.dto.response.PageResponse;
 import java.util.List;
 
 @Service
@@ -107,5 +109,23 @@ public class ReleaseService {
         return releaseRepository.findAll().stream()
                 .map(this::mapToResponse)
                 .toList();
+    }
+
+    public PageResponse<ReleaseResponse> getAllReleases(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Release> releasePage = releaseRepository.findAll(pageable);
+
+        List<ReleaseResponse> content = releasePage.getContent().stream()
+                .map(this::mapToResponse)
+                .toList();
+
+        PageResponse<ReleaseResponse> response = new PageResponse<>();
+        response.setContent(content);
+        response.setCurrentPage(releasePage.getNumber());
+        response.setTotalPages(releasePage.getTotalPages());
+        response.setTotalElements(releasePage.getTotalElements());
+        response.setPageSize(releasePage.getSize());
+
+        return response;
     }
 }

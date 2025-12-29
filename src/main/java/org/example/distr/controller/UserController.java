@@ -3,6 +3,7 @@ package org.example.distr.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.distr.dto.request.UserRequest;
+import org.example.distr.dto.response.PageResponse;
 import org.example.distr.dto.response.UserResponse;
 import org.example.distr.entity.enums.UserType;
 import org.example.distr.exception.BusinessLogicException;
@@ -44,17 +45,27 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponse>> getAllUsers(@RequestParam(required = false) String type) {
+    public ResponseEntity<PageResponse<UserResponse>> getAllUsers(
+            @RequestParam(required = false) String type,
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize) {
+
         if (type != null) {
             try {
                 UserType userType = UserType.valueOf(type.toUpperCase());
                 List<UserResponse> response = userService.getUsersByType(userType);
-                return ResponseEntity.ok(response);
+                PageResponse<UserResponse> pageResponse = new PageResponse<>();
+                pageResponse.setContent(response);
+                pageResponse.setCurrentPage(0);
+                pageResponse.setTotalPages(1);
+                pageResponse.setTotalElements(response.size());
+                pageResponse.setPageSize(response.size());
+                return ResponseEntity.ok(pageResponse);
             } catch (IllegalArgumentException e) {
                 throw new BusinessLogicException("Invalid user type: " + type);
             }
         } else {
-            List<UserResponse> response = userService.getAllUsers();
+            PageResponse<UserResponse> response = userService.getAllUsers(pageNumber, pageSize);
             return ResponseEntity.ok(response);
         }
     }
