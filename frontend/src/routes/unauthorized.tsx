@@ -27,21 +27,23 @@ function UnauthorizedPage() {
   };
 
   return (
-    <div className="mx-auto mt-16 p-6 max-w-md text-center">
-      <div className="mb-4 text-6xl">🚫</div>
-      <h1 className="mb-2 font-bold text-2xl">Access Denied</h1>
-      <p className="mb-6 text-gray-600">
+    <div className='mx-auto mt-16 p-6 max-w-md text-center'>
+      <div className='mb-4 text-6xl'>🚫</div>
+      <h1 className='mb-2 font-bold text-2xl'>Access Denied</h1>
+      <p className='mb-6 text-gray-600'>
         You don't have permission to access this page.
         {search.attempted && (
-          <span className="block mt-2">Attempted to access: {search.attempted}</span>
+          <span className='block mt-2'>
+            Attempted to access: {search.attempted}
+          </span>
         )}
       </p>
 
-      <div className="flex justify-center space-x-4">
-        <Button onClick={handleGoHome} variant="default">
+      <div className='flex justify-center space-x-4'>
+        <Button onClick={handleGoHome} variant='default'>
           Go to Dashboard
         </Button>
-        <Button onClick={handleLogout} variant="secondary">
+        <Button onClick={handleLogout} variant='secondary'>
           Logout
         </Button>
       </div>

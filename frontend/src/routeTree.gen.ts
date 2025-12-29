@@ -26,6 +26,7 @@ import { Route as adminUsersIndexRouteImport } from './routes/(admin)/users/inde
 import { Route as userRoyaltiesReportIdRouteImport } from './routes/(user)/royalties/$reportId'
 import { Route as moderatorModerationReleaseIdRouteImport } from './routes/(moderator)/moderation/$releaseId'
 import { Route as adminUsersUserIdRouteImport } from './routes/(admin)/users/$userId'
+import { Route as userReleasesReleaseIdIndexRouteImport } from './routes/(user)/releases/$releaseId/index'
 
 const userReleasesIndexLazyRouteImport = createFileRoute('/(user)/releases/')()
 const moderatorModerationIndexLazyRouteImport = createFileRoute(
@@ -33,9 +34,6 @@ const moderatorModerationIndexLazyRouteImport = createFileRoute(
 )()
 const userReleasesNewIndexLazyRouteImport = createFileRoute(
   '/(user)/releases/new/',
-)()
-const userReleasesReleaseIdIndexLazyRouteImport = createFileRoute(
-  '/(user)/releases/$releaseId/',
 )()
 
 const UnauthorizedRoute = UnauthorizedRouteImport.update({
@@ -142,18 +140,17 @@ const userReleasesNewIndexLazyRoute = userReleasesNewIndexLazyRouteImport
   .lazy(() =>
     import('./routes/(user)/releases/new/index.lazy').then((d) => d.Route),
   )
-const userReleasesReleaseIdIndexLazyRoute =
-  userReleasesReleaseIdIndexLazyRouteImport
-    .update({
-      id: '/(user)/releases/$releaseId/',
-      path: '/releases/$releaseId/',
-      getParentRoute: () => rootRouteImport,
-    } as any)
-    .lazy(() =>
-      import('./routes/(user)/releases/$releaseId/index.lazy').then(
-        (d) => d.Route,
-      ),
-    )
+const userReleasesReleaseIdIndexRoute = userReleasesReleaseIdIndexRouteImport
+  .update({
+    id: '/(user)/releases/$releaseId/',
+    path: '/releases/$releaseId/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+  .lazy(() =>
+    import('./routes/(user)/releases/$releaseId/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -173,7 +170,7 @@ export interface FileRoutesByFullPath {
   '/royalties': typeof userRoyaltiesIndexRoute
   '/moderation': typeof moderatorModerationIndexLazyRoute
   '/releases': typeof userReleasesIndexLazyRoute
-  '/releases/$releaseId': typeof userReleasesReleaseIdIndexLazyRoute
+  '/releases/$releaseId': typeof userReleasesReleaseIdIndexRoute
   '/releases/new': typeof userReleasesNewIndexLazyRoute
 }
 export interface FileRoutesByTo {
@@ -194,7 +191,7 @@ export interface FileRoutesByTo {
   '/royalties': typeof userRoyaltiesIndexRoute
   '/moderation': typeof moderatorModerationIndexLazyRoute
   '/releases': typeof userReleasesIndexLazyRoute
-  '/releases/$releaseId': typeof userReleasesReleaseIdIndexLazyRoute
+  '/releases/$releaseId': typeof userReleasesReleaseIdIndexRoute
   '/releases/new': typeof userReleasesNewIndexLazyRoute
 }
 export interface FileRoutesById {
@@ -216,7 +213,7 @@ export interface FileRoutesById {
   '/(user)/royalties/': typeof userRoyaltiesIndexRoute
   '/(moderator)/moderation/': typeof moderatorModerationIndexLazyRoute
   '/(user)/releases/': typeof userReleasesIndexLazyRoute
-  '/(user)/releases/$releaseId/': typeof userReleasesReleaseIdIndexLazyRoute
+  '/(user)/releases/$releaseId/': typeof userReleasesReleaseIdIndexRoute
   '/(user)/releases/new/': typeof userReleasesNewIndexLazyRoute
 }
 export interface FileRouteTypes {
@@ -303,7 +300,7 @@ export interface RootRouteChildren {
   userRoyaltiesIndexRoute: typeof userRoyaltiesIndexRoute
   moderatorModerationIndexLazyRoute: typeof moderatorModerationIndexLazyRoute
   userReleasesIndexLazyRoute: typeof userReleasesIndexLazyRoute
-  userReleasesReleaseIdIndexLazyRoute: typeof userReleasesReleaseIdIndexLazyRoute
+  userReleasesReleaseIdIndexRoute: typeof userReleasesReleaseIdIndexRoute
   userReleasesNewIndexLazyRoute: typeof userReleasesNewIndexLazyRoute
 }
 
@@ -439,7 +436,7 @@ declare module '@tanstack/react-router' {
       id: '/(user)/releases/$releaseId/'
       path: '/releases/$releaseId'
       fullPath: '/releases/$releaseId'
-      preLoaderRoute: typeof userReleasesReleaseIdIndexLazyRouteImport
+      preLoaderRoute: typeof userReleasesReleaseIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -463,7 +460,7 @@ const rootRouteChildren: RootRouteChildren = {
   userRoyaltiesIndexRoute: userRoyaltiesIndexRoute,
   moderatorModerationIndexLazyRoute: moderatorModerationIndexLazyRoute,
   userReleasesIndexLazyRoute: userReleasesIndexLazyRoute,
-  userReleasesReleaseIdIndexLazyRoute: userReleasesReleaseIdIndexLazyRoute,
+  userReleasesReleaseIdIndexRoute: userReleasesReleaseIdIndexRoute,
   userReleasesNewIndexLazyRoute: userReleasesNewIndexLazyRoute,
 }
 export const routeTree = rootRouteImport
