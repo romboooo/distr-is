@@ -83,13 +83,3 @@ INSERT INTO on_moderation (id, comment, moderator_id, release_id, date) VALUES
                                                                             (3, 'Need to fix explicit lyrics in track 2', 1, 3, '2023-08-18 16:45:00'),
                                                                             (4, 'Audio quality issues in track 1, please re-upload', 2, 4, '2023-09-05 09:20:00');
 
-SELECT setval('label_id_seq', COALESCE((SELECT MAX(id) FROM label), 1), true);
-SELECT setval('artist_id_seq', COALESCE((SELECT MAX(id) FROM artist), 1), true);
-SELECT setval('release_id_seq', COALESCE((SELECT MAX(id) FROM release), 1), true);
-SELECT setval('song_id_seq', COALESCE((SELECT MAX(id) FROM song), 1), true);
-SELECT setval('user_id_seq', COALESCE((SELECT MAX(id) FROM users), 1), true);
-SELECT setval('moderators_id_seq', COALESCE((SELECT MAX(id) FROM moderators), 1), true);
-SELECT setval('platform_id_seq', COALESCE((SELECT MAX(id) FROM platform), 1), true);
-SELECT setval('royalty_report_id_seq', COALESCE((SELECT MAX(id) FROM royalty_report), 1), true);
-SELECT setval('royalty_id_seq', COALESCE((SELECT MAX(id) FROM royalty), 1), true);
-SELECT setval('on_moderation_id_seq', COALESCE((SELECT MAX(id) FROM on_moderation), 1), true);
