@@ -11,7 +11,7 @@ const baseGuard = async (allowedRoles: UserType[]) => {
     throw redirect({
       to: '/login',
       search: {
-        redirect: location.pathname + location.search,
+        next: location.pathname + location.search,
       },
     });
   }
@@ -32,7 +32,7 @@ const baseGuard = async (allowedRoles: UserType[]) => {
     throw redirect({
       to: '/login',
       search: {
-        redirect: location.pathname + location.search,
+        next: location.pathname + location.search,
         error: 'INVALID_TOKEN',
       },
     });

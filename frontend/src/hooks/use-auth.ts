@@ -1,8 +1,8 @@
 // src/hooks/use-auth.ts
 
 import { useQuery } from '@tanstack/react-query';
-import { getCurrentUser } from '@/services/auth';
 import type { AuthenticatedUser, UserType } from '@/types/api';
+import { getCurrentUser } from '@/services/auth';
 
 export const useAuth = () => {
   return useQuery<AuthenticatedUser | null>({

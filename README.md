@@ -5,23 +5,27 @@
 ### Шаблон: $base_url/api/
 
 ## --------------------------Users ---------------------------
+
 ### POST /users
 
     Request Body:
+
 ```json
 {
-  "login": "string (3-50 chars)",
-  "password": "string (min 6 chars)",
-  "type": "ARTIST | LABEL | MODERATOR | ADMIN | PLATFORM"
+    "login": "string (3-50 chars)",
+    "password": "string (min 6 chars)",
+    "type": "ARTIST | LABEL | MODERATOR | ADMIN | PLATFORM"
 }
 ```
+
     Response (201 Created):
+
 ```json
 {
-  "id": 1,
-  "login": "john_doe",
-  "type": "ARTIST",
-  "registrationDate": "2024-01-15T10:30:00"
+    "id": 1,
+    "login": "john_doe",
+    "type": "ARTIST",
+    "registrationDate": "2024-01-15T10:30:00"
 }
 ```
 
@@ -73,27 +77,27 @@
 
 ```json
 {
-"name": "Artist Name",
-"labelId": 1,
-"country": "USA",
-"realName": "John Doe",
-"userId": 1
+    "name": "Artist Name",
+    "country": "USA",
+    "realName": "John Doe",
+    "userId": 1
 }
 ```
+
     Response (201 Created):
 
 ```json
 {
-"id": 1,
-"name": "Artist Name",
-"labelId": 1,
-"labelName": "Label Contact Name",
-"country": "USA",
-"realName": "John Doe",
-"userId": 1,
-"userLogin": "john_doe"
+    "id": 1,
+    "name": "Artist Name",
+    "labelName": "Label Contact Name",
+    "country": "USA",
+    "realName": "John Doe",
+    "userId": 1,
+    "userLogin": "john_doe"
 }
 ```
+
 ### GET /artists
 
 #### Получение всех артистов
@@ -109,37 +113,41 @@
     Response (200 OK): ArtistResponse
 
 ## --------------------------Labels ---------------------------
+
 ### POST /labels
 
 #### Создание нового лейбла
 
 #### Request Body:
-```json
 
+```json
 {
-"country": "Страна",
-"contactName": "Имя контактного лица",
-"phone": "Номер телефона",
-"userId": 1
+    "country": "Страна",
+    "contactName": "Имя контактного лица",
+    "phone": "Номер телефона",
+    "userId": 1
 }
 ```
+
     Response (201 Created):
-```json
 
+```json
 {
-"id": 1,
-"country": "Страна",
-"contactName": "Имя контактного лица",
-"phone": "Номер телефона",
-"userId": 1,
-"userLogin": "логин пользователя"
+    "id": 1,
+    "country": "Страна",
+    "contactName": "Имя контактного лица",
+    "phone": "Номер телефона",
+    "userId": 1,
+    "userLogin": "логин пользователя"
 }
 ```
+
 ### GET /labels
 
 #### Получение списка всех лейблов
 
     Response (200 OK): Массив объектов LabelResponse
+
 ### GET /labels/{id}
 
 #### #### Получение лейбла по ID
@@ -149,6 +157,7 @@
     id (Long) - идентификатор лейбла
 
     Response (200 OK): Объект LabelResponse
+
 ## --------------------------Releases ------------------------
 
 ### POST /releases
@@ -156,38 +165,41 @@
 #### Создание нового релиза (альбом/сингл)
 
     Request Body:
-```json
 
+```json
 {
-"name": "Название релиза",
-"artistId": 1,
-"genre": "Жанр",
-"releaseType": "ALBUM | SINGLE | MAXI_SINGLE | EP | MIXTAPE",
-"labelId": 1
+    "name": "Название релиза",
+    "artistId": 1,
+    "genre": "Жанр",
+    "releaseType": "ALBUM | SINGLE | MAXI_SINGLE | EP | MIXTAPE",
+    "labelId": 1
 }
 ```
+
     Response (201 Created):
-```json
 
+```json
 {
-"id": 1,
-"name": "Название релиза",
-"artistId": 1,
-"artistName": "Имя артиста",
-"genre": "Жанр",
-"releaseUpc": 123456789012,
-"date": "2024-01-15T10:30:00",
-"moderationState": "ON_REVIEW | APPROVED | REJECTED | WAITING_FOR_CHANGES | DRAFT",
-"releaseType": "ALBUM",
-"labelId": 1,
-"labelName": "Название лейбла"
+    "id": 1,
+    "name": "Название релиза",
+    "artistId": 1,
+    "artistName": "Имя артиста",
+    "genre": "Жанр",
+    "releaseUpc": 123456789012,
+    "date": "2024-01-15T10:30:00",
+    "moderationState": "ON_REVIEW | APPROVED | REJECTED | WAITING_FOR_CHANGES | DRAFT",
+    "releaseType": "ALBUM",
+    "labelId": 1,
+    "labelName": "Название лейбла"
 }
 ```
+
 ### GET /releases
 
 #### Получение списка всех релизов
 
     Response (200 OK): Массив объектов ReleaseResponse
+
 ### GET /releases/{id}
 
 #### Получение релиза по ID
@@ -197,6 +209,7 @@
     id (Long) - идентификатор релиза
 
     Response (200 OK): Объект ReleaseResponse
+
 ## --------------------------Songs ---------------------------
 
 ### POST /songs
@@ -204,42 +217,45 @@
 #### Добавление новой песни в релиз
 
     Request Body:
-```json
 
+```json
 {
-"releaseId": 1,
-"artistIds": [1, 2],
-"musicAuthor": "Автор музыки",
-"parentalAdvisory": false,
-"songUpc": 987654321098,
-"metadata": "{\"key\": \"value\"}",
-"pathToFile": "/path/to/file.mp3",
-"songLengthSeconds": 240
+    "releaseId": 1,
+    "artistIds": [1, 2],
+    "musicAuthor": "Автор музыки",
+    "parentalAdvisory": false,
+    "songUpc": 987654321098,
+    "metadata": "{\"key\": \"value\"}",
+    "pathToFile": "/path/to/file.mp3",
+    "songLengthSeconds": 240
 }
 ```
+
     Response (201 Created):
-```json
 
+```json
 {
-"id": 1,
-"releaseId": 1,
-"releaseName": "Название релиза",
-"artistIds": [1, 2],
-"artistNames": ["Имя артиста 1", "Имя артиста 2"],
-"musicAuthor": "Автор музыки",
-"parentalAdvisory": false,
-"streams": 0,
-"songUpc": 987654321098,
-"metadata": "{\"key\": \"value\"}",
-"pathToFile": "/path/to/file.mp3",
-"songLengthSeconds": 240
+    "id": 1,
+    "releaseId": 1,
+    "releaseName": "Название релиза",
+    "artistIds": [1, 2],
+    "artistNames": ["Имя артиста 1", "Имя артиста 2"],
+    "musicAuthor": "Автор музыки",
+    "parentalAdvisory": false,
+    "streams": 0,
+    "songUpc": 987654321098,
+    "metadata": "{\"key\": \"value\"}",
+    "pathToFile": "/path/to/file.mp3",
+    "songLengthSeconds": 240
 }
 ```
+
 ### GET /songs
 
 #### Получение списка всех песен
 
     Response (200 OK): Массив объектов SongResponse
+
 ### GET /songs/{id}
 
 #### Получение песни по ID
@@ -249,8 +265,11 @@
     id (Long) - идентификатор песни
 
     Response (200 OK): Объект SongResponse
+
 #### Типы данных и перечисления
+
 ### UserType
+
 ```text
 
 ARTIST    - Артист
@@ -259,7 +278,9 @@ MODERATOR - Модератор
 ADMIN     - Администратор
 PLATFORM  - Платформа
 ```
+
 ### ModerationState
+
 ```text
 
 REJECTED           - Отклонено
@@ -268,7 +289,9 @@ WAITING_FOR_CHANGES - Ожидает изменений
 ON_REVIEW          - На рассмотрении
 DRAFT              - Черновик
 ```
+
 ### ReleaseType
+
 ```text
 
 SINGLE       - Сингл
@@ -277,6 +300,7 @@ EP           - EP (Extended Play)
 ALBUM        - Альбом
 MIXTAPE      - Микстейп
 ```
+
 ### Коды ошибок
 
     200 OK: Успешный запрос
@@ -292,3 +316,8 @@ MIXTAPE      - Микстейп
     409 Conflict: Конфликт (например, дублирование уникальных данных)
 
     500 Internal Server Error: Внутренняя ошибка сервера
+
+туду:
+
+-   подумать как быть с лейблом пустышкой (артист сам для себя лейбл)
+-   как назначать артиста на лейбл (возможно приглашение в лейбл)
