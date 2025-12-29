@@ -1,8 +1,10 @@
+import { moderatorGuard } from '@/lib/route-guards'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute(
-  '/(app)/(moderator)/moderation/$releaseId',
+  '/(moderator)/moderation/$releaseId',
 )({
+  beforeLoad: () => moderatorGuard(),
   component: RouteComponent,
 })
 
