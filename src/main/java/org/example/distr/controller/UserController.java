@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.distr.dto.request.UserRequest;
 import org.example.distr.dto.response.UserResponse;
 import org.example.distr.entity.enums.UserType;
+import org.example.distr.exception.BusinessLogicException;
 import org.example.distr.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,9 +44,19 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponse>> getAllUsers() {
-        List<UserResponse> response = userService.getAllUsers();
-        return ResponseEntity.ok(response);
+    public ResponseEntity<List<UserResponse>> getAllUsers(@RequestParam(required = false) String type) {
+        if (type != null) {
+            try {
+                UserType userType = UserType.valueOf(type.toUpperCase());
+                List<UserResponse> response = userService.getUsersByType(userType);
+                return ResponseEntity.ok(response);
+            } catch (IllegalArgumentException e) {
+                throw new BusinessLogicException("Invalid user type: " + type);
+            }
+        } else {
+            List<UserResponse> response = userService.getAllUsers();
+            return ResponseEntity.ok(response);
+        }
     }
 
     @DeleteMapping("/{id}")

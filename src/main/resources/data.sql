@@ -1,19 +1,19 @@
-INSERT INTO users (id, login, password, type) VALUES
-                                                  (1, 'user1', 'password', 'ADMIN'),
-                                                  (2, 'user2', 'password', 'LABEL'),
-                                                  (3, 'user3', 'password', 'ARTIST'),
-                                                  (4, 'user4', 'password', 'MODERATOR'),
-                                                  (5, 'user5', 'password', 'LABEL'),
-                                                  (6, 'user6', 'password', 'LABEL'),
-                                                  (7, 'user7', 'password', 'ARTIST'),
-                                                  (8, 'user8', 'password', 'ARTIST'),
-                                                  (9, 'user9', 'password', 'PLATFORM'),
-                                                  (10, 'user10', 'password', 'ADMIN'),
-                                                  (11, 'user11', 'password', 'MODERATOR'),
-                                                  (12, 'user12', 'password', 'ARTIST'),
-                                                  (13, 'user13', 'password', 'MODERATOR'),
-                                                  (14, 'user14', 'password', 'LABEL'),
-                                                  (15, 'user15', 'password', 'ARTIST');
+INSERT INTO users (id, login, password, type, registration_date) VALUES
+                                                                     (1, 'user1', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVwEe6', 'ADMIN', NOW()),
+                                                                     (2, 'user2', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVwEe6', 'LABEL', NOW()),
+                                                                     (3, 'user3', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVwEe6', 'ARTIST', NOW()),
+                                                                     (4, 'user4', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVwEe6', 'MODERATOR', NOW()),
+                                                                     (5, 'user5', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVwEe6', 'LABEL', NOW()),
+                                                                     (6, 'user6', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVwEe6', 'LABEL', NOW()),
+                                                                     (7, 'user7', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVwEe6', 'ARTIST', NOW()),
+                                                                     (8, 'user8', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVwEe6', 'ARTIST', NOW()),
+                                                                     (9, 'user9', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVwEe6', 'PLATFORM', NOW()),
+                                                                     (10, 'user10', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVwEe6', 'ADMIN', NOW()),
+                                                                     (11, 'user11', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVwEe6', 'MODERATOR', NOW()),
+                                                                     (12, 'user12', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVwEe6', 'ARTIST', NOW()),
+                                                                     (13, 'user13', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVwEe6', 'MODERATOR', NOW()),
+                                                                     (14, 'user14', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVwEe6', 'LABEL', NOW()),
+                                                                     (15, 'user15', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iKTVwEe6', 'ARTIST', NOW());
 
 INSERT INTO label (id, country, contact_name, phone, user_id) VALUES
                                                                   (1, 'USA', 'John Smith', '+1-555-0101', 2),
@@ -82,4 +82,14 @@ INSERT INTO on_moderation (id, comment, moderator_id, release_id, date) VALUES
                                                                             (2, 'Excellent Japanese pop track, approved', 2, 2, '2023-07-10 11:15:00'),
                                                                             (3, 'Need to fix explicit lyrics in track 2', 1, 3, '2023-08-18 16:45:00'),
                                                                             (4, 'Audio quality issues in track 1, please re-upload', 2, 4, '2023-09-05 09:20:00');
+SELECT setval('user_id_seq', COALESCE((SELECT MAX(id) FROM users), 1));
+SELECT setval('label_id_seq', COALESCE((SELECT MAX(id) FROM label), 1));
+SELECT setval('artist_id_seq', COALESCE((SELECT MAX(id) FROM artist), 1));
+SELECT setval('release_id_seq', COALESCE((SELECT MAX(id) FROM release), 1));
+SELECT setval('song_id_seq', COALESCE((SELECT MAX(id) FROM song), 1));
+SELECT setval('moderators_id_seq', COALESCE((SELECT MAX(id) FROM moderators), 1));
+SELECT setval('platform_id_seq', COALESCE((SELECT MAX(id) FROM platform), 1));
+SELECT setval('royalty_report_id_seq', COALESCE((SELECT MAX(id) FROM royalty_report), 1));
+SELECT setval('royalty_id_seq', COALESCE((SELECT MAX(id) FROM royalty), 1));
+SELECT setval('on_moderation_id_seq', COALESCE((SELECT MAX(id) FROM on_moderation), 1));
 
