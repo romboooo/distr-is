@@ -277,7 +277,111 @@ EP           - EP (Extended Play)
 ALBUM        - Альбом
 MIXTAPE      - Микстейп
 ```
-### Коды ошибок
+
+
+## --------------------------Auth-----------------------
+
+### POST /register
+
+#### Регистрация нового пользователя
+
+**Правила доступа:**
+- ARTIST, LABEL: может быть создан кем угодно (даже неаутентифицированным пользователем)
+- MODERATOR: только ADMIN или MODERATOR
+- ADMIN: только ADMIN
+- PLATFORM: только ADMIN
+
+**Request Body:**
+```json
+{
+  "login": "string (3-50 chars)",
+  "password": "string (min 6 chars)",
+  "type": "ARTIST | LABEL | MODERATOR | ADMIN | PLATFORM"
+}
+```
+**Response (201 Created):**
+
+```json
+{
+"id": 1,
+"login": "john_doe",
+"type": "ARTIST",
+"registrationDate": "2024-01-15T10:30:00"
+}
+```
+
+**Response (403 Forbidden):**
+
+```json
+{
+  "timestamp": "2024-01-15T10:30:00",
+  "status": 403,
+  "error": "Forbidden",
+  "message": "Only ADMIN can create ADMIN users"
+}
+```
+
+### POST /login
+#### Аутентификация пользователя
+
+**Request Body:**
+```json
+
+{
+"login": "string",
+"password": "string"
+}
+```
+**Response (200 OK):**
+```json
+
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9...",
+  "type": "Bearer",
+  "user": {
+    "id": 1,
+    "login": "john_doe",
+    "type": "ARTIST",
+    "registrationDate": "2024-01-15T10:30:00"
+  }
+}
+```
+**Response (403 Forbidden):**
+```json
+
+{
+"timestamp": "2024-01-15T10:30:00",
+"status": 403,
+"error": "Forbidden",
+"message": "Invalid login or password"
+}
+```
+### GET /me
+#### Получение информации о текущем аутентифицированном пользователе
+
+#### Требуется аутентификация: Да (токен в заголовке Authorization)
+
+**Response (200 OK):**
+```json
+
+{
+"id": 1,
+"login": "john_doe",
+"type": "ARTIST",
+"registrationDate": "2024-01-15T10:30:00"
+}
+```
+**Response (401 Unauthorized):**
+```json
+
+{
+"error": "Unauthorized",
+"message": "User no longer exists"
+}
+```
+
+
+### HTTP Коды 
 
     200 OK: Успешный запрос
 
@@ -286,6 +390,8 @@ MIXTAPE      - Микстейп
     204 No Content: Успешный запрос без возвращаемых данных
 
     400 Bad Request: Ошибка валидации или неправильный запрос
+
+    401 Unauthorized: Требуется аутентификация или токен недействителен
 
     404 Not Found: Ресурс не найден
 
