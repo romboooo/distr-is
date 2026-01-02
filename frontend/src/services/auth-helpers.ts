@@ -1,6 +1,6 @@
 // src/services/auth-helpers.ts
 
-import { apiClient, TOKEN_STORAGE_KEY } from '@/services/api';
+import { apiClient, clearAuthToken } from '@/services/api';
 import { createArtistProfile } from '@/services/artists';
 import { createLabelProfile } from '@/services/labels';
 import { loginUser } from '@/services/login';
@@ -63,7 +63,7 @@ export const getCurrentUser = async (): Promise<User | null> => {
     return response.data;
   } catch (error) {
     console.error('Auth check failed:', error);
-    localStorage.removeItem(TOKEN_STORAGE_KEY);
+    clearAuthToken();
     return null;
   }
 };

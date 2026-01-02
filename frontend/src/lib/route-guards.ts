@@ -1,7 +1,7 @@
 // src/lib/route-guards.ts
 import { redirect } from '@tanstack/react-router';
 import type { UserType } from '@/types/api';
-import { getAuthToken, TOKEN_STORAGE_KEY } from '@/services/api';
+import { clearAuthToken, getAuthToken } from '@/services/api';
 import { getCurrentUser } from '@/services/auth-helpers';
 
 const baseGuard = async (allowedRoles: UserType[]) => {
@@ -18,7 +18,7 @@ const baseGuard = async (allowedRoles: UserType[]) => {
   const user = await getCurrentUser();
 
   if (!user) {
-    localStorage.removeItem(TOKEN_STORAGE_KEY);
+    clearAuthToken();
     throw redirect({
       to: '/login',
       search: {
