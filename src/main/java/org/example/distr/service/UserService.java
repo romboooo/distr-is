@@ -2,6 +2,7 @@ package org.example.distr.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.distr.dto.request.UserRequest;
+import org.example.distr.dto.response.PageResponse;
 import org.example.distr.dto.response.UserResponse;
 import org.example.distr.entity.User;
 import org.example.distr.entity.enums.UserType;
@@ -9,6 +10,9 @@ import org.example.distr.exception.BusinessLogicException;
 import org.example.distr.exception.ResourceAlreadyExistsException;
 import org.example.distr.exception.ResourceNotFoundException;
 import org.example.distr.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -124,6 +128,24 @@ public class UserService {
         response.setLogin(user.getLogin());
         response.setType(user.getType());
         response.setRegistrationDate(user.getRegistrationDate());
+        return response;
+    }
+
+    public PageResponse<UserResponse> getAllUsers(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<User> userPage = userRepository.findAll(pageable);
+
+        List<UserResponse> content = userPage.getContent().stream()
+                .map(this::mapToResponse)
+                .toList();
+
+        PageResponse<UserResponse> response = new PageResponse<>();
+        response.setContent(content);
+        response.setCurrentPage(userPage.getNumber());
+        response.setTotalPages(userPage.getTotalPages());
+        response.setTotalElements(userPage.getTotalElements());
+        response.setPageSize(userPage.getSize());
+
         return response;
     }
 }

@@ -3,6 +3,7 @@ package org.example.distr.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.distr.dto.request.SongRequest;
+import org.example.distr.dto.response.PageResponse;
 import org.example.distr.dto.response.SongResponse;
 import org.example.distr.service.SongService;
 import org.springframework.http.HttpStatus;
@@ -30,8 +31,10 @@ public class SongController {
     }
 
     @GetMapping
-    public ResponseEntity<List<SongResponse>> getAllSongs() {
-        List<SongResponse> response = songService.getAllSongs();
+    public ResponseEntity<PageResponse<SongResponse>> getAllSongs(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize) {
+        PageResponse<SongResponse> response = songService.getAllSongs(pageNumber, pageSize);
         return ResponseEntity.ok(response);
     }
 }

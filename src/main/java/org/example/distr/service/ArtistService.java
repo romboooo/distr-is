@@ -3,6 +3,7 @@ package org.example.distr.service;
 import lombok.RequiredArgsConstructor;
 import org.example.distr.dto.request.ArtistRequest;
 import org.example.distr.dto.response.ArtistResponse;
+import org.example.distr.dto.response.PageResponse;
 import org.example.distr.entity.Artist;
 import org.example.distr.entity.Label;
 import org.example.distr.entity.User;
@@ -10,6 +11,9 @@ import org.example.distr.exception.ResourceNotFoundException;
 import org.example.distr.repository.ArtistRepository;
 import org.example.distr.repository.LabelRepository;
 import org.example.distr.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -107,4 +111,23 @@ public class ArtistService {
                 .map(this::mapToResponse)
                 .toList();
     }
+
+    public PageResponse<ArtistResponse> getAllArtists(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Artist> artistPage = artistRepository.findAll(pageable);
+
+        List<ArtistResponse> content = artistPage.getContent().stream()
+                .map(this::mapToResponse)
+                .toList();
+
+        PageResponse<ArtistResponse> response = new PageResponse<>();
+        response.setContent(content);
+        response.setCurrentPage(artistPage.getNumber());
+        response.setTotalPages(artistPage.getTotalPages());
+        response.setTotalElements(artistPage.getTotalElements());
+        response.setPageSize(artistPage.getSize());
+
+        return response;
+    }
+
 }

@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.distr.dto.request.LabelRequest;
 import org.example.distr.dto.response.LabelResponse;
+import org.example.distr.dto.response.PageResponse;
 import org.example.distr.service.LabelService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +31,10 @@ public class LabelController {
     }
 
     @GetMapping
-    public ResponseEntity<List<LabelResponse>> getAllLabels() {
-        List<LabelResponse> response = labelService.getAllLabels();
+    public ResponseEntity<PageResponse<LabelResponse>> getAllLabels(
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize) {
+        PageResponse<LabelResponse> response = labelService.getAllLabels(pageNumber, pageSize);
         return ResponseEntity.ok(response);
     }
 }

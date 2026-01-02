@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.example.distr.dto.request.SongRequest;
+import org.example.distr.dto.response.PageResponse;
 import org.example.distr.dto.response.SongResponse;
 import org.example.distr.entity.Artist;
 import org.example.distr.entity.Release;
@@ -12,6 +13,9 @@ import org.example.distr.exception.ResourceNotFoundException;
 import org.example.distr.repository.ArtistRepository;
 import org.example.distr.repository.ReleaseRepository;
 import org.example.distr.repository.SongRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +34,6 @@ public class SongService {
         Release release = releaseRepository.findById(request.getReleaseId())
                 .orElseThrow(() -> new ResourceNotFoundException("Release not found"));
 
-        // Преобразуем metadata из строки в JsonNode
         JsonNode metadata = null;
         if (request.getMetadata() != null && !request.getMetadata().isEmpty()) {
             try {
@@ -112,5 +115,23 @@ public class SongService {
         return songRepository.findAll().stream()
                 .map(this::mapToResponse)
                 .toList();
+    }
+
+    public PageResponse<SongResponse> getAllSongs(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Song> songPage = songRepository.findAll(pageable);
+
+        List<SongResponse> content = songPage.getContent().stream()
+                .map(this::mapToResponse)
+                .toList();
+
+        PageResponse<SongResponse> response = new PageResponse<>();
+        response.setContent(content);
+        response.setCurrentPage(songPage.getNumber());
+        response.setTotalPages(songPage.getTotalPages());
+        response.setTotalElements(songPage.getTotalElements());
+        response.setPageSize(songPage.getSize());
+
+        return response;
     }
 }
