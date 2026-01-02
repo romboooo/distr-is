@@ -1,66 +1,44 @@
 // src/lib/route-guards.ts
 import { redirect } from '@tanstack/react-router';
 import type { UserType } from '@/types/api';
+import { getAuthToken, TOKEN_STORAGE_KEY } from '@/services/api';
+import { getCurrentUser } from '@/services/auth-helpers';
 
-// Базовая функция защиты
 const baseGuard = async (allowedRoles: UserType[]) => {
-  const token =
-    typeof window !== 'undefined' ? localStorage.getItem('auth_token') : null;
+  if (typeof window === 'undefined') return null;
 
+  const token = getAuthToken();
   if (!token) {
     throw redirect({
       to: '/login',
-      search: {
-        next: location.pathname + location.search,
-      },
+      search: { next: window.location.pathname + window.location.search },
     });
   }
 
-  // Маппинг токенов к ID пользователей
-  const tokenMap: Record<string, number> = {
-    artist_token: 1,
-    label_token: 2,
-    moderator_token: 3,
-    admin_token: 4,
-    artist2_token: 5,
-  };
+  const user = await getCurrentUser();
 
-  const userId = tokenMap[token];
-
-  if (!userId) {
-    localStorage.removeItem('auth_token');
+  if (!user) {
+    localStorage.removeItem(TOKEN_STORAGE_KEY);
     throw redirect({
       to: '/login',
       search: {
-        next: location.pathname + location.search,
-        error: 'INVALID_TOKEN',
+        next: window.location.pathname + window.location.search,
+        error: 'INVALID_SESSION',
       },
     });
   }
 
-  // Получаем пользователя из мок-базы
-  const mockUsers: { id: number; type: UserType }[] = [
-    { id: 1, type: 'ARTIST' },
-    { id: 2, type: 'LABEL' },
-    { id: 3, type: 'MODERATOR' },
-    { id: 4, type: 'ADMIN' },
-    { id: 5, type: 'ARTIST' },
-  ];
-
-  const user = mockUsers.find((u) => u.id === userId);
-
-  if (!user || !allowedRoles.includes(user.type)) {
+  if (!allowedRoles.includes(user.type)) {
     throw redirect({
       to: '/unauthorized',
-      search: {
-        attempted: location.pathname,
-      },
+      search: { attempted: window.location.pathname },
     });
   }
 
   return user;
 };
 
+// Export guards with real API checks
 export const artistGuard = () => baseGuard(['ARTIST']);
 export const labelGuard = () => baseGuard(['LABEL']);
 export const moderatorGuard = () => baseGuard(['MODERATOR', 'ADMIN']);

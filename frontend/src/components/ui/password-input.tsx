@@ -1,8 +1,8 @@
-import * as React from "react";
-import { Eye, EyeOff } from "lucide-react";
+import * as React from 'react';
+import { Eye, EyeOff } from 'lucide-react';
 
-import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
+import { cn } from '@/lib/utils';
+import { Input } from '@/components/ui/input';
 
 type PasswordInputProps = React.ComponentProps<typeof Input> & {
   revealLabel?: string;
@@ -11,7 +11,12 @@ type PasswordInputProps = React.ComponentProps<typeof Input> & {
 
 const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
   (
-    { className, revealLabel = "Show password while pressing", hideLabel = "Hide password", ...props },
+    {
+      className,
+      revealLabel = 'Show password while pressing',
+      hideLabel = 'Hide password',
+      ...props
+    },
     forwardedRef,
   ) => {
     const [isRevealed, setIsRevealed] = React.useState(false);
@@ -21,13 +26,15 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
       (node: HTMLInputElement | null) => {
         internalRef.current = node;
 
-        if (typeof forwardedRef === "function") {
+        if (typeof forwardedRef === 'function') {
           forwardedRef(node);
           return;
         }
 
         if (forwardedRef) {
-          (forwardedRef as React.MutableRefObject<HTMLInputElement | null>).current = node;
+          (
+            forwardedRef as React.MutableRefObject<HTMLInputElement | null>
+          ).current = node;
         }
       },
       [forwardedRef],
@@ -45,7 +52,9 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
       internalRef.current?.focus({ preventScroll: true });
     }, []);
 
-    const handlePointerDown = (event: React.PointerEvent<HTMLButtonElement>) => {
+    const handlePointerDown = (
+      event: React.PointerEvent<HTMLButtonElement>,
+    ) => {
       event.preventDefault();
       focusInput();
       reveal();
@@ -56,29 +65,29 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
     };
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
-      if (event.key === " " || event.key === "Enter") {
+      if (event.key === ' ' || event.key === 'Enter') {
         event.preventDefault();
         reveal();
       }
     };
 
     const handleKeyUp = (event: React.KeyboardEvent<HTMLButtonElement>) => {
-      if (event.key === " " || event.key === "Enter") {
+      if (event.key === ' ' || event.key === 'Enter') {
         event.preventDefault();
         conceal();
       }
     };
 
     return (
-      <div className="relative">
+      <div className='relative'>
         <Input
           ref={combineRefs}
-          type={isRevealed ? "text" : "password"}
-          className={cn("pr-10", className)}
+          type={isRevealed ? 'text' : 'password'}
+          className={cn('pr-10', className)}
           {...props}
         />
         <button
-          type="button"
+          type='button'
           onPointerDown={handlePointerDown}
           onPointerUp={handlePointerUp}
           onPointerLeave={handlePointerUp}
@@ -88,12 +97,12 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
           onKeyUp={handleKeyUp}
           aria-pressed={isRevealed}
           aria-label={isRevealed ? hideLabel : revealLabel}
-          className="right-0 absolute inset-y-0 flex items-center px-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background text-muted-foreground hover:text-foreground transition-colors"
+          className='right-0 absolute inset-y-0 flex items-center px-2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background text-muted-foreground hover:text-foreground transition-colors'
         >
           {isRevealed ? (
-            <EyeOff aria-hidden="true" className="w-4 h-4" />
+            <EyeOff aria-hidden='true' className='w-4 h-4' />
           ) : (
-            <Eye aria-hidden="true" className="w-4 h-4" />
+            <Eye aria-hidden='true' className='w-4 h-4' />
           )}
         </button>
       </div>
@@ -101,6 +110,6 @@ const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
   },
 );
 
-PasswordInput.displayName = "PasswordInput";
+PasswordInput.displayName = 'PasswordInput';
 
 export { PasswordInput };

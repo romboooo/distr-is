@@ -1,5 +1,6 @@
 // src/services/register.ts
-import { API_BASE_URL } from '@/services/api';
+import { apiClient } from '@/services/api';
+import { AxiosError } from 'axios';
 
 export interface RegisterUserPayload {
   login: string;
@@ -14,21 +15,21 @@ export interface UserResponse {
   registrationDate: string;
 }
 
+export interface ErrorResponse {
+  message?: string;
+}
+
 export const registerUser = async (
   payload: RegisterUserPayload,
 ): Promise<UserResponse> => {
-  const response = await fetch(`${API_BASE_URL}/users`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || 'Registration failed');
+  try {
+    const response = await apiClient.post<UserResponse>('/register', payload);
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      const errorData = error.response.data as ErrorResponse;
+      throw new Error(errorData.message || 'Registration failed');
+    }
+    throw new Error('Registration failed');
   }
-
-  return response.json();
 };

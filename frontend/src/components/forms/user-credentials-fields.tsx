@@ -1,5 +1,11 @@
 import type { Control } from 'react-hook-form';
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import type { RegisterFormValues } from '@/services/schemas';
 
@@ -8,18 +14,21 @@ interface UserCredentialsFieldsProps {
   isSubmitting: boolean;
 }
 
-export function UserCredentialsFields({ control, isSubmitting }: UserCredentialsFieldsProps) {
+export function UserCredentialsFields({
+  control,
+  isSubmitting,
+}: UserCredentialsFieldsProps) {
   return (
     <>
       <FormField
         control={control}
-        name="login"
+        name='login'
         render={({ field }) => (
           <FormItem>
             <FormLabel>Username</FormLabel>
             <FormControl>
               <Input
-                placeholder="your_unique_username"
+                placeholder='your_unique_username'
                 {...field}
                 disabled={isSubmitting}
               />
@@ -31,14 +40,14 @@ export function UserCredentialsFields({ control, isSubmitting }: UserCredentials
 
       <FormField
         control={control}
-        name="password"
+        name='password'
         render={({ field }) => (
           <FormItem>
             <FormLabel>Password</FormLabel>
             <FormControl>
               <Input
-                type="password"
-                placeholder="••••••••"
+                type='password'
+                placeholder='••••••••'
                 {...field}
                 disabled={isSubmitting}
               />
@@ -50,14 +59,14 @@ export function UserCredentialsFields({ control, isSubmitting }: UserCredentials
 
       <FormField
         control={control}
-        name="confirmPassword"
+        name='confirmPassword'
         render={({ field }) => (
           <FormItem>
             <FormLabel>Confirm Password</FormLabel>
             <FormControl>
               <Input
-                type="password"
-                placeholder="••••••••"
+                type='password'
+                placeholder='••••••••'
                 {...field}
                 disabled={isSubmitting}
               />

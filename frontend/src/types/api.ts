@@ -67,8 +67,3 @@ export interface Song {
   pathToFile: string;
   songLengthSeconds: number;
 }
-
-export interface AuthenticatedUser {
-  user: User;
-  profile: Artist | Label | null; // null для MODERATOR, ADMIN, PLATFORM
-}

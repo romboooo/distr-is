@@ -3,6 +3,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from '@tanstack/react-router';
 import z from 'zod';
+import { TOKEN_STORAGE_KEY } from '@/services/api';
 
 const unauthorizedSearchSchema = z.object({
   attempted: z.string().optional(),
@@ -22,7 +23,7 @@ function UnauthorizedPage() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('auth_token');
+    localStorage.removeItem(TOKEN_STORAGE_KEY);
     navigate({ to: '/login' });
   };
 

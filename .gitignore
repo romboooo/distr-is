@@ -65,3 +65,4 @@ lerna-debug.log*
 **/build
 .gradle
 bin
+**/.vite/

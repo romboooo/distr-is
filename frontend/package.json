@@ -4,12 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "generate-routes": "tsr generate",
-    "watch-routes": "tsr watch",
-    "dev": "vite",
+    "generate-routes": "bun --bun tsr generate",
+    "watch-routes": "bun --bun tsr watch",
+    "dev": "bunx --bun vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "lint": "bunx --bun eslint .",
+    "prettier": "bunx --bun prettier --write .",
+    "preview": "bunx --bun vite preview"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

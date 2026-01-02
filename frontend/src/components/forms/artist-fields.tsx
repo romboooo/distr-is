@@ -1,4 +1,10 @@
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import type { RegisterFormValues } from '@/services/schemas';
 import type { Control } from 'react-hook-form';
@@ -13,13 +19,13 @@ export function ArtistFields({ control, isSubmitting }: ArtistFieldsProps) {
     <>
       <FormField
         control={control}
-        name="name"
+        name='name'
         render={({ field }) => (
           <FormItem>
             <FormLabel>Artist Name</FormLabel>
             <FormControl>
               <Input
-                placeholder="Stage name or band name"
+                placeholder='Stage name or band name'
                 {...field}
                 disabled={isSubmitting}
               />
@@ -31,13 +37,13 @@ export function ArtistFields({ control, isSubmitting }: ArtistFieldsProps) {
 
       <FormField
         control={control}
-        name="realName"
+        name='realName'
         render={({ field }) => (
           <FormItem>
             <FormLabel>Legal Name (Optional)</FormLabel>
             <FormControl>
               <Input
-                placeholder="Your legal name"
+                placeholder='Your legal name'
                 {...field}
                 disabled={isSubmitting}
               />
@@ -49,13 +55,13 @@ export function ArtistFields({ control, isSubmitting }: ArtistFieldsProps) {
 
       <FormField
         control={control}
-        name="country"
+        name='country'
         render={({ field }) => (
           <FormItem>
             <FormLabel>Country</FormLabel>
             <FormControl>
               <Input
-                placeholder="Country of origin"
+                placeholder='Country of origin'
                 {...field}
                 disabled={isSubmitting}
               />

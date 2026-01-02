@@ -1,5 +1,6 @@
 // src/services/artists.ts
-import { API_BASE_URL } from '@/services/api';
+import { apiClient } from '@/services/api';
+import { AxiosError } from 'axios';
 
 export interface CreateArtistPayload {
   name: string;
@@ -17,21 +18,24 @@ export interface ArtistResponse {
   userLogin: string;
 }
 
+interface ErrorResponse {
+  message?: string;
+}
+
 export const createArtistProfile = async (
   payload: CreateArtistPayload,
 ): Promise<ArtistResponse> => {
-  const response = await fetch(`${API_BASE_URL}/artists`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || 'Failed to create artist profile');
+  try {
+    const response = await apiClient.post<ArtistResponse>('/artists', {
+      ...payload,
+      labelId: 4,
+    });
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError && error.response) {
+      const errorData = error.response.data as ErrorResponse;
+      throw new Error(errorData.message || 'Failed to create artist profile');
+    }
+    throw new Error('Failed to create artist profile');
   }
-
-  return response.json();
 };
