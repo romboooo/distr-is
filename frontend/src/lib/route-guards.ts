@@ -43,6 +43,6 @@ export const artistGuard = () => baseGuard(['ARTIST']);
 export const labelGuard = () => baseGuard(['LABEL']);
 export const moderatorGuard = () => baseGuard(['MODERATOR', 'ADMIN']);
 export const adminGuard = () => baseGuard(['ADMIN']);
-export const userGuard = () => baseGuard(['ARTIST', 'LABEL']);
+export const userGuard = () => baseGuard(['ARTIST', 'LABEL', 'ADMIN']);
 export const anyGuard = () =>
   baseGuard(['ARTIST', 'LABEL', 'MODERATOR', 'ADMIN', 'PLATFORM']);

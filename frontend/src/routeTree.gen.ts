@@ -12,28 +12,32 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UnauthorizedRouteImport } from './routes/unauthorized'
-import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as userProfileRouteImport } from './routes/(user)/profile'
-import { Route as authResetPasswordRouteImport } from './routes/(auth)/reset-password'
-import { Route as authRegisterRouteImport } from './routes/(auth)/register'
-import { Route as authLoginRouteImport } from './routes/(auth)/login'
-import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-password'
-import { Route as adminReportsRouteImport } from './routes/(admin)/reports'
-import { Route as adminPlatformsRouteImport } from './routes/(admin)/platforms'
-import { Route as userRoyaltiesIndexRouteImport } from './routes/(user)/royalties/index'
-import { Route as adminUsersIndexRouteImport } from './routes/(admin)/users/index'
-import { Route as userRoyaltiesReportIdRouteImport } from './routes/(user)/royalties/$reportId'
-import { Route as moderatorModerationReleaseIdRouteImport } from './routes/(moderator)/moderation/$releaseId'
-import { Route as adminUsersUserIdRouteImport } from './routes/(admin)/users/$userId'
-import { Route as userReleasesReleaseIdIndexRouteImport } from './routes/(user)/releases/$releaseId/index'
+import { Route as UserRouteImport } from './routes/_user'
+import { Route as ModeratorRouteImport } from './routes/_moderator'
+import { Route as AuthRouteImport } from './routes/_auth'
+import { Route as AdminRouteImport } from './routes/_admin'
+import { Route as UserIndexRouteImport } from './routes/_user/index'
+import { Route as UserProfileRouteImport } from './routes/_user/profile'
+import { Route as AuthResetPasswordRouteImport } from './routes/_auth/reset-password'
+import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
+import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as AuthForgotPasswordRouteImport } from './routes/_auth/forgot-password'
+import { Route as UserRoyaltiesIndexRouteImport } from './routes/_user/royalties/index'
+import { Route as AdminAdminIndexRouteImport } from './routes/_admin/admin/index'
+import { Route as UserRoyaltiesReportIdRouteImport } from './routes/_user/royalties/$reportId'
+import { Route as ModeratorModerationReleaseIdRouteImport } from './routes/_moderator/moderation/$releaseId'
+import { Route as AdminAdminReportsRouteImport } from './routes/_admin/admin/reports'
+import { Route as AdminAdminPlatformsRouteImport } from './routes/_admin/admin/platforms'
+import { Route as UserReleasesReleaseIdIndexRouteImport } from './routes/_user/releases/$releaseId/index'
+import { Route as AdminAdminUsersIndexRouteImport } from './routes/_admin/admin/users/index'
+import { Route as AdminAdminUsersUserIdRouteImport } from './routes/_admin/admin/users/$userId'
 
-const userReleasesIndexLazyRouteImport = createFileRoute('/(user)/releases/')()
-const moderatorModerationIndexLazyRouteImport = createFileRoute(
-  '/(moderator)/moderation/',
+const UserReleasesIndexLazyRouteImport = createFileRoute('/_user/releases/')()
+const ModeratorModerationIndexLazyRouteImport = createFileRoute(
+  '/_moderator/moderation/',
 )()
-const userReleasesNewIndexLazyRouteImport = createFileRoute(
-  '/(user)/releases/new/',
+const UserReleasesNewIndexLazyRouteImport = createFileRoute(
+  '/_user/releases/new/',
 )()
 
 const UnauthorizedRoute = UnauthorizedRouteImport.update({
@@ -41,267 +45,271 @@ const UnauthorizedRoute = UnauthorizedRouteImport.update({
   path: '/unauthorized',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+const UserRoute = UserRouteImport.update({
+  id: '/_user',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
+const ModeratorRoute = ModeratorRouteImport.update({
+  id: '/_moderator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/_auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/_admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UserIndexRoute = UserIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => UserRoute,
 } as any)
-const userProfileRoute = userProfileRouteImport.update({
-  id: '/(user)/profile',
+const UserProfileRoute = UserProfileRouteImport.update({
+  id: '/profile',
   path: '/profile',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => UserRoute,
 } as any)
-const authResetPasswordRoute = authResetPasswordRouteImport.update({
-  id: '/(auth)/reset-password',
+const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
+  id: '/reset-password',
   path: '/reset-password',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthRoute,
 } as any)
-const authRegisterRoute = authRegisterRouteImport.update({
-  id: '/(auth)/register',
+const AuthRegisterRoute = AuthRegisterRouteImport.update({
+  id: '/register',
   path: '/register',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthRoute,
 } as any)
-const authLoginRoute = authLoginRouteImport.update({
-  id: '/(auth)/login',
+const AuthLoginRoute = AuthLoginRouteImport.update({
+  id: '/login',
   path: '/login',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthRoute,
 } as any)
-const authForgotPasswordRoute = authForgotPasswordRouteImport.update({
-  id: '/(auth)/forgot-password',
+const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
+  id: '/forgot-password',
   path: '/forgot-password',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthRoute,
 } as any)
-const adminReportsRoute = adminReportsRouteImport.update({
-  id: '/(admin)/reports',
-  path: '/reports',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const adminPlatformsRoute = adminPlatformsRouteImport.update({
-  id: '/(admin)/platforms',
-  path: '/platforms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const userReleasesIndexLazyRoute = userReleasesIndexLazyRouteImport
-  .update({
-    id: '/(user)/releases/',
-    path: '/releases/',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-  .lazy(() =>
-    import('./routes/(user)/releases/index.lazy').then((d) => d.Route),
+const UserReleasesIndexLazyRoute = UserReleasesIndexLazyRouteImport.update({
+  id: '/releases/',
+  path: '/releases/',
+  getParentRoute: () => UserRoute,
+} as any).lazy(() =>
+  import('./routes/_user/releases/index.lazy').then((d) => d.Route),
+)
+const ModeratorModerationIndexLazyRoute =
+  ModeratorModerationIndexLazyRouteImport.update({
+    id: '/moderation/',
+    path: '/moderation/',
+    getParentRoute: () => ModeratorRoute,
+  } as any).lazy(() =>
+    import('./routes/_moderator/moderation/index.lazy').then((d) => d.Route),
   )
-const moderatorModerationIndexLazyRoute =
-  moderatorModerationIndexLazyRouteImport
-    .update({
-      id: '/(moderator)/moderation/',
-      path: '/moderation/',
-      getParentRoute: () => rootRouteImport,
-    } as any)
-    .lazy(() =>
-      import('./routes/(moderator)/moderation/index.lazy').then((d) => d.Route),
-    )
-const userRoyaltiesIndexRoute = userRoyaltiesIndexRouteImport.update({
-  id: '/(user)/royalties/',
+const UserRoyaltiesIndexRoute = UserRoyaltiesIndexRouteImport.update({
+  id: '/royalties/',
   path: '/royalties/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => UserRoute,
 } as any)
-const adminUsersIndexRoute = adminUsersIndexRouteImport.update({
-  id: '/(admin)/users/',
-  path: '/users/',
-  getParentRoute: () => rootRouteImport,
+const AdminAdminIndexRoute = AdminAdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => AdminRoute,
 } as any)
-const userRoyaltiesReportIdRoute = userRoyaltiesReportIdRouteImport.update({
-  id: '/(user)/royalties/$reportId',
+const UserRoyaltiesReportIdRoute = UserRoyaltiesReportIdRouteImport.update({
+  id: '/royalties/$reportId',
   path: '/royalties/$reportId',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => UserRoute,
 } as any)
-const moderatorModerationReleaseIdRoute =
-  moderatorModerationReleaseIdRouteImport.update({
-    id: '/(moderator)/moderation/$releaseId',
+const ModeratorModerationReleaseIdRoute =
+  ModeratorModerationReleaseIdRouteImport.update({
+    id: '/moderation/$releaseId',
     path: '/moderation/$releaseId',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => ModeratorRoute,
   } as any)
-const adminUsersUserIdRoute = adminUsersUserIdRouteImport.update({
-  id: '/(admin)/users/$userId',
-  path: '/users/$userId',
-  getParentRoute: () => rootRouteImport,
+const AdminAdminReportsRoute = AdminAdminReportsRouteImport.update({
+  id: '/admin/reports',
+  path: '/admin/reports',
+  getParentRoute: () => AdminRoute,
 } as any)
-const userReleasesNewIndexLazyRoute = userReleasesNewIndexLazyRouteImport
-  .update({
-    id: '/(user)/releases/new/',
+const AdminAdminPlatformsRoute = AdminAdminPlatformsRouteImport.update({
+  id: '/admin/platforms',
+  path: '/admin/platforms',
+  getParentRoute: () => AdminRoute,
+} as any)
+const UserReleasesNewIndexLazyRoute =
+  UserReleasesNewIndexLazyRouteImport.update({
+    id: '/releases/new/',
     path: '/releases/new/',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-  .lazy(() =>
-    import('./routes/(user)/releases/new/index.lazy').then((d) => d.Route),
+    getParentRoute: () => UserRoute,
+  } as any).lazy(() =>
+    import('./routes/_user/releases/new/index.lazy').then((d) => d.Route),
   )
-const userReleasesReleaseIdIndexRoute = userReleasesReleaseIdIndexRouteImport
-  .update({
-    id: '/(user)/releases/$releaseId/',
+const UserReleasesReleaseIdIndexRoute =
+  UserReleasesReleaseIdIndexRouteImport.update({
+    id: '/releases/$releaseId/',
     path: '/releases/$releaseId/',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-  .lazy(() =>
-    import('./routes/(user)/releases/$releaseId/index.lazy').then(
+    getParentRoute: () => UserRoute,
+  } as any).lazy(() =>
+    import('./routes/_user/releases/$releaseId/index.lazy').then(
       (d) => d.Route,
     ),
   )
+const AdminAdminUsersIndexRoute = AdminAdminUsersIndexRouteImport.update({
+  id: '/admin/users/',
+  path: '/admin/users/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminAdminUsersUserIdRoute = AdminAdminUsersUserIdRouteImport.update({
+  id: '/admin/users/$userId',
+  path: '/admin/users/$userId',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
   '/unauthorized': typeof UnauthorizedRoute
-  '/platforms': typeof adminPlatformsRoute
-  '/reports': typeof adminReportsRoute
-  '/forgot-password': typeof authForgotPasswordRoute
-  '/login': typeof authLoginRoute
-  '/register': typeof authRegisterRoute
-  '/reset-password': typeof authResetPasswordRoute
-  '/profile': typeof userProfileRoute
-  '/users/$userId': typeof adminUsersUserIdRoute
-  '/moderation/$releaseId': typeof moderatorModerationReleaseIdRoute
-  '/royalties/$reportId': typeof userRoyaltiesReportIdRoute
-  '/users': typeof adminUsersIndexRoute
-  '/royalties': typeof userRoyaltiesIndexRoute
-  '/moderation': typeof moderatorModerationIndexLazyRoute
-  '/releases': typeof userReleasesIndexLazyRoute
-  '/releases/$releaseId': typeof userReleasesReleaseIdIndexRoute
-  '/releases/new': typeof userReleasesNewIndexLazyRoute
+  '/forgot-password': typeof AuthForgotPasswordRoute
+  '/login': typeof AuthLoginRoute
+  '/register': typeof AuthRegisterRoute
+  '/reset-password': typeof AuthResetPasswordRoute
+  '/profile': typeof UserProfileRoute
+  '/': typeof UserIndexRoute
+  '/admin/platforms': typeof AdminAdminPlatformsRoute
+  '/admin/reports': typeof AdminAdminReportsRoute
+  '/moderation/$releaseId': typeof ModeratorModerationReleaseIdRoute
+  '/royalties/$reportId': typeof UserRoyaltiesReportIdRoute
+  '/admin': typeof AdminAdminIndexRoute
+  '/royalties': typeof UserRoyaltiesIndexRoute
+  '/moderation': typeof ModeratorModerationIndexLazyRoute
+  '/releases': typeof UserReleasesIndexLazyRoute
+  '/admin/users/$userId': typeof AdminAdminUsersUserIdRoute
+  '/admin/users': typeof AdminAdminUsersIndexRoute
+  '/releases/$releaseId': typeof UserReleasesReleaseIdIndexRoute
+  '/releases/new': typeof UserReleasesNewIndexLazyRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
   '/unauthorized': typeof UnauthorizedRoute
-  '/platforms': typeof adminPlatformsRoute
-  '/reports': typeof adminReportsRoute
-  '/forgot-password': typeof authForgotPasswordRoute
-  '/login': typeof authLoginRoute
-  '/register': typeof authRegisterRoute
-  '/reset-password': typeof authResetPasswordRoute
-  '/profile': typeof userProfileRoute
-  '/users/$userId': typeof adminUsersUserIdRoute
-  '/moderation/$releaseId': typeof moderatorModerationReleaseIdRoute
-  '/royalties/$reportId': typeof userRoyaltiesReportIdRoute
-  '/users': typeof adminUsersIndexRoute
-  '/royalties': typeof userRoyaltiesIndexRoute
-  '/moderation': typeof moderatorModerationIndexLazyRoute
-  '/releases': typeof userReleasesIndexLazyRoute
-  '/releases/$releaseId': typeof userReleasesReleaseIdIndexRoute
-  '/releases/new': typeof userReleasesNewIndexLazyRoute
+  '/forgot-password': typeof AuthForgotPasswordRoute
+  '/login': typeof AuthLoginRoute
+  '/register': typeof AuthRegisterRoute
+  '/reset-password': typeof AuthResetPasswordRoute
+  '/profile': typeof UserProfileRoute
+  '/': typeof UserIndexRoute
+  '/admin/platforms': typeof AdminAdminPlatformsRoute
+  '/admin/reports': typeof AdminAdminReportsRoute
+  '/moderation/$releaseId': typeof ModeratorModerationReleaseIdRoute
+  '/royalties/$reportId': typeof UserRoyaltiesReportIdRoute
+  '/admin': typeof AdminAdminIndexRoute
+  '/royalties': typeof UserRoyaltiesIndexRoute
+  '/moderation': typeof ModeratorModerationIndexLazyRoute
+  '/releases': typeof UserReleasesIndexLazyRoute
+  '/admin/users/$userId': typeof AdminAdminUsersUserIdRoute
+  '/admin/users': typeof AdminAdminUsersIndexRoute
+  '/releases/$releaseId': typeof UserReleasesReleaseIdIndexRoute
+  '/releases/new': typeof UserReleasesNewIndexLazyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
+  '/_admin': typeof AdminRouteWithChildren
+  '/_auth': typeof AuthRouteWithChildren
+  '/_moderator': typeof ModeratorRouteWithChildren
+  '/_user': typeof UserRouteWithChildren
   '/unauthorized': typeof UnauthorizedRoute
-  '/(admin)/platforms': typeof adminPlatformsRoute
-  '/(admin)/reports': typeof adminReportsRoute
-  '/(auth)/forgot-password': typeof authForgotPasswordRoute
-  '/(auth)/login': typeof authLoginRoute
-  '/(auth)/register': typeof authRegisterRoute
-  '/(auth)/reset-password': typeof authResetPasswordRoute
-  '/(user)/profile': typeof userProfileRoute
-  '/(admin)/users/$userId': typeof adminUsersUserIdRoute
-  '/(moderator)/moderation/$releaseId': typeof moderatorModerationReleaseIdRoute
-  '/(user)/royalties/$reportId': typeof userRoyaltiesReportIdRoute
-  '/(admin)/users/': typeof adminUsersIndexRoute
-  '/(user)/royalties/': typeof userRoyaltiesIndexRoute
-  '/(moderator)/moderation/': typeof moderatorModerationIndexLazyRoute
-  '/(user)/releases/': typeof userReleasesIndexLazyRoute
-  '/(user)/releases/$releaseId/': typeof userReleasesReleaseIdIndexRoute
-  '/(user)/releases/new/': typeof userReleasesNewIndexLazyRoute
+  '/_auth/forgot-password': typeof AuthForgotPasswordRoute
+  '/_auth/login': typeof AuthLoginRoute
+  '/_auth/register': typeof AuthRegisterRoute
+  '/_auth/reset-password': typeof AuthResetPasswordRoute
+  '/_user/profile': typeof UserProfileRoute
+  '/_user/': typeof UserIndexRoute
+  '/_admin/admin/platforms': typeof AdminAdminPlatformsRoute
+  '/_admin/admin/reports': typeof AdminAdminReportsRoute
+  '/_moderator/moderation/$releaseId': typeof ModeratorModerationReleaseIdRoute
+  '/_user/royalties/$reportId': typeof UserRoyaltiesReportIdRoute
+  '/_admin/admin/': typeof AdminAdminIndexRoute
+  '/_user/royalties/': typeof UserRoyaltiesIndexRoute
+  '/_moderator/moderation/': typeof ModeratorModerationIndexLazyRoute
+  '/_user/releases/': typeof UserReleasesIndexLazyRoute
+  '/_admin/admin/users/$userId': typeof AdminAdminUsersUserIdRoute
+  '/_admin/admin/users/': typeof AdminAdminUsersIndexRoute
+  '/_user/releases/$releaseId/': typeof UserReleasesReleaseIdIndexRoute
+  '/_user/releases/new/': typeof UserReleasesNewIndexLazyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/dashboard'
     | '/unauthorized'
-    | '/platforms'
-    | '/reports'
     | '/forgot-password'
     | '/login'
     | '/register'
     | '/reset-password'
     | '/profile'
-    | '/users/$userId'
+    | '/'
+    | '/admin/platforms'
+    | '/admin/reports'
     | '/moderation/$releaseId'
     | '/royalties/$reportId'
-    | '/users'
+    | '/admin'
     | '/royalties'
     | '/moderation'
     | '/releases'
+    | '/admin/users/$userId'
+    | '/admin/users'
     | '/releases/$releaseId'
     | '/releases/new'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
-    | '/dashboard'
     | '/unauthorized'
-    | '/platforms'
-    | '/reports'
     | '/forgot-password'
     | '/login'
     | '/register'
     | '/reset-password'
     | '/profile'
-    | '/users/$userId'
+    | '/'
+    | '/admin/platforms'
+    | '/admin/reports'
     | '/moderation/$releaseId'
     | '/royalties/$reportId'
-    | '/users'
+    | '/admin'
     | '/royalties'
     | '/moderation'
     | '/releases'
+    | '/admin/users/$userId'
+    | '/admin/users'
     | '/releases/$releaseId'
     | '/releases/new'
   id:
     | '__root__'
-    | '/'
-    | '/dashboard'
+    | '/_admin'
+    | '/_auth'
+    | '/_moderator'
+    | '/_user'
     | '/unauthorized'
-    | '/(admin)/platforms'
-    | '/(admin)/reports'
-    | '/(auth)/forgot-password'
-    | '/(auth)/login'
-    | '/(auth)/register'
-    | '/(auth)/reset-password'
-    | '/(user)/profile'
-    | '/(admin)/users/$userId'
-    | '/(moderator)/moderation/$releaseId'
-    | '/(user)/royalties/$reportId'
-    | '/(admin)/users/'
-    | '/(user)/royalties/'
-    | '/(moderator)/moderation/'
-    | '/(user)/releases/'
-    | '/(user)/releases/$releaseId/'
-    | '/(user)/releases/new/'
+    | '/_auth/forgot-password'
+    | '/_auth/login'
+    | '/_auth/register'
+    | '/_auth/reset-password'
+    | '/_user/profile'
+    | '/_user/'
+    | '/_admin/admin/platforms'
+    | '/_admin/admin/reports'
+    | '/_moderator/moderation/$releaseId'
+    | '/_user/royalties/$reportId'
+    | '/_admin/admin/'
+    | '/_user/royalties/'
+    | '/_moderator/moderation/'
+    | '/_user/releases/'
+    | '/_admin/admin/users/$userId'
+    | '/_admin/admin/users/'
+    | '/_user/releases/$releaseId/'
+    | '/_user/releases/new/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  DashboardRoute: typeof DashboardRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  AuthRoute: typeof AuthRouteWithChildren
+  ModeratorRoute: typeof ModeratorRouteWithChildren
+  UserRoute: typeof UserRouteWithChildren
   UnauthorizedRoute: typeof UnauthorizedRoute
-  adminPlatformsRoute: typeof adminPlatformsRoute
-  adminReportsRoute: typeof adminReportsRoute
-  authForgotPasswordRoute: typeof authForgotPasswordRoute
-  authLoginRoute: typeof authLoginRoute
-  authRegisterRoute: typeof authRegisterRoute
-  authResetPasswordRoute: typeof authResetPasswordRoute
-  userProfileRoute: typeof userProfileRoute
-  adminUsersUserIdRoute: typeof adminUsersUserIdRoute
-  moderatorModerationReleaseIdRoute: typeof moderatorModerationReleaseIdRoute
-  userRoyaltiesReportIdRoute: typeof userRoyaltiesReportIdRoute
-  adminUsersIndexRoute: typeof adminUsersIndexRoute
-  userRoyaltiesIndexRoute: typeof userRoyaltiesIndexRoute
-  moderatorModerationIndexLazyRoute: typeof moderatorModerationIndexLazyRoute
-  userReleasesIndexLazyRoute: typeof userReleasesIndexLazyRoute
-  userReleasesReleaseIdIndexRoute: typeof userReleasesReleaseIdIndexRoute
-  userReleasesNewIndexLazyRoute: typeof userReleasesNewIndexLazyRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -313,155 +321,239 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UnauthorizedRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
+    '/_user': {
+      id: '/_user'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof UserRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
+    '/_moderator': {
+      id: '/_moderator'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof ModeratorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_admin': {
+      id: '/_admin'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_user/': {
+      id: '/_user/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof UserIndexRouteImport
+      parentRoute: typeof UserRoute
     }
-    '/(user)/profile': {
-      id: '/(user)/profile'
+    '/_user/profile': {
+      id: '/_user/profile'
       path: '/profile'
       fullPath: '/profile'
-      preLoaderRoute: typeof userProfileRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof UserProfileRouteImport
+      parentRoute: typeof UserRoute
     }
-    '/(auth)/reset-password': {
-      id: '/(auth)/reset-password'
+    '/_auth/reset-password': {
+      id: '/_auth/reset-password'
       path: '/reset-password'
       fullPath: '/reset-password'
-      preLoaderRoute: typeof authResetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthResetPasswordRouteImport
+      parentRoute: typeof AuthRoute
     }
-    '/(auth)/register': {
-      id: '/(auth)/register'
+    '/_auth/register': {
+      id: '/_auth/register'
       path: '/register'
       fullPath: '/register'
-      preLoaderRoute: typeof authRegisterRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthRegisterRouteImport
+      parentRoute: typeof AuthRoute
     }
-    '/(auth)/login': {
-      id: '/(auth)/login'
+    '/_auth/login': {
+      id: '/_auth/login'
       path: '/login'
       fullPath: '/login'
-      preLoaderRoute: typeof authLoginRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof AuthRoute
     }
-    '/(auth)/forgot-password': {
-      id: '/(auth)/forgot-password'
+    '/_auth/forgot-password': {
+      id: '/_auth/forgot-password'
       path: '/forgot-password'
       fullPath: '/forgot-password'
-      preLoaderRoute: typeof authForgotPasswordRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthForgotPasswordRouteImport
+      parentRoute: typeof AuthRoute
     }
-    '/(admin)/reports': {
-      id: '/(admin)/reports'
-      path: '/reports'
-      fullPath: '/reports'
-      preLoaderRoute: typeof adminReportsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(admin)/platforms': {
-      id: '/(admin)/platforms'
-      path: '/platforms'
-      fullPath: '/platforms'
-      preLoaderRoute: typeof adminPlatformsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(user)/releases/': {
-      id: '/(user)/releases/'
+    '/_user/releases/': {
+      id: '/_user/releases/'
       path: '/releases'
       fullPath: '/releases'
-      preLoaderRoute: typeof userReleasesIndexLazyRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof UserReleasesIndexLazyRouteImport
+      parentRoute: typeof UserRoute
     }
-    '/(moderator)/moderation/': {
-      id: '/(moderator)/moderation/'
+    '/_moderator/moderation/': {
+      id: '/_moderator/moderation/'
       path: '/moderation'
       fullPath: '/moderation'
-      preLoaderRoute: typeof moderatorModerationIndexLazyRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof ModeratorModerationIndexLazyRouteImport
+      parentRoute: typeof ModeratorRoute
     }
-    '/(user)/royalties/': {
-      id: '/(user)/royalties/'
+    '/_user/royalties/': {
+      id: '/_user/royalties/'
       path: '/royalties'
       fullPath: '/royalties'
-      preLoaderRoute: typeof userRoyaltiesIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof UserRoyaltiesIndexRouteImport
+      parentRoute: typeof UserRoute
     }
-    '/(admin)/users/': {
-      id: '/(admin)/users/'
-      path: '/users'
-      fullPath: '/users'
-      preLoaderRoute: typeof adminUsersIndexRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_admin/admin/': {
+      id: '/_admin/admin/'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminAdminIndexRouteImport
+      parentRoute: typeof AdminRoute
     }
-    '/(user)/royalties/$reportId': {
-      id: '/(user)/royalties/$reportId'
+    '/_user/royalties/$reportId': {
+      id: '/_user/royalties/$reportId'
       path: '/royalties/$reportId'
       fullPath: '/royalties/$reportId'
-      preLoaderRoute: typeof userRoyaltiesReportIdRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof UserRoyaltiesReportIdRouteImport
+      parentRoute: typeof UserRoute
     }
-    '/(moderator)/moderation/$releaseId': {
-      id: '/(moderator)/moderation/$releaseId'
+    '/_moderator/moderation/$releaseId': {
+      id: '/_moderator/moderation/$releaseId'
       path: '/moderation/$releaseId'
       fullPath: '/moderation/$releaseId'
-      preLoaderRoute: typeof moderatorModerationReleaseIdRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof ModeratorModerationReleaseIdRouteImport
+      parentRoute: typeof ModeratorRoute
     }
-    '/(admin)/users/$userId': {
-      id: '/(admin)/users/$userId'
-      path: '/users/$userId'
-      fullPath: '/users/$userId'
-      preLoaderRoute: typeof adminUsersUserIdRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_admin/admin/reports': {
+      id: '/_admin/admin/reports'
+      path: '/admin/reports'
+      fullPath: '/admin/reports'
+      preLoaderRoute: typeof AdminAdminReportsRouteImport
+      parentRoute: typeof AdminRoute
     }
-    '/(user)/releases/new/': {
-      id: '/(user)/releases/new/'
+    '/_admin/admin/platforms': {
+      id: '/_admin/admin/platforms'
+      path: '/admin/platforms'
+      fullPath: '/admin/platforms'
+      preLoaderRoute: typeof AdminAdminPlatformsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_user/releases/new/': {
+      id: '/_user/releases/new/'
       path: '/releases/new'
       fullPath: '/releases/new'
-      preLoaderRoute: typeof userReleasesNewIndexLazyRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof UserReleasesNewIndexLazyRouteImport
+      parentRoute: typeof UserRoute
     }
-    '/(user)/releases/$releaseId/': {
-      id: '/(user)/releases/$releaseId/'
+    '/_user/releases/$releaseId/': {
+      id: '/_user/releases/$releaseId/'
       path: '/releases/$releaseId'
       fullPath: '/releases/$releaseId'
-      preLoaderRoute: typeof userReleasesReleaseIdIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof UserReleasesReleaseIdIndexRouteImport
+      parentRoute: typeof UserRoute
+    }
+    '/_admin/admin/users/': {
+      id: '/_admin/admin/users/'
+      path: '/admin/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AdminAdminUsersIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_admin/admin/users/$userId': {
+      id: '/_admin/admin/users/$userId'
+      path: '/admin/users/$userId'
+      fullPath: '/admin/users/$userId'
+      preLoaderRoute: typeof AdminAdminUsersUserIdRouteImport
+      parentRoute: typeof AdminRoute
     }
   }
 }
 
+interface AdminRouteChildren {
+  AdminAdminPlatformsRoute: typeof AdminAdminPlatformsRoute
+  AdminAdminReportsRoute: typeof AdminAdminReportsRoute
+  AdminAdminIndexRoute: typeof AdminAdminIndexRoute
+  AdminAdminUsersUserIdRoute: typeof AdminAdminUsersUserIdRoute
+  AdminAdminUsersIndexRoute: typeof AdminAdminUsersIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminAdminPlatformsRoute: AdminAdminPlatformsRoute,
+  AdminAdminReportsRoute: AdminAdminReportsRoute,
+  AdminAdminIndexRoute: AdminAdminIndexRoute,
+  AdminAdminUsersUserIdRoute: AdminAdminUsersUserIdRoute,
+  AdminAdminUsersIndexRoute: AdminAdminUsersIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
+interface AuthRouteChildren {
+  AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthRegisterRoute: typeof AuthRegisterRoute
+  AuthResetPasswordRoute: typeof AuthResetPasswordRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthForgotPasswordRoute: AuthForgotPasswordRoute,
+  AuthLoginRoute: AuthLoginRoute,
+  AuthRegisterRoute: AuthRegisterRoute,
+  AuthResetPasswordRoute: AuthResetPasswordRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
+interface ModeratorRouteChildren {
+  ModeratorModerationReleaseIdRoute: typeof ModeratorModerationReleaseIdRoute
+  ModeratorModerationIndexLazyRoute: typeof ModeratorModerationIndexLazyRoute
+}
+
+const ModeratorRouteChildren: ModeratorRouteChildren = {
+  ModeratorModerationReleaseIdRoute: ModeratorModerationReleaseIdRoute,
+  ModeratorModerationIndexLazyRoute: ModeratorModerationIndexLazyRoute,
+}
+
+const ModeratorRouteWithChildren = ModeratorRoute._addFileChildren(
+  ModeratorRouteChildren,
+)
+
+interface UserRouteChildren {
+  UserProfileRoute: typeof UserProfileRoute
+  UserIndexRoute: typeof UserIndexRoute
+  UserRoyaltiesReportIdRoute: typeof UserRoyaltiesReportIdRoute
+  UserRoyaltiesIndexRoute: typeof UserRoyaltiesIndexRoute
+  UserReleasesIndexLazyRoute: typeof UserReleasesIndexLazyRoute
+  UserReleasesReleaseIdIndexRoute: typeof UserReleasesReleaseIdIndexRoute
+  UserReleasesNewIndexLazyRoute: typeof UserReleasesNewIndexLazyRoute
+}
+
+const UserRouteChildren: UserRouteChildren = {
+  UserProfileRoute: UserProfileRoute,
+  UserIndexRoute: UserIndexRoute,
+  UserRoyaltiesReportIdRoute: UserRoyaltiesReportIdRoute,
+  UserRoyaltiesIndexRoute: UserRoyaltiesIndexRoute,
+  UserReleasesIndexLazyRoute: UserReleasesIndexLazyRoute,
+  UserReleasesReleaseIdIndexRoute: UserReleasesReleaseIdIndexRoute,
+  UserReleasesNewIndexLazyRoute: UserReleasesNewIndexLazyRoute,
+}
+
+const UserRouteWithChildren = UserRoute._addFileChildren(UserRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  DashboardRoute: DashboardRoute,
+  AdminRoute: AdminRouteWithChildren,
+  AuthRoute: AuthRouteWithChildren,
+  ModeratorRoute: ModeratorRouteWithChildren,
+  UserRoute: UserRouteWithChildren,
   UnauthorizedRoute: UnauthorizedRoute,
-  adminPlatformsRoute: adminPlatformsRoute,
-  adminReportsRoute: adminReportsRoute,
-  authForgotPasswordRoute: authForgotPasswordRoute,
-  authLoginRoute: authLoginRoute,
-  authRegisterRoute: authRegisterRoute,
-  authResetPasswordRoute: authResetPasswordRoute,
-  userProfileRoute: userProfileRoute,
-  adminUsersUserIdRoute: adminUsersUserIdRoute,
-  moderatorModerationReleaseIdRoute: moderatorModerationReleaseIdRoute,
-  userRoyaltiesReportIdRoute: userRoyaltiesReportIdRoute,
-  adminUsersIndexRoute: adminUsersIndexRoute,
-  userRoyaltiesIndexRoute: userRoyaltiesIndexRoute,
-  moderatorModerationIndexLazyRoute: moderatorModerationIndexLazyRoute,
-  userReleasesIndexLazyRoute: userReleasesIndexLazyRoute,
-  userReleasesReleaseIdIndexRoute: userReleasesReleaseIdIndexRoute,
-  userReleasesNewIndexLazyRoute: userReleasesNewIndexLazyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

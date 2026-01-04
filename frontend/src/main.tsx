@@ -2,8 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import { Providers } from '@/providers/providers';
-import { router } from '@/providers/router';
-import { RouterProvider } from '@tanstack/react-router';
+import { App } from '@/app';
 
 const rootElement = document.getElementById('app')!;
 if (!rootElement.innerHTML) {
@@ -11,7 +10,7 @@ if (!rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <Providers>
-        <RouterProvider router={router} />
+        <App />
       </Providers>
     </StrictMode>,
   );

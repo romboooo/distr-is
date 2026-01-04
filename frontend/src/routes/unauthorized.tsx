@@ -19,7 +19,7 @@ function UnauthorizedPage() {
   const search = Route.useSearch();
 
   const handleGoHome = () => {
-    navigate({ to: '/dashboard' });
+    navigate({ to: '/' });
   };
 
   const handleLogout = () => {

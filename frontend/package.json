@@ -9,7 +9,7 @@
     "dev": "bunx --bun vite",
     "build": "tsc -b && vite build",
     "lint": "bunx --bun eslint .",
-    "prettier": "bunx --bun prettier --write .",
+    "prettier": "bunx --bun prettier --write src",
     "preview": "bunx --bun vite preview"
   },
   "dependencies": {
