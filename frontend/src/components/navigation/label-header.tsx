@@ -7,10 +7,10 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu';
-import { LogOut, Users, BarChart3, Database } from 'lucide-react';
+import { LogOut, Music, DollarSign, User } from 'lucide-react';
 
-export const AdminHeader = () => {
-  const { data: user, logout } = useAuth();
+export const LabelHeader = () => {
+  const { data, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -19,27 +19,27 @@ export const AdminHeader = () => {
   };
 
   return (
-    <header className="bg-background/95 supports-backdrop-filter:bg-background/60 backdrop-blur border-b w-full">
+    <header className="bg-background/95 supports-backdrop-filter:bg-background/60 backdrop-blur border-b">
       <div className="flex justify-between items-center px-6 w-full h-16">
-        <Link to="/admin" className="font-bold text-2xl">
-          Admin Panel
+        <Link to="/" className="font-bold text-2xl">
+          Music Platform
         </Link>
 
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
-              <Link to="/admin/users" className={navigationMenuTriggerStyle()}>
-                <Users className="mr-2 w-4 h-4" /> Users
+              <Link to="/label/releases" className={navigationMenuTriggerStyle()}>
+                <Music className="mr-2 w-4 h-4" /> Releases
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link to="/admin/platforms" className={navigationMenuTriggerStyle()}>
-                <Database className="mr-2 w-4 h-4" /> Platforms
+              <Link to="/label/royalties" className={navigationMenuTriggerStyle()}>
+                <DollarSign className="mr-2 w-4 h-4" /> Royalties
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link to="/admin/reports" className={navigationMenuTriggerStyle()}>
-                <BarChart3 className="mr-2 w-4 h-4" /> Reports
+              <Link to="/label/profile" className={navigationMenuTriggerStyle()}>
+                <User className="mr-2 w-4 h-4" /> Profile
               </Link>
             </NavigationMenuItem>
           </NavigationMenuList>
@@ -47,7 +47,7 @@ export const AdminHeader = () => {
 
         <div className="flex items-center gap-4">
           <div className="font-medium text-sm">
-            Admin: {user?.login}
+            Welcome, {data?.login}
           </div>
           <Button variant="outline" onClick={handleLogout} className="flex items-center gap-2">
             <LogOut className="w-4 h-4" /> Logout

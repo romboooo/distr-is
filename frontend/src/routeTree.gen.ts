@@ -12,32 +12,47 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UnauthorizedRouteImport } from './routes/unauthorized'
-import { Route as UserRouteImport } from './routes/_user'
 import { Route as ModeratorRouteImport } from './routes/_moderator'
+import { Route as LabelRouteImport } from './routes/_label'
 import { Route as AuthRouteImport } from './routes/_auth'
+import { Route as ArtistRouteImport } from './routes/_artist'
 import { Route as AdminRouteImport } from './routes/_admin'
-import { Route as UserIndexRouteImport } from './routes/_user/index'
-import { Route as UserProfileRouteImport } from './routes/_user/profile'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthResetPasswordRouteImport } from './routes/_auth/reset-password'
 import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as AuthForgotPasswordRouteImport } from './routes/_auth/forgot-password'
-import { Route as UserRoyaltiesIndexRouteImport } from './routes/_user/royalties/index'
+import { Route as LabelLabelIndexRouteImport } from './routes/_label/label/index'
+import { Route as ArtistArtistIndexRouteImport } from './routes/_artist/artist/index'
 import { Route as AdminAdminIndexRouteImport } from './routes/_admin/admin/index'
-import { Route as UserRoyaltiesReportIdRouteImport } from './routes/_user/royalties/$reportId'
 import { Route as ModeratorModerationReleaseIdRouteImport } from './routes/_moderator/moderation/$releaseId'
+import { Route as LabelLabelProfileRouteImport } from './routes/_label/label/profile'
+import { Route as ArtistArtistProfileRouteImport } from './routes/_artist/artist/profile'
 import { Route as AdminAdminReportsRouteImport } from './routes/_admin/admin/reports'
 import { Route as AdminAdminPlatformsRouteImport } from './routes/_admin/admin/platforms'
-import { Route as UserReleasesReleaseIdIndexRouteImport } from './routes/_user/releases/$releaseId/index'
+import { Route as LabelLabelRoyaltiesIndexRouteImport } from './routes/_label/label/royalties/index'
+import { Route as ArtistArtistRoyaltiesIndexRouteImport } from './routes/_artist/artist/royalties/index'
 import { Route as AdminAdminUsersIndexRouteImport } from './routes/_admin/admin/users/index'
+import { Route as LabelLabelRoyaltiesReportIdRouteImport } from './routes/_label/label/royalties/$reportId'
+import { Route as ArtistArtistRoyaltiesReportIdRouteImport } from './routes/_artist/artist/royalties/$reportId'
 import { Route as AdminAdminUsersUserIdRouteImport } from './routes/_admin/admin/users/$userId'
+import { Route as LabelLabelReleasesReleaseIdIndexRouteImport } from './routes/_label/label/releases/$releaseId/index'
+import { Route as ArtistArtistReleasesReleaseIdIndexRouteImport } from './routes/_artist/artist/releases/$releaseId/index'
 
-const UserReleasesIndexLazyRouteImport = createFileRoute('/_user/releases/')()
 const ModeratorModerationIndexLazyRouteImport = createFileRoute(
   '/_moderator/moderation/',
 )()
-const UserReleasesNewIndexLazyRouteImport = createFileRoute(
-  '/_user/releases/new/',
+const LabelLabelReleasesIndexLazyRouteImport = createFileRoute(
+  '/_label/label/releases/',
+)()
+const ArtistArtistReleasesIndexLazyRouteImport = createFileRoute(
+  '/_artist/artist/releases/',
+)()
+const LabelLabelReleasesNewIndexLazyRouteImport = createFileRoute(
+  '/_label/label/releases/new/',
+)()
+const ArtistArtistReleasesNewIndexLazyRouteImport = createFileRoute(
+  '/_artist/artist/releases/new/',
 )()
 
 const UnauthorizedRoute = UnauthorizedRouteImport.update({
@@ -45,31 +60,30 @@ const UnauthorizedRoute = UnauthorizedRouteImport.update({
   path: '/unauthorized',
   getParentRoute: () => rootRouteImport,
 } as any)
-const UserRoute = UserRouteImport.update({
-  id: '/_user',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ModeratorRoute = ModeratorRouteImport.update({
   id: '/_moderator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LabelRoute = LabelRouteImport.update({
+  id: '/_label',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArtistRoute = ArtistRouteImport.update({
+  id: '/_artist',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminRoute = AdminRouteImport.update({
   id: '/_admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const UserIndexRoute = UserIndexRouteImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => UserRoute,
-} as any)
-const UserProfileRoute = UserProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => UserRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -91,13 +105,6 @@ const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
   path: '/forgot-password',
   getParentRoute: () => AuthRoute,
 } as any)
-const UserReleasesIndexLazyRoute = UserReleasesIndexLazyRouteImport.update({
-  id: '/releases/',
-  path: '/releases/',
-  getParentRoute: () => UserRoute,
-} as any).lazy(() =>
-  import('./routes/_user/releases/index.lazy').then((d) => d.Route),
-)
 const ModeratorModerationIndexLazyRoute =
   ModeratorModerationIndexLazyRouteImport.update({
     id: '/moderation/',
@@ -106,20 +113,20 @@ const ModeratorModerationIndexLazyRoute =
   } as any).lazy(() =>
     import('./routes/_moderator/moderation/index.lazy').then((d) => d.Route),
   )
-const UserRoyaltiesIndexRoute = UserRoyaltiesIndexRouteImport.update({
-  id: '/royalties/',
-  path: '/royalties/',
-  getParentRoute: () => UserRoute,
+const LabelLabelIndexRoute = LabelLabelIndexRouteImport.update({
+  id: '/label/',
+  path: '/label/',
+  getParentRoute: () => LabelRoute,
+} as any)
+const ArtistArtistIndexRoute = ArtistArtistIndexRouteImport.update({
+  id: '/artist/',
+  path: '/artist/',
+  getParentRoute: () => ArtistRoute,
 } as any)
 const AdminAdminIndexRoute = AdminAdminIndexRouteImport.update({
   id: '/admin/',
   path: '/admin/',
   getParentRoute: () => AdminRoute,
-} as any)
-const UserRoyaltiesReportIdRoute = UserRoyaltiesReportIdRouteImport.update({
-  id: '/royalties/$reportId',
-  path: '/royalties/$reportId',
-  getParentRoute: () => UserRoute,
 } as any)
 const ModeratorModerationReleaseIdRoute =
   ModeratorModerationReleaseIdRouteImport.update({
@@ -127,6 +134,16 @@ const ModeratorModerationReleaseIdRoute =
     path: '/moderation/$releaseId',
     getParentRoute: () => ModeratorRoute,
   } as any)
+const LabelLabelProfileRoute = LabelLabelProfileRouteImport.update({
+  id: '/label/profile',
+  path: '/label/profile',
+  getParentRoute: () => LabelRoute,
+} as any)
+const ArtistArtistProfileRoute = ArtistArtistProfileRouteImport.update({
+  id: '/artist/profile',
+  path: '/artist/profile',
+  getParentRoute: () => ArtistRoute,
+} as any)
 const AdminAdminReportsRoute = AdminAdminReportsRouteImport.update({
   id: '/admin/reports',
   path: '/admin/reports',
@@ -137,178 +154,292 @@ const AdminAdminPlatformsRoute = AdminAdminPlatformsRouteImport.update({
   path: '/admin/platforms',
   getParentRoute: () => AdminRoute,
 } as any)
-const UserReleasesNewIndexLazyRoute =
-  UserReleasesNewIndexLazyRouteImport.update({
-    id: '/releases/new/',
-    path: '/releases/new/',
-    getParentRoute: () => UserRoute,
+const LabelLabelReleasesIndexLazyRoute =
+  LabelLabelReleasesIndexLazyRouteImport.update({
+    id: '/label/releases/',
+    path: '/label/releases/',
+    getParentRoute: () => LabelRoute,
   } as any).lazy(() =>
-    import('./routes/_user/releases/new/index.lazy').then((d) => d.Route),
+    import('./routes/_label/label/releases/index.lazy').then((d) => d.Route),
   )
-const UserReleasesReleaseIdIndexRoute =
-  UserReleasesReleaseIdIndexRouteImport.update({
-    id: '/releases/$releaseId/',
-    path: '/releases/$releaseId/',
-    getParentRoute: () => UserRoute,
+const ArtistArtistReleasesIndexLazyRoute =
+  ArtistArtistReleasesIndexLazyRouteImport.update({
+    id: '/artist/releases/',
+    path: '/artist/releases/',
+    getParentRoute: () => ArtistRoute,
   } as any).lazy(() =>
-    import('./routes/_user/releases/$releaseId/index.lazy').then(
-      (d) => d.Route,
-    ),
+    import('./routes/_artist/artist/releases/index.lazy').then((d) => d.Route),
   )
+const LabelLabelRoyaltiesIndexRoute =
+  LabelLabelRoyaltiesIndexRouteImport.update({
+    id: '/label/royalties/',
+    path: '/label/royalties/',
+    getParentRoute: () => LabelRoute,
+  } as any)
+const ArtistArtistRoyaltiesIndexRoute =
+  ArtistArtistRoyaltiesIndexRouteImport.update({
+    id: '/artist/royalties/',
+    path: '/artist/royalties/',
+    getParentRoute: () => ArtistRoute,
+  } as any)
 const AdminAdminUsersIndexRoute = AdminAdminUsersIndexRouteImport.update({
   id: '/admin/users/',
   path: '/admin/users/',
   getParentRoute: () => AdminRoute,
 } as any)
+const LabelLabelRoyaltiesReportIdRoute =
+  LabelLabelRoyaltiesReportIdRouteImport.update({
+    id: '/label/royalties/$reportId',
+    path: '/label/royalties/$reportId',
+    getParentRoute: () => LabelRoute,
+  } as any)
+const ArtistArtistRoyaltiesReportIdRoute =
+  ArtistArtistRoyaltiesReportIdRouteImport.update({
+    id: '/artist/royalties/$reportId',
+    path: '/artist/royalties/$reportId',
+    getParentRoute: () => ArtistRoute,
+  } as any)
 const AdminAdminUsersUserIdRoute = AdminAdminUsersUserIdRouteImport.update({
   id: '/admin/users/$userId',
   path: '/admin/users/$userId',
   getParentRoute: () => AdminRoute,
 } as any)
+const LabelLabelReleasesNewIndexLazyRoute =
+  LabelLabelReleasesNewIndexLazyRouteImport.update({
+    id: '/label/releases/new/',
+    path: '/label/releases/new/',
+    getParentRoute: () => LabelRoute,
+  } as any).lazy(() =>
+    import('./routes/_label/label/releases/new/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+const ArtistArtistReleasesNewIndexLazyRoute =
+  ArtistArtistReleasesNewIndexLazyRouteImport.update({
+    id: '/artist/releases/new/',
+    path: '/artist/releases/new/',
+    getParentRoute: () => ArtistRoute,
+  } as any).lazy(() =>
+    import('./routes/_artist/artist/releases/new/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+const LabelLabelReleasesReleaseIdIndexRoute =
+  LabelLabelReleasesReleaseIdIndexRouteImport.update({
+    id: '/label/releases/$releaseId/',
+    path: '/label/releases/$releaseId/',
+    getParentRoute: () => LabelRoute,
+  } as any).lazy(() =>
+    import('./routes/_label/label/releases/$releaseId/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+const ArtistArtistReleasesReleaseIdIndexRoute =
+  ArtistArtistReleasesReleaseIdIndexRouteImport.update({
+    id: '/artist/releases/$releaseId/',
+    path: '/artist/releases/$releaseId/',
+    getParentRoute: () => ArtistRoute,
+  } as any).lazy(() =>
+    import('./routes/_artist/artist/releases/$releaseId/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
   '/reset-password': typeof AuthResetPasswordRoute
-  '/profile': typeof UserProfileRoute
-  '/': typeof UserIndexRoute
   '/admin/platforms': typeof AdminAdminPlatformsRoute
   '/admin/reports': typeof AdminAdminReportsRoute
+  '/artist/profile': typeof ArtistArtistProfileRoute
+  '/label/profile': typeof LabelLabelProfileRoute
   '/moderation/$releaseId': typeof ModeratorModerationReleaseIdRoute
-  '/royalties/$reportId': typeof UserRoyaltiesReportIdRoute
   '/admin': typeof AdminAdminIndexRoute
-  '/royalties': typeof UserRoyaltiesIndexRoute
+  '/artist': typeof ArtistArtistIndexRoute
+  '/label': typeof LabelLabelIndexRoute
   '/moderation': typeof ModeratorModerationIndexLazyRoute
-  '/releases': typeof UserReleasesIndexLazyRoute
   '/admin/users/$userId': typeof AdminAdminUsersUserIdRoute
+  '/artist/royalties/$reportId': typeof ArtistArtistRoyaltiesReportIdRoute
+  '/label/royalties/$reportId': typeof LabelLabelRoyaltiesReportIdRoute
   '/admin/users': typeof AdminAdminUsersIndexRoute
-  '/releases/$releaseId': typeof UserReleasesReleaseIdIndexRoute
-  '/releases/new': typeof UserReleasesNewIndexLazyRoute
+  '/artist/royalties': typeof ArtistArtistRoyaltiesIndexRoute
+  '/label/royalties': typeof LabelLabelRoyaltiesIndexRoute
+  '/artist/releases': typeof ArtistArtistReleasesIndexLazyRoute
+  '/label/releases': typeof LabelLabelReleasesIndexLazyRoute
+  '/artist/releases/$releaseId': typeof ArtistArtistReleasesReleaseIdIndexRoute
+  '/label/releases/$releaseId': typeof LabelLabelReleasesReleaseIdIndexRoute
+  '/artist/releases/new': typeof ArtistArtistReleasesNewIndexLazyRoute
+  '/label/releases/new': typeof LabelLabelReleasesNewIndexLazyRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
   '/reset-password': typeof AuthResetPasswordRoute
-  '/profile': typeof UserProfileRoute
-  '/': typeof UserIndexRoute
   '/admin/platforms': typeof AdminAdminPlatformsRoute
   '/admin/reports': typeof AdminAdminReportsRoute
+  '/artist/profile': typeof ArtistArtistProfileRoute
+  '/label/profile': typeof LabelLabelProfileRoute
   '/moderation/$releaseId': typeof ModeratorModerationReleaseIdRoute
-  '/royalties/$reportId': typeof UserRoyaltiesReportIdRoute
   '/admin': typeof AdminAdminIndexRoute
-  '/royalties': typeof UserRoyaltiesIndexRoute
+  '/artist': typeof ArtistArtistIndexRoute
+  '/label': typeof LabelLabelIndexRoute
   '/moderation': typeof ModeratorModerationIndexLazyRoute
-  '/releases': typeof UserReleasesIndexLazyRoute
   '/admin/users/$userId': typeof AdminAdminUsersUserIdRoute
+  '/artist/royalties/$reportId': typeof ArtistArtistRoyaltiesReportIdRoute
+  '/label/royalties/$reportId': typeof LabelLabelRoyaltiesReportIdRoute
   '/admin/users': typeof AdminAdminUsersIndexRoute
-  '/releases/$releaseId': typeof UserReleasesReleaseIdIndexRoute
-  '/releases/new': typeof UserReleasesNewIndexLazyRoute
+  '/artist/royalties': typeof ArtistArtistRoyaltiesIndexRoute
+  '/label/royalties': typeof LabelLabelRoyaltiesIndexRoute
+  '/artist/releases': typeof ArtistArtistReleasesIndexLazyRoute
+  '/label/releases': typeof LabelLabelReleasesIndexLazyRoute
+  '/artist/releases/$releaseId': typeof ArtistArtistReleasesReleaseIdIndexRoute
+  '/label/releases/$releaseId': typeof LabelLabelReleasesReleaseIdIndexRoute
+  '/artist/releases/new': typeof ArtistArtistReleasesNewIndexLazyRoute
+  '/label/releases/new': typeof LabelLabelReleasesNewIndexLazyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/_admin': typeof AdminRouteWithChildren
+  '/_artist': typeof ArtistRouteWithChildren
   '/_auth': typeof AuthRouteWithChildren
+  '/_label': typeof LabelRouteWithChildren
   '/_moderator': typeof ModeratorRouteWithChildren
-  '/_user': typeof UserRouteWithChildren
   '/unauthorized': typeof UnauthorizedRoute
   '/_auth/forgot-password': typeof AuthForgotPasswordRoute
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
   '/_auth/reset-password': typeof AuthResetPasswordRoute
-  '/_user/profile': typeof UserProfileRoute
-  '/_user/': typeof UserIndexRoute
   '/_admin/admin/platforms': typeof AdminAdminPlatformsRoute
   '/_admin/admin/reports': typeof AdminAdminReportsRoute
+  '/_artist/artist/profile': typeof ArtistArtistProfileRoute
+  '/_label/label/profile': typeof LabelLabelProfileRoute
   '/_moderator/moderation/$releaseId': typeof ModeratorModerationReleaseIdRoute
-  '/_user/royalties/$reportId': typeof UserRoyaltiesReportIdRoute
   '/_admin/admin/': typeof AdminAdminIndexRoute
-  '/_user/royalties/': typeof UserRoyaltiesIndexRoute
+  '/_artist/artist/': typeof ArtistArtistIndexRoute
+  '/_label/label/': typeof LabelLabelIndexRoute
   '/_moderator/moderation/': typeof ModeratorModerationIndexLazyRoute
-  '/_user/releases/': typeof UserReleasesIndexLazyRoute
   '/_admin/admin/users/$userId': typeof AdminAdminUsersUserIdRoute
+  '/_artist/artist/royalties/$reportId': typeof ArtistArtistRoyaltiesReportIdRoute
+  '/_label/label/royalties/$reportId': typeof LabelLabelRoyaltiesReportIdRoute
   '/_admin/admin/users/': typeof AdminAdminUsersIndexRoute
-  '/_user/releases/$releaseId/': typeof UserReleasesReleaseIdIndexRoute
-  '/_user/releases/new/': typeof UserReleasesNewIndexLazyRoute
+  '/_artist/artist/royalties/': typeof ArtistArtistRoyaltiesIndexRoute
+  '/_label/label/royalties/': typeof LabelLabelRoyaltiesIndexRoute
+  '/_artist/artist/releases/': typeof ArtistArtistReleasesIndexLazyRoute
+  '/_label/label/releases/': typeof LabelLabelReleasesIndexLazyRoute
+  '/_artist/artist/releases/$releaseId/': typeof ArtistArtistReleasesReleaseIdIndexRoute
+  '/_label/label/releases/$releaseId/': typeof LabelLabelReleasesReleaseIdIndexRoute
+  '/_artist/artist/releases/new/': typeof ArtistArtistReleasesNewIndexLazyRoute
+  '/_label/label/releases/new/': typeof LabelLabelReleasesNewIndexLazyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/unauthorized'
     | '/forgot-password'
     | '/login'
     | '/register'
     | '/reset-password'
-    | '/profile'
-    | '/'
     | '/admin/platforms'
     | '/admin/reports'
+    | '/artist/profile'
+    | '/label/profile'
     | '/moderation/$releaseId'
-    | '/royalties/$reportId'
     | '/admin'
-    | '/royalties'
+    | '/artist'
+    | '/label'
     | '/moderation'
-    | '/releases'
     | '/admin/users/$userId'
+    | '/artist/royalties/$reportId'
+    | '/label/royalties/$reportId'
     | '/admin/users'
-    | '/releases/$releaseId'
-    | '/releases/new'
+    | '/artist/royalties'
+    | '/label/royalties'
+    | '/artist/releases'
+    | '/label/releases'
+    | '/artist/releases/$releaseId'
+    | '/label/releases/$releaseId'
+    | '/artist/releases/new'
+    | '/label/releases/new'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | '/unauthorized'
     | '/forgot-password'
     | '/login'
     | '/register'
     | '/reset-password'
-    | '/profile'
-    | '/'
     | '/admin/platforms'
     | '/admin/reports'
+    | '/artist/profile'
+    | '/label/profile'
     | '/moderation/$releaseId'
-    | '/royalties/$reportId'
     | '/admin'
-    | '/royalties'
+    | '/artist'
+    | '/label'
     | '/moderation'
-    | '/releases'
     | '/admin/users/$userId'
+    | '/artist/royalties/$reportId'
+    | '/label/royalties/$reportId'
     | '/admin/users'
-    | '/releases/$releaseId'
-    | '/releases/new'
+    | '/artist/royalties'
+    | '/label/royalties'
+    | '/artist/releases'
+    | '/label/releases'
+    | '/artist/releases/$releaseId'
+    | '/label/releases/$releaseId'
+    | '/artist/releases/new'
+    | '/label/releases/new'
   id:
     | '__root__'
+    | '/'
     | '/_admin'
+    | '/_artist'
     | '/_auth'
+    | '/_label'
     | '/_moderator'
-    | '/_user'
     | '/unauthorized'
     | '/_auth/forgot-password'
     | '/_auth/login'
     | '/_auth/register'
     | '/_auth/reset-password'
-    | '/_user/profile'
-    | '/_user/'
     | '/_admin/admin/platforms'
     | '/_admin/admin/reports'
+    | '/_artist/artist/profile'
+    | '/_label/label/profile'
     | '/_moderator/moderation/$releaseId'
-    | '/_user/royalties/$reportId'
     | '/_admin/admin/'
-    | '/_user/royalties/'
+    | '/_artist/artist/'
+    | '/_label/label/'
     | '/_moderator/moderation/'
-    | '/_user/releases/'
     | '/_admin/admin/users/$userId'
+    | '/_artist/artist/royalties/$reportId'
+    | '/_label/label/royalties/$reportId'
     | '/_admin/admin/users/'
-    | '/_user/releases/$releaseId/'
-    | '/_user/releases/new/'
+    | '/_artist/artist/royalties/'
+    | '/_label/label/royalties/'
+    | '/_artist/artist/releases/'
+    | '/_label/label/releases/'
+    | '/_artist/artist/releases/$releaseId/'
+    | '/_label/label/releases/$releaseId/'
+    | '/_artist/artist/releases/new/'
+    | '/_label/label/releases/new/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
+  ArtistRoute: typeof ArtistRouteWithChildren
   AuthRoute: typeof AuthRouteWithChildren
+  LabelRoute: typeof LabelRouteWithChildren
   ModeratorRoute: typeof ModeratorRouteWithChildren
-  UserRoute: typeof UserRouteWithChildren
   UnauthorizedRoute: typeof UnauthorizedRoute
 }
 
@@ -321,18 +452,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UnauthorizedRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_user': {
-      id: '/_user'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof UserRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_moderator': {
       id: '/_moderator'
       path: ''
       fullPath: ''
       preLoaderRoute: typeof ModeratorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_label': {
+      id: '/_label'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof LabelRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth': {
@@ -342,6 +473,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_artist': {
+      id: '/_artist'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof ArtistRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_admin': {
       id: '/_admin'
       path: ''
@@ -349,19 +487,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_user/': {
-      id: '/_user/'
+    '/': {
+      id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof UserIndexRouteImport
-      parentRoute: typeof UserRoute
-    }
-    '/_user/profile': {
-      id: '/_user/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof UserProfileRouteImport
-      parentRoute: typeof UserRoute
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_auth/reset-password': {
       id: '/_auth/reset-password'
@@ -391,13 +522,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthForgotPasswordRouteImport
       parentRoute: typeof AuthRoute
     }
-    '/_user/releases/': {
-      id: '/_user/releases/'
-      path: '/releases'
-      fullPath: '/releases'
-      preLoaderRoute: typeof UserReleasesIndexLazyRouteImport
-      parentRoute: typeof UserRoute
-    }
     '/_moderator/moderation/': {
       id: '/_moderator/moderation/'
       path: '/moderation'
@@ -405,12 +529,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ModeratorModerationIndexLazyRouteImport
       parentRoute: typeof ModeratorRoute
     }
-    '/_user/royalties/': {
-      id: '/_user/royalties/'
-      path: '/royalties'
-      fullPath: '/royalties'
-      preLoaderRoute: typeof UserRoyaltiesIndexRouteImport
-      parentRoute: typeof UserRoute
+    '/_label/label/': {
+      id: '/_label/label/'
+      path: '/label'
+      fullPath: '/label'
+      preLoaderRoute: typeof LabelLabelIndexRouteImport
+      parentRoute: typeof LabelRoute
+    }
+    '/_artist/artist/': {
+      id: '/_artist/artist/'
+      path: '/artist'
+      fullPath: '/artist'
+      preLoaderRoute: typeof ArtistArtistIndexRouteImport
+      parentRoute: typeof ArtistRoute
     }
     '/_admin/admin/': {
       id: '/_admin/admin/'
@@ -419,19 +550,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/_user/royalties/$reportId': {
-      id: '/_user/royalties/$reportId'
-      path: '/royalties/$reportId'
-      fullPath: '/royalties/$reportId'
-      preLoaderRoute: typeof UserRoyaltiesReportIdRouteImport
-      parentRoute: typeof UserRoute
-    }
     '/_moderator/moderation/$releaseId': {
       id: '/_moderator/moderation/$releaseId'
       path: '/moderation/$releaseId'
       fullPath: '/moderation/$releaseId'
       preLoaderRoute: typeof ModeratorModerationReleaseIdRouteImport
       parentRoute: typeof ModeratorRoute
+    }
+    '/_label/label/profile': {
+      id: '/_label/label/profile'
+      path: '/label/profile'
+      fullPath: '/label/profile'
+      preLoaderRoute: typeof LabelLabelProfileRouteImport
+      parentRoute: typeof LabelRoute
+    }
+    '/_artist/artist/profile': {
+      id: '/_artist/artist/profile'
+      path: '/artist/profile'
+      fullPath: '/artist/profile'
+      preLoaderRoute: typeof ArtistArtistProfileRouteImport
+      parentRoute: typeof ArtistRoute
     }
     '/_admin/admin/reports': {
       id: '/_admin/admin/reports'
@@ -447,19 +585,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminPlatformsRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/_user/releases/new/': {
-      id: '/_user/releases/new/'
-      path: '/releases/new'
-      fullPath: '/releases/new'
-      preLoaderRoute: typeof UserReleasesNewIndexLazyRouteImport
-      parentRoute: typeof UserRoute
+    '/_label/label/releases/': {
+      id: '/_label/label/releases/'
+      path: '/label/releases'
+      fullPath: '/label/releases'
+      preLoaderRoute: typeof LabelLabelReleasesIndexLazyRouteImport
+      parentRoute: typeof LabelRoute
     }
-    '/_user/releases/$releaseId/': {
-      id: '/_user/releases/$releaseId/'
-      path: '/releases/$releaseId'
-      fullPath: '/releases/$releaseId'
-      preLoaderRoute: typeof UserReleasesReleaseIdIndexRouteImport
-      parentRoute: typeof UserRoute
+    '/_artist/artist/releases/': {
+      id: '/_artist/artist/releases/'
+      path: '/artist/releases'
+      fullPath: '/artist/releases'
+      preLoaderRoute: typeof ArtistArtistReleasesIndexLazyRouteImport
+      parentRoute: typeof ArtistRoute
+    }
+    '/_label/label/royalties/': {
+      id: '/_label/label/royalties/'
+      path: '/label/royalties'
+      fullPath: '/label/royalties'
+      preLoaderRoute: typeof LabelLabelRoyaltiesIndexRouteImport
+      parentRoute: typeof LabelRoute
+    }
+    '/_artist/artist/royalties/': {
+      id: '/_artist/artist/royalties/'
+      path: '/artist/royalties'
+      fullPath: '/artist/royalties'
+      preLoaderRoute: typeof ArtistArtistRoyaltiesIndexRouteImport
+      parentRoute: typeof ArtistRoute
     }
     '/_admin/admin/users/': {
       id: '/_admin/admin/users/'
@@ -468,12 +620,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminAdminUsersIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/_label/label/royalties/$reportId': {
+      id: '/_label/label/royalties/$reportId'
+      path: '/label/royalties/$reportId'
+      fullPath: '/label/royalties/$reportId'
+      preLoaderRoute: typeof LabelLabelRoyaltiesReportIdRouteImport
+      parentRoute: typeof LabelRoute
+    }
+    '/_artist/artist/royalties/$reportId': {
+      id: '/_artist/artist/royalties/$reportId'
+      path: '/artist/royalties/$reportId'
+      fullPath: '/artist/royalties/$reportId'
+      preLoaderRoute: typeof ArtistArtistRoyaltiesReportIdRouteImport
+      parentRoute: typeof ArtistRoute
+    }
     '/_admin/admin/users/$userId': {
       id: '/_admin/admin/users/$userId'
       path: '/admin/users/$userId'
       fullPath: '/admin/users/$userId'
       preLoaderRoute: typeof AdminAdminUsersUserIdRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/_label/label/releases/new/': {
+      id: '/_label/label/releases/new/'
+      path: '/label/releases/new'
+      fullPath: '/label/releases/new'
+      preLoaderRoute: typeof LabelLabelReleasesNewIndexLazyRouteImport
+      parentRoute: typeof LabelRoute
+    }
+    '/_artist/artist/releases/new/': {
+      id: '/_artist/artist/releases/new/'
+      path: '/artist/releases/new'
+      fullPath: '/artist/releases/new'
+      preLoaderRoute: typeof ArtistArtistReleasesNewIndexLazyRouteImport
+      parentRoute: typeof ArtistRoute
+    }
+    '/_label/label/releases/$releaseId/': {
+      id: '/_label/label/releases/$releaseId/'
+      path: '/label/releases/$releaseId'
+      fullPath: '/label/releases/$releaseId'
+      preLoaderRoute: typeof LabelLabelReleasesReleaseIdIndexRouteImport
+      parentRoute: typeof LabelRoute
+    }
+    '/_artist/artist/releases/$releaseId/': {
+      id: '/_artist/artist/releases/$releaseId/'
+      path: '/artist/releases/$releaseId'
+      fullPath: '/artist/releases/$releaseId'
+      preLoaderRoute: typeof ArtistArtistReleasesReleaseIdIndexRouteImport
+      parentRoute: typeof ArtistRoute
     }
   }
 }
@@ -496,6 +690,30 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
+interface ArtistRouteChildren {
+  ArtistArtistProfileRoute: typeof ArtistArtistProfileRoute
+  ArtistArtistIndexRoute: typeof ArtistArtistIndexRoute
+  ArtistArtistRoyaltiesReportIdRoute: typeof ArtistArtistRoyaltiesReportIdRoute
+  ArtistArtistRoyaltiesIndexRoute: typeof ArtistArtistRoyaltiesIndexRoute
+  ArtistArtistReleasesIndexLazyRoute: typeof ArtistArtistReleasesIndexLazyRoute
+  ArtistArtistReleasesReleaseIdIndexRoute: typeof ArtistArtistReleasesReleaseIdIndexRoute
+  ArtistArtistReleasesNewIndexLazyRoute: typeof ArtistArtistReleasesNewIndexLazyRoute
+}
+
+const ArtistRouteChildren: ArtistRouteChildren = {
+  ArtistArtistProfileRoute: ArtistArtistProfileRoute,
+  ArtistArtistIndexRoute: ArtistArtistIndexRoute,
+  ArtistArtistRoyaltiesReportIdRoute: ArtistArtistRoyaltiesReportIdRoute,
+  ArtistArtistRoyaltiesIndexRoute: ArtistArtistRoyaltiesIndexRoute,
+  ArtistArtistReleasesIndexLazyRoute: ArtistArtistReleasesIndexLazyRoute,
+  ArtistArtistReleasesReleaseIdIndexRoute:
+    ArtistArtistReleasesReleaseIdIndexRoute,
+  ArtistArtistReleasesNewIndexLazyRoute: ArtistArtistReleasesNewIndexLazyRoute,
+}
+
+const ArtistRouteWithChildren =
+  ArtistRoute._addFileChildren(ArtistRouteChildren)
+
 interface AuthRouteChildren {
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   AuthLoginRoute: typeof AuthLoginRoute
@@ -512,6 +730,28 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
+interface LabelRouteChildren {
+  LabelLabelProfileRoute: typeof LabelLabelProfileRoute
+  LabelLabelIndexRoute: typeof LabelLabelIndexRoute
+  LabelLabelRoyaltiesReportIdRoute: typeof LabelLabelRoyaltiesReportIdRoute
+  LabelLabelRoyaltiesIndexRoute: typeof LabelLabelRoyaltiesIndexRoute
+  LabelLabelReleasesIndexLazyRoute: typeof LabelLabelReleasesIndexLazyRoute
+  LabelLabelReleasesReleaseIdIndexRoute: typeof LabelLabelReleasesReleaseIdIndexRoute
+  LabelLabelReleasesNewIndexLazyRoute: typeof LabelLabelReleasesNewIndexLazyRoute
+}
+
+const LabelRouteChildren: LabelRouteChildren = {
+  LabelLabelProfileRoute: LabelLabelProfileRoute,
+  LabelLabelIndexRoute: LabelLabelIndexRoute,
+  LabelLabelRoyaltiesReportIdRoute: LabelLabelRoyaltiesReportIdRoute,
+  LabelLabelRoyaltiesIndexRoute: LabelLabelRoyaltiesIndexRoute,
+  LabelLabelReleasesIndexLazyRoute: LabelLabelReleasesIndexLazyRoute,
+  LabelLabelReleasesReleaseIdIndexRoute: LabelLabelReleasesReleaseIdIndexRoute,
+  LabelLabelReleasesNewIndexLazyRoute: LabelLabelReleasesNewIndexLazyRoute,
+}
+
+const LabelRouteWithChildren = LabelRoute._addFileChildren(LabelRouteChildren)
+
 interface ModeratorRouteChildren {
   ModeratorModerationReleaseIdRoute: typeof ModeratorModerationReleaseIdRoute
   ModeratorModerationIndexLazyRoute: typeof ModeratorModerationIndexLazyRoute
@@ -526,33 +766,13 @@ const ModeratorRouteWithChildren = ModeratorRoute._addFileChildren(
   ModeratorRouteChildren,
 )
 
-interface UserRouteChildren {
-  UserProfileRoute: typeof UserProfileRoute
-  UserIndexRoute: typeof UserIndexRoute
-  UserRoyaltiesReportIdRoute: typeof UserRoyaltiesReportIdRoute
-  UserRoyaltiesIndexRoute: typeof UserRoyaltiesIndexRoute
-  UserReleasesIndexLazyRoute: typeof UserReleasesIndexLazyRoute
-  UserReleasesReleaseIdIndexRoute: typeof UserReleasesReleaseIdIndexRoute
-  UserReleasesNewIndexLazyRoute: typeof UserReleasesNewIndexLazyRoute
-}
-
-const UserRouteChildren: UserRouteChildren = {
-  UserProfileRoute: UserProfileRoute,
-  UserIndexRoute: UserIndexRoute,
-  UserRoyaltiesReportIdRoute: UserRoyaltiesReportIdRoute,
-  UserRoyaltiesIndexRoute: UserRoyaltiesIndexRoute,
-  UserReleasesIndexLazyRoute: UserReleasesIndexLazyRoute,
-  UserReleasesReleaseIdIndexRoute: UserReleasesReleaseIdIndexRoute,
-  UserReleasesNewIndexLazyRoute: UserReleasesNewIndexLazyRoute,
-}
-
-const UserRouteWithChildren = UserRoute._addFileChildren(UserRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
+  ArtistRoute: ArtistRouteWithChildren,
   AuthRoute: AuthRouteWithChildren,
+  LabelRoute: LabelRouteWithChildren,
   ModeratorRoute: ModeratorRouteWithChildren,
-  UserRoute: UserRouteWithChildren,
   UnauthorizedRoute: UnauthorizedRoute,
 }
 export const routeTree = rootRouteImport

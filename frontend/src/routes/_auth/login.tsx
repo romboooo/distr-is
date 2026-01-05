@@ -1,3 +1,4 @@
+// src/routes/_auth/login.tsx
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -27,15 +28,14 @@ import { Separator } from '@/components/ui/separator';
 import {
   createFileRoute,
   Link,
-  Outlet,
   useNavigate,
 } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import z from 'zod';
-import { loginUser } from '@/services/login';
 import { PasswordInput } from '@/components/ui/password-input';
+import { useAuth } from '@/hooks/use-auth';
 
 const loginSearchSchema = z.object({
   next: z.string().optional(),
@@ -56,11 +56,11 @@ type FormValues = z.infer<typeof loginSchema>;
 
 function LoginForm() {
   const navigate = useNavigate();
+  const { login, isAuthenticated } = useAuth();
   const search = Route.useSearch();
   const next = search?.next || '/';
   const [formError, setFormError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  // const { login: authLogin } = useAuth();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(loginSchema),
@@ -74,15 +74,23 @@ function LoginForm() {
     setFormError(null);
   }, [form]);
 
+  useEffect(() => {
+    // Redirect if already authenticated
+    if (isAuthenticated) {
+      navigate({ to: next });
+    }
+  }, [isAuthenticated, navigate, next]);
+
   async function onSubmit(values: FormValues) {
     setFormError(null);
     setIsLoading(true);
 
     try {
-      // Use auth context instead of direct API call
-      await loginUser({ login: values.login, password: values.password });
-      // Redirect to next URL or dashboard
-      navigate({ to: next });
+      // Login using the hook
+      await login({
+        login: values.login,
+        password: values.password
+      });
     } catch (error) {
       setFormError(error instanceof Error ? error.message : 'Login failed');
     } finally {
@@ -92,7 +100,6 @@ function LoginForm() {
 
   return (
     <div className='flex w-screen h-screen'>
-      <Outlet></Outlet>
       {/* Login Form Side */}
       <div className='flex justify-center items-center px-4 sm:px-6 py-8 sm:py-12 w-full lg:w-1/2'>
         <div className='w-full max-w-sm'>

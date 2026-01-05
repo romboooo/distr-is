@@ -1,9 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/_user/')({
+export const Route = createFileRoute('/_label/label/')({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  return <div>Hello "/_user/"!</div>;
+  return <div>Hello label home</div>;
 }

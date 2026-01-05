@@ -1,11 +1,11 @@
-// src/components/layouts/admin-layout.tsx
-import { AdminHeader } from '@/components/navigation/admin-header';
+// src/components/layouts/user-layout.tsx
+import { ArtistHeader } from '@/components/navigation/artist-header';
 import { Outlet } from '@tanstack/react-router';
 
-export const AdminLayout = () => {
+export const ModeratorLayout = () => {
   return (
     <div className='flex flex-col w-full min-h-screen'>
-      <AdminHeader />
+      <ArtistHeader />
       <main className='flex-1'>
         <Outlet />
       </main>

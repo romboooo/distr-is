@@ -1,11 +1,11 @@
 // src/routes/_moderator.tsx
 import { createFileRoute } from '@tanstack/react-router';
 import { moderatorGuard } from '@/lib/route-guards';
-import { AdminLayout } from '@/components/layouts/admin-layout';
+import { ModeratorLayout } from '@/components/layouts/moderator-layout';
 
 export const Route = createFileRoute('/_moderator')({
-  beforeLoad: async () => {
-    await moderatorGuard();
+  beforeLoad: async ({ context }) => {
+    await moderatorGuard(context);
   },
-  component: AdminLayout,
+  component: ModeratorLayout,
 });

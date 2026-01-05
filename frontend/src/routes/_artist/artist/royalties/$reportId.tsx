@@ -1,9 +1,7 @@
-import { userGuard } from '@/lib/route-guards';
 import { createFileRoute } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/_user/royalties/$reportId')({
+export const Route = createFileRoute('/_artist/artist/royalties/$reportId')({
   component: RouteComponent,
-  beforeLoad: () => userGuard(),
 });
 
 function RouteComponent() {

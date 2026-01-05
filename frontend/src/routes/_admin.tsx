@@ -4,8 +4,8 @@ import { adminGuard } from '@/lib/route-guards';
 import { AdminLayout } from '@/components/layouts/admin-layout';
 
 export const Route = createFileRoute('/_admin')({
-  beforeLoad: async () => {
-    await adminGuard();
+  beforeLoad: async ({ context }) => {
+    await adminGuard(context);
   },
   component: AdminLayout,
 });
