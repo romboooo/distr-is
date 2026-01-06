@@ -1,4 +1,5 @@
 // src/services/api-client.ts
+import type { User } from '@/types/api';
 import axios, { AxiosError, type InternalAxiosRequestConfig } from 'axios';
 
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
@@ -11,7 +12,6 @@ export const apiClient = axios.create({
   },
 });
 
-// Add auth token to requests automatically
 apiClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token = getAuthToken();
   if (token) {
@@ -21,7 +21,6 @@ apiClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   return config;
 });
 
-// Handle 401 errors globally
 apiClient.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
@@ -38,4 +37,17 @@ export const getAuthToken = (): string | null => {
 
 export const clearAuthToken = (): void => {
   localStorage.removeItem(TOKEN_STORAGE_KEY);
+};
+
+export const getCurrentUser = async (): Promise<User | null> => {
+  if (typeof window === 'undefined') return null;
+
+  try {
+    const response = await apiClient.get<User>('/me');
+    return response.data;
+  } catch (error) {
+    console.error('Auth check failed:', error);
+    clearAuthToken();
+    return null;
+  }
 };

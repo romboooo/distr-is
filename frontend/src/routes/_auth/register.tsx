@@ -26,7 +26,10 @@ import { AccountTypeField } from '@/components/forms/account-type-field';
 import { UserCredentialsFields } from '@/components/forms/user-credentials-fields';
 import { LabelFields } from '@/components/forms/label-fields';
 import { ArtistFields } from '@/components/forms/artist-fields';
-import { registerArtist, registerLabel } from '@/services/auth-helpers';
+import { useAuth } from '@/hooks/use-auth';
+import { createLabelProfile } from '@/services/labels';
+import { createArtistProfile } from '@/services/artists';
+import { registerUser } from '@/services/register';
 
 const registerSearchSchema = z.object({
   next: z.string().optional(),
@@ -40,10 +43,12 @@ export const Route = createFileRoute('/_auth/register')({
 function RegisterForm() {
   const navigate = useNavigate();
   const search = Route.useSearch();
-  const next = search?.next || '/dashboard';
+  const next = search?.next || '/';
   const [formError, setFormError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [accountType, setAccountType] = useState<'ARTIST' | 'LABEL'>('ARTIST');
+
+  const { login } = useAuth();
 
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
@@ -75,13 +80,35 @@ function RegisterForm() {
     setIsLoading(true);
 
     try {
-      if (values.type === 'ARTIST') {
-        await registerArtist(values);
-      } else if (values.type === 'LABEL') {
-        await registerLabel(values);
-      }
+      await registerUser({
+        login: values.login,
+        password: values.password,
+        type: 'ARTIST',
+      });
 
-      console.log('navigating to ' + next);
+      const authResponse = await login({
+        login: values.login,
+        password: values.password,
+      });
+
+
+      if (values.type === 'ARTIST') {
+        await createArtistProfile({
+          name: values.name,
+          country: values.country,
+          realName: values.realName || null,
+          userId: authResponse.id,
+        });
+
+      } else if (values.type === 'LABEL') {
+        await createLabelProfile({
+          contactName: values.contactName,
+          country: values.country,
+          phone: values.phone,
+          userId: authResponse.id,
+        });
+
+      }
 
       navigate({
         to: next,

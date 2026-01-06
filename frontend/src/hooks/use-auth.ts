@@ -1,8 +1,7 @@
 // src/hooks/use-auth.ts
 import { useQuery } from '@tanstack/react-query';
 import type { User, UserType } from '@/types/api';
-import { getCurrentUser } from '@/services/auth-helpers';
-import { clearAuthToken, getAuthToken } from '@/services/api';
+import { clearAuthToken, getAuthToken, getCurrentUser } from '@/services/api';
 import { loginUser } from '@/services/login';
 import { queryClient } from '@/providers/query-client';
 

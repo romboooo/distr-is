@@ -13,6 +13,14 @@ export type ReleaseType = 'SINGLE' | 'MAXI_SINGLE' | 'EP' | 'ALBUM' | 'MIXTAPE';
 
 export type IsoDateString = string;
 
+export interface PaginatedResponse<T> {
+  content: T[];
+  currentPage: number;
+  totalPages: number;
+  totalElements: number;
+  pageSize: number;
+}
+
 export interface User {
   id: number;
   login: string;

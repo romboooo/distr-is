@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import type { RegisterFormValues } from '@/services/schemas';
+import { PasswordInput } from '@/components/ui/password-input';
 
 interface UserCredentialsFieldsProps {
   control: Control<RegisterFormValues>;
@@ -45,8 +46,7 @@ export function UserCredentialsFields({
           <FormItem>
             <FormLabel>Password</FormLabel>
             <FormControl>
-              <Input
-                type='password'
+              <PasswordInput
                 placeholder='••••••••'
                 {...field}
                 disabled={isSubmitting}
@@ -64,8 +64,7 @@ export function UserCredentialsFields({
           <FormItem>
             <FormLabel>Confirm Password</FormLabel>
             <FormControl>
-              <Input
-                type='password'
+              <PasswordInput
                 placeholder='••••••••'
                 {...field}
                 disabled={isSubmitting}
