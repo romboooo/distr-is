@@ -22,35 +22,49 @@ export const useUser = (
   });
 };
 
-export interface UserWithArtistDetails extends User {
-  type: 'ARTIST';
-  artistDetails: Artist | null;
-}
-
-export interface UserWithLabelDetails extends User {
-  type: 'LABEL';
-  labelDetails: Label | null;
-}
-
-export interface UserWithDetails extends User {
-  artistDetails: Artist | null;
-  labelDetails: Label | null;
-}
+// Discriminated union types for better type safety
+export type UserWithDetails =
+  | (User & { type: 'ARTIST'; artistDetails: Artist | null })
+  | (User & { type: 'LABEL'; labelDetails: Label | null })
+  | (User & {
+      type: Exclude<UserType, 'ARTIST' | 'LABEL'>;
+      artistDetails: null;
+      labelDetails: null;
+    });
 
 export const useArtistByUserId = (userId: number, enabled: boolean = false) => {
-  return useQuery<Artist, AxiosError>({
+  return useQuery<Artist | null, AxiosError>({
     queryKey: ['artist-by-user-id', userId],
-    queryFn: () => apiClient.get(`/artists/${userId}`).then((res) => res.data),
+    queryFn: async () => {
+      try {
+        const res = await apiClient.get<Artist>(`/artists/by-user/${userId}`);
+        return res.data;
+      } catch (error) {
+        if (error instanceof AxiosError && error.response?.status === 404) {
+          return null; // Gracefully handle 404
+        }
+        throw error;
+      }
+    },
     enabled: enabled && !!userId,
     retry: false,
   });
 };
 
 export const useLabelByUserId = (userId: number, enabled: boolean = false) => {
-  return useQuery<Label, AxiosError>({
+  return useQuery<Label | null, AxiosError>({
     queryKey: ['label-by-user-id', userId],
-    queryFn: () =>
-      apiClient.get(`/labels/user/${userId}`).then((res) => res.data),
+    queryFn: async () => {
+      try {
+        const res = await apiClient.get<Label>(`/labels/by-user/${userId}`);
+        return res.data;
+      } catch (error) {
+        if (error instanceof AxiosError && error.response?.status === 404) {
+          return null; // Gracefully handle 404
+        }
+        throw error;
+      }
+    },
     enabled: enabled && !!userId,
     retry: false,
   });
@@ -58,67 +72,71 @@ export const useLabelByUserId = (userId: number, enabled: boolean = false) => {
 
 export const useUserWithDetails = (userId: number) => {
   const userQuery = useUser(userId);
+  const isArtist = userQuery.data?.type === 'ARTIST';
+  const isLabel = userQuery.data?.type === 'LABEL';
 
-  const artistQuery = useArtistByUserId(
-    userId,
-    !!userQuery.data && userQuery.data.type === 'ARTIST',
-  );
-
-  const labelQuery = useLabelByUserId(
-    userId,
-    !!userQuery.data && userQuery.data.type === 'LABEL',
-  );
+  const artistQuery = useArtistByUserId(userId, !!userQuery.data && isArtist);
+  const labelQuery = useLabelByUserId(userId, !!userQuery.data && isLabel);
 
   const isLoading =
     userQuery.isLoading ||
-    (userQuery.data?.type === 'ARTIST' && artistQuery.isLoading) ||
-    (userQuery.data?.type === 'LABEL' && labelQuery.isLoading);
+    (isArtist && artistQuery.isLoading) ||
+    (isLabel && labelQuery.isLoading);
 
   const isError =
-    userQuery.isError || artistQuery.isError || labelQuery.isError;
-  const error = userQuery.error || artistQuery.error || labelQuery.error;
+    userQuery.isError ||
+    (isArtist && artistQuery.isError) ||
+    (isLabel && labelQuery.isError);
 
-  const combinedData = React.useMemo(() => {
+  const error =
+    userQuery.error ||
+    (isArtist ? artistQuery.error : undefined) ||
+    (isLabel ? labelQuery.error : undefined);
+
+  const combinedData = React.useMemo((): UserWithDetails | null => {
     if (!userQuery.data) return null;
 
-    const baseUserData = {
-      ...userQuery.data,
-      artistDetails: null,
-      labelDetails: null,
+    const baseUser = {
+      id: userQuery.data.id,
+      login: userQuery.data.login,
+      type: userQuery.data.type,
+      registrationDate: userQuery.data.registrationDate,
     };
 
-    if (userQuery.data.type === 'ARTIST' && artistQuery.data) {
-      return {
-        ...baseUserData,
-        type: 'ARTIST' as const,
-        artistDetails: artistQuery.data,
-      };
+    switch (userQuery.data.type) {
+      case 'ARTIST':
+        return {
+          ...baseUser,
+          type: 'ARTIST' as const,
+          artistDetails: artistQuery.data,
+          labelDetails: null,
+        } as UserWithDetails;
+      case 'LABEL':
+        return {
+          ...baseUser,
+          type: 'LABEL' as const,
+          labelDetails: labelQuery.data,
+          artistDetails: null,
+        } as UserWithDetails;
+      default:
+        return {
+          ...baseUser,
+          type: userQuery.data.type as Exclude<UserType, 'ARTIST' | 'LABEL'>,
+          artistDetails: null,
+          labelDetails: null,
+        } as UserWithDetails;
     }
-
-    if (userQuery.data.type === 'LABEL' && labelQuery.data) {
-      return {
-        ...baseUserData,
-        type: 'LABEL' as const,
-        labelDetails: labelQuery.data,
-      };
-    }
-
-    return baseUserData;
   }, [userQuery.data, artistQuery.data, labelQuery.data]);
 
   return {
-    data: combinedData as UserWithDetails | null,
+    data: combinedData,
     isLoading,
     isError,
-    error,
+    error: error as AxiosError | undefined,
     refetch: () => {
       userQuery.refetch();
-      if (userQuery.data?.type === 'ARTIST') {
-        artistQuery.refetch();
-      }
-      if (userQuery.data?.type === 'LABEL') {
-        labelQuery.refetch();
-      }
+      if (isArtist) artistQuery.refetch();
+      if (isLabel) labelQuery.refetch();
     },
     isRefetching:
       userQuery.isRefetching ||
@@ -136,7 +154,7 @@ export const useDeleteUser = () => {
     mutationFn: (id) => apiClient.delete(`/users/${id}`),
     onSuccess: (_, id) => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
-      queryClient.invalidateQueries({ queryKey: ['user', id], exact: true });
+      queryClient.invalidateQueries({ queryKey: ['user', id] });
     },
   });
 };
