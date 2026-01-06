@@ -112,6 +112,14 @@
 
     Response (200 OK): ArtistResponse
 
+### GET /artists/by-user/{userId}
+
+#### Получение артиста по ID пользователя
+
+    Path Param: userId (Long)
+
+    Response (200 OK): ArtistResponse
+
 ## --------------------------Labels ---------------------------
 
 ### POST /labels
@@ -157,6 +165,25 @@
     id (Long) - идентификатор лейбла
 
     Response (200 OK): Объект LabelResponse
+
+### GET /labels/by-user/{userId}
+
+#### Получение лейбла по ID пользователя
+
+    Path Param: userId (Long)
+
+    Response (200 OK): LabelResponse
+
+```json
+{
+    "id": 1,
+    "country": "Страна",
+    "contactName": "Имя контактного лица",
+    "phone": "Номер телефона",
+    "userId": 1,
+    "userLogin": "логин пользователя"
+}
+```
 
 ## --------------------------Releases ------------------------
 

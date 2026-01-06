@@ -106,12 +106,6 @@ public class ArtistService {
         return response;
     }
 
-    public List<ArtistResponse> getAllArtists() {
-        return artistRepository.findAll().stream()
-                .map(this::mapToResponse)
-                .toList();
-    }
-
     public PageResponse<ArtistResponse> getAllArtists(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Artist> artistPage = artistRepository.findAll(pageable);
@@ -130,4 +124,11 @@ public class ArtistService {
         return response;
     }
 
+    public ArtistResponse getArtistByUserId(Long userId) {
+        Artist artist = artistRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Artist not found for user ID: " + userId));
+
+        return mapToResponse(artist);
+    }
 }

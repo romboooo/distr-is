@@ -37,4 +37,10 @@ public class LabelController {
         PageResponse<LabelResponse> response = labelService.getAllLabels(pageNumber, pageSize);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/by-user/{userId}")
+    public ResponseEntity<LabelResponse> getLabelByUserId(@PathVariable Long userId) {
+        LabelResponse response = labelService.getLabelByUserId(userId);
+        return ResponseEntity.ok(response);
+    }
 }

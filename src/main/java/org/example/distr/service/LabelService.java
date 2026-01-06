@@ -79,4 +79,11 @@ public class LabelService {
 
         return response;
     }
+
+    public LabelResponse getLabelByUserId(Long userId) {
+        Label label = labelRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Label not found for user ID: " + userId));
+        return mapToResponse(label);
+    }
 }

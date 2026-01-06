@@ -36,7 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 .env
-src/main/resources/application.yml
 # Logs
 logs
 *.log

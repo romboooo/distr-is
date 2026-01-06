@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 @RequestMapping("/artists")
 @RequiredArgsConstructor
@@ -34,6 +33,12 @@ public class ArtistController {
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int pageSize) {
         PageResponse<ArtistResponse> response = artistService.getAllArtists(pageNumber, pageSize);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/by-user/{userId}")
+    public ResponseEntity<ArtistResponse> getArtistByUserId(@PathVariable Long userId) {
+        ArtistResponse response = artistService.getArtistByUserId(userId);
         return ResponseEntity.ok(response);
     }
 }
