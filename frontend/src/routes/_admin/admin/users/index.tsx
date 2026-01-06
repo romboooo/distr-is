@@ -9,10 +9,10 @@ export const Route = createFileRoute('/_admin/admin/users/')({
 
 function UsersPage() {
   return (
-    <div className="mx-auto py-6 container">
+    <div className='mx-auto py-6 container'>
       <Card>
-        <CardHeader className="flex flex-row justify-between items-center">
-          <CardTitle className="font-bold text-2xl">User Management</CardTitle>
+        <CardHeader className='flex flex-row justify-between items-center'>
+          <CardTitle className='font-bold text-2xl'>User Management</CardTitle>
         </CardHeader>
         <CardContent>
           <UsersTable pageSize={10} />

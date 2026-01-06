@@ -8,8 +8,7 @@ if (!rootElement.innerHTML) {
   const root = createRoot(rootElement);
   root.render(
     <StrictMode>
-      <Providers>
-      </Providers>
+      <Providers></Providers>
     </StrictMode>,
   );
 }

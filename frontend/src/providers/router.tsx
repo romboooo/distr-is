@@ -10,8 +10,8 @@ declare module '@tanstack/react-router' {
 }
 
 export type RouterContext = {
-  auth: ReturnType<typeof useAuth>
-}
+  auth: ReturnType<typeof useAuth>;
+};
 export const router = createRouter({
   routeTree,
   context: {

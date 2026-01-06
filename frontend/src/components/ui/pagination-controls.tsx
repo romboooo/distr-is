@@ -6,7 +6,7 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
+} from '@/components/ui/pagination';
 
 export interface PaginationControlsProps {
   currentPage: number; // zero-based index
@@ -17,7 +17,7 @@ export interface PaginationControlsProps {
 export function PaginationControls({
   currentPage,
   totalPages,
-  onPageChange
+  onPageChange,
 }: PaginationControlsProps) {
   if (totalPages <= 1) return null;
 
@@ -53,16 +53,18 @@ export function PaginationControls({
   };
 
   return (
-    <div className="flex justify-center mt-4">
+    <div className='flex justify-center mt-4'>
       <Pagination>
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious
               onClick={() => onPageChange(Math.max(0, currentPage - 1))}
               className={`
-                ${currentPage === 0
-                  ? "pointer-events-none opacity-50"
-                  : "cursor-pointer hover:bg-accent hover:text-accent-foreground"}
+                ${
+                  currentPage === 0
+                    ? 'pointer-events-none opacity-50'
+                    : 'cursor-pointer hover:bg-accent hover:text-accent-foreground'
+                }
               `}
             />
           </PaginationItem>
@@ -73,13 +75,15 @@ export function PaginationControls({
                 <PaginationEllipsis />
               ) : (
                 <PaginationLink
-                  onClick={() => onPageChange(item as number - 1)}
-                  isActive={currentPage === (item as number - 1)}
+                  onClick={() => onPageChange((item as number) - 1)}
+                  isActive={currentPage === (item as number) - 1}
                   className={`
                     cursor-pointer
-                    ${currentPage === (item as number - 1)
-                      ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                      : "hover:bg-accent hover:text-accent-foreground"}
+                    ${
+                      currentPage === (item as number) - 1
+                        ? 'bg-primary text-primary-foreground hover:bg-primary/90'
+                        : 'hover:bg-accent hover:text-accent-foreground'
+                    }
                   `}
                 >
                   {item}
@@ -90,11 +94,15 @@ export function PaginationControls({
 
           <PaginationItem>
             <PaginationNext
-              onClick={() => onPageChange(Math.min(totalPages - 1, currentPage + 1))}
+              onClick={() =>
+                onPageChange(Math.min(totalPages - 1, currentPage + 1))
+              }
               className={`
-                ${currentPage === totalPages - 1
-                  ? "pointer-events-none opacity-50"
-                  : "cursor-pointer hover:bg-accent hover:text-accent-foreground"}
+                ${
+                  currentPage === totalPages - 1
+                    ? 'pointer-events-none opacity-50'
+                    : 'cursor-pointer hover:bg-accent hover:text-accent-foreground'
+                }
               `}
             />
           </PaginationItem>

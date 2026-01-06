@@ -91,7 +91,6 @@ function RegisterForm() {
         password: values.password,
       });
 
-
       if (values.type === 'ARTIST') {
         await createArtistProfile({
           name: values.name,
@@ -99,7 +98,6 @@ function RegisterForm() {
           realName: values.realName || null,
           userId: authResponse.id,
         });
-
       } else if (values.type === 'LABEL') {
         await createLabelProfile({
           contactName: values.contactName,
@@ -107,7 +105,6 @@ function RegisterForm() {
           phone: values.phone,
           userId: authResponse.id,
         });
-
       }
 
       navigate({

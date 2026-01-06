@@ -25,11 +25,7 @@ import {
   Music,
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
-import {
-  createFileRoute,
-  Link,
-  useNavigate,
-} from '@tanstack/react-router';
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -86,7 +82,7 @@ function LoginForm() {
     try {
       await login({
         login: values.login,
-        password: values.password
+        password: values.password,
       });
     } catch (error) {
       setFormError(error instanceof Error ? error.message : 'Login failed');

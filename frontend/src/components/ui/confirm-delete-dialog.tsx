@@ -1,5 +1,5 @@
-"use client";
-import * as React from "react";
+'use client';
+import * as React from 'react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,8 +9,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { Loader2 } from "lucide-react";
+} from '@/components/ui/alert-dialog';
+import { Loader2 } from 'lucide-react';
 
 export interface ConfirmDeleteDialogProps {
   open: boolean;
@@ -29,20 +29,18 @@ export function ConfirmDeleteDialog({
   onOpenChange,
   onConfirm,
   isLoading = false,
-  title = "Confirm Deletion",
-  description = "This action cannot be undone. Are you sure you want to proceed?",
+  title = 'Confirm Deletion',
+  description = 'This action cannot be undone. Are you sure you want to proceed?',
   destructive = true,
-  confirmText = "Delete",
-  cancelText = "Cancel",
+  confirmText = 'Delete',
+  cancelText = 'Cancel',
 }: ConfirmDeleteDialogProps) {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>
-            {description}
-          </AlertDialogDescription>
+          <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>{cancelText}</AlertDialogCancel>
@@ -50,14 +48,16 @@ export function ConfirmDeleteDialog({
             onClick={onConfirm}
             disabled={isLoading}
             className={`
-              ${destructive
-                ? "bg-destructive hover:bg-destructive/90 focus:ring-destructive"
-                : ""}
+              ${
+                destructive
+                  ? 'bg-destructive hover:bg-destructive/90 focus:ring-destructive'
+                  : ''
+              }
             `}
           >
             {isLoading ? (
               <>
-                <Loader2 className="mr-2 w-4 h-4 animate-spin" />
+                <Loader2 className='mr-2 w-4 h-4 animate-spin' />
                 {confirmText}...
               </>
             ) : (

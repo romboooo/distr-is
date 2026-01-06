@@ -1,5 +1,5 @@
 // src/routes/index.tsx
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router';
 import { roleBasedRedirect } from '@/lib/route-guards';
 
 export const Route = createFileRoute('/')({
@@ -7,8 +7,8 @@ export const Route = createFileRoute('/')({
   beforeLoad: async ({ context }) => {
     await roleBasedRedirect(context);
   },
-})
+});
 
 function RouteComponent() {
-  return <div>Redirecting...</div>
+  return <div>Redirecting...</div>;
 }
