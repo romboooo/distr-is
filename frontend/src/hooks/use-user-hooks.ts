@@ -2,15 +2,14 @@
 import {
   useMutation,
   useQuery,
-  useQueryClient,
   type UseQueryOptions,
 } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import type { PaginatedResponse, User, UserType } from '@/types/api';
 import { apiClient } from '@/services/api';
 import { toast } from 'sonner';
+import { queryClient } from '@/providers/query-client';
 
-// ===== USER HOOKS =====
 export const useUsers = (
   page = 0,
   size = 20,
@@ -48,8 +47,6 @@ export const useUser = (
 };
 
 export const useCreateUser = () => {
-  const queryClient = useQueryClient();
-
   return useMutation<
     User,
     AxiosError<{ error: string; message: string }>,
@@ -74,8 +71,6 @@ export const useCreateUser = () => {
 };
 
 export const useUpdateUser = () => {
-  const queryClient = useQueryClient();
-
   return useMutation<
     User,
     AxiosError<{ error: string; message: string }>,
@@ -101,8 +96,6 @@ export const useUpdateUser = () => {
 };
 
 export const useDeleteUser = () => {
-  const queryClient = useQueryClient();
-
   return useMutation<
     void,
     AxiosError<{ error: string; message: string }>,

@@ -69,13 +69,11 @@ function LoginForm() {
   });
 
   useEffect(() => {
-    // Clear errors when form fields change
     form.clearErrors();
     setFormError(null);
   }, [form]);
 
   useEffect(() => {
-    // Redirect if already authenticated
     if (isAuthenticated) {
       navigate({ to: next });
     }
@@ -86,7 +84,6 @@ function LoginForm() {
     setIsLoading(true);
 
     try {
-      // Login using the hook
       await login({
         login: values.login,
         password: values.password

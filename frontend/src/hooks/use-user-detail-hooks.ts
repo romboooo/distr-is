@@ -2,15 +2,14 @@
 import React from 'react';
 import {
   useQuery,
-  useQueryClient,
   useMutation,
   type UseQueryOptions,
 } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import type { User, UserType, Artist, Label } from '@/types/api';
 import { apiClient } from '@/services/api';
+import { queryClient } from '@/providers/query-client';
 
-// Basic user hook
 export const useUser = (
   id: number,
   options?: UseQueryOptions<User, AxiosError>,
@@ -23,7 +22,6 @@ export const useUser = (
   });
 };
 
-// Extended types for user with details
 export interface UserWithArtistDetails extends User {
   type: 'ARTIST';
   artistDetails: Artist | null;
@@ -39,7 +37,6 @@ export interface UserWithDetails extends User {
   labelDetails: Label | null;
 }
 
-// Artist-specific hook (for users with type ARTIST)
 export const useArtistByUserId = (userId: number, enabled: boolean = false) => {
   return useQuery<Artist, AxiosError>({
     queryKey: ['artist-by-user-id', userId],
@@ -49,7 +46,6 @@ export const useArtistByUserId = (userId: number, enabled: boolean = false) => {
   });
 };
 
-// Label-specific hook (for users with type LABEL)
 export const useLabelByUserId = (userId: number, enabled: boolean = false) => {
   return useQuery<Label, AxiosError>({
     queryKey: ['label-by-user-id', userId],
@@ -60,17 +56,14 @@ export const useLabelByUserId = (userId: number, enabled: boolean = false) => {
   });
 };
 
-// Generic hook to get user with their related data based on type
 export const useUserWithDetails = (userId: number) => {
   const userQuery = useUser(userId);
 
-  // Get artist details only if user is an artist
   const artistQuery = useArtistByUserId(
     userId,
     !!userQuery.data && userQuery.data.type === 'ARTIST',
   );
 
-  // Get label details only if user is a label
   const labelQuery = useLabelByUserId(
     userId,
     !!userQuery.data && userQuery.data.type === 'LABEL',
@@ -85,11 +78,9 @@ export const useUserWithDetails = (userId: number) => {
     userQuery.isError || artistQuery.isError || labelQuery.isError;
   const error = userQuery.error || artistQuery.error || labelQuery.error;
 
-  // Combine the data based on user type
   const combinedData = React.useMemo(() => {
     if (!userQuery.data) return null;
 
-    // Create a base user object with null details
     const baseUserData = {
       ...userQuery.data,
       artistDetails: null,
@@ -136,10 +127,7 @@ export const useUserWithDetails = (userId: number) => {
   };
 };
 
-// Mutation hooks
 export const useDeleteUser = () => {
-  const queryClient = useQueryClient();
-
   return useMutation<
     void,
     AxiosError<{ error: string; message: string }>,
@@ -154,8 +142,6 @@ export const useDeleteUser = () => {
 };
 
 export const useUpdateUser = () => {
-  const queryClient = useQueryClient();
-
   return useMutation<
     User,
     AxiosError<{ error: string; message: string }>,

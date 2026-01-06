@@ -68,7 +68,6 @@ export function EditUserDialog({ user, open, onOpenChange, onSuccess }: EditUser
   }, [open, user, reset]);
 
   React.useEffect(() => {
-    // Sync local state with form values when dialog is open
     if (open) {
       const currentType = getValues("type");
       if (currentType !== selectedType) {
@@ -79,7 +78,6 @@ export function EditUserDialog({ user, open, onOpenChange, onSuccess }: EditUser
 
   const onSubmit = async (data: EditUserFormData) => {
     try {
-      // Check if type is changing to admin/platform
       if ((data.type === "ADMIN" || data.type === "PLATFORM") && data.type !== user.type) {
         if (currentUser.data?.type !== "ADMIN") {
           toast.error("Only ADMIN users can promote users to ADMIN or PLATFORM roles");
@@ -110,7 +108,6 @@ export function EditUserDialog({ user, open, onOpenChange, onSuccess }: EditUser
     setError(null);
     setShowTypeWarning(false);
 
-    // Handle type-specific validation rules
     if ((userType === "ADMIN" || userType === "PLATFORM") && userType !== user.type) {
       if (currentUser.data?.type !== "ADMIN") {
         toast.error("Only ADMIN users can promote users to ADMIN or PLATFORM roles");

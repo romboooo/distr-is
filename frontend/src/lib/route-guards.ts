@@ -22,7 +22,6 @@ const baseGuard = async (allowedRoles: UserType[], context: RouterContext) => {
   return auth.data;
 };
 
-// Update all guards to accept context
 export const artistGuard = (context: RouterContext) =>
   baseGuard(['ARTIST'], context);
 export const labelGuard = (context: RouterContext) =>
@@ -36,7 +35,6 @@ export const userGuard = (context: RouterContext) =>
 export const anyGuard = (context: RouterContext) =>
   baseGuard(['ARTIST', 'LABEL', 'MODERATOR', 'ADMIN', 'PLATFORM'], context);
 
-// New role-based redirect using context
 export const roleBasedRedirect = async (context: RouterContext) => {
   const { auth } = context;
 
@@ -45,7 +43,6 @@ export const roleBasedRedirect = async (context: RouterContext) => {
     return;
   }
 
-  // Redirect based on role using context data
   switch (auth.data.type) {
     case 'ARTIST':
       throw redirect({ to: '/artist' });

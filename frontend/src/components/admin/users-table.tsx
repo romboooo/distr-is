@@ -38,7 +38,6 @@ import { PaginationControls } from "@/components/ui/pagination-controls";
 import { ConfirmDeleteDialog } from "@/components/ui/confirm-delete-dialog";
 import { Link } from "@tanstack/react-router";
 
-// Define types based on your API documentation
 export type UserType = "ARTIST" | "LABEL" | "MODERATOR" | "ADMIN" | "PLATFORM";
 
 export interface User {
@@ -64,7 +63,7 @@ interface UsersTableProps {
 }
 
 export function UsersTable({ pageSize = 10, initialFilters = {} }: UsersTableProps) {
-  const [page, setPage] = React.useState(0); // zero-based
+  const [page, setPage] = React.useState(0);
   const [filters, setFilters] = React.useState(initialFilters);
   const [editingUser, setEditingUser] = React.useState<User | null>(null);
   const [userToDelete, setUserToDelete] = React.useState<User | null>(null);
@@ -117,7 +116,7 @@ export function UsersTable({ pageSize = 10, initialFilters = {} }: UsersTablePro
 
   const handleFilterChange = (type: UserType | undefined) => {
     setFilters({ type });
-    setPage(0); // Reset to first page when filter changes
+    setPage(0);
   };
 
   const handleDownload = () => {
@@ -307,7 +306,7 @@ export function UsersTable({ pageSize = 10, initialFilters = {} }: UsersTablePro
                           size="icon"
                           onClick={() => handleEditClick(user)}
                           className="w-8 h-8"
-                          disabled={user.type === 'PLATFORM'} // Example: disable editing for platform users
+                          disabled={user.type === 'PLATFORM'}
                         >
                           <Pencil className="w-4 h-4" />
                           <span className="sr-only">Edit {user.login}</span>
@@ -317,7 +316,7 @@ export function UsersTable({ pageSize = 10, initialFilters = {} }: UsersTablePro
                           size="icon"
                           onClick={() => handleDeleteClick(user)}
                           className="hover:bg-destructive/10 w-8 h-8 text-destructive hover:text-destructive"
-                          disabled={user.type === 'ADMIN' || user.type === 'PLATFORM'} // Prevent deleting admins/platforms
+                          disabled={user.type === 'ADMIN'}
                         >
                           <Trash className="w-4 h-4" />
                         </Button>

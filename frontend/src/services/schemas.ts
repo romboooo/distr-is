@@ -2,13 +2,12 @@ import z from 'zod';
 
 const MIN_PASSWORD_LENGTH = 6;
 
-// Define separate schemas for each account type
 const artistSchema = z
   .object({
     type: z.literal('ARTIST'),
     name: z.string().min(2, 'Name must be at least 2 characters'),
     country: z.string().min(2, 'Country is required'),
-    realName: z.string().optional(), // Fixed the .aoptional() typo
+    realName: z.string().optional(),
     login: z.string().min(3, 'Username must be at least 3 characters'),
     password: z
       .string()
@@ -43,7 +42,6 @@ const labelSchema = z
     path: ['confirmPassword'],
   });
 
-// Create discriminated union
 export const registerSchema = z.discriminatedUnion('type', [
   artistSchema,
   labelSchema,

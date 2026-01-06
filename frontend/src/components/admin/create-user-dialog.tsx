@@ -63,7 +63,6 @@ export function CreateUserDialog({ open, onOpenChange, onSuccess }: CreateUserDi
   }, [open, reset]);
 
   React.useEffect(() => {
-    // Sync the local state with form values when dialog opens
     if (open) {
       const currentType = getValues("type");
       setSelectedType(currentType);
@@ -87,7 +86,6 @@ export function CreateUserDialog({ open, onOpenChange, onSuccess }: CreateUserDi
     setValue("type", userType);
     setError(null);
 
-    // Handle type-specific validation rules
     if (value === "ADMIN" || value === "PLATFORM") {
       toast.warning("Only ADMIN users can create ADMIN or PLATFORM accounts");
     }

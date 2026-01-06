@@ -15,13 +15,10 @@ export const useAuth = () => {
     enabled: () => !!getAuthToken(), // Only fetch if token exists
   });
 
-  // Login function
   const login = async (credentials: { login: string; password: string }) => {
     try {
-      // Call login API
       const loginResponse = await loginUser(credentials);
 
-      // Create user object that matches the User type
       const user: User = {
         id: loginResponse.user.id,
         login: loginResponse.user.login,
@@ -29,18 +26,15 @@ export const useAuth = () => {
         registrationDate: loginResponse.user.registrationDate,
       };
 
-      // Update context and cache
       queryClient.setQueryData<User>(['auth', 'me'], user);
 
       return user;
     } catch (error) {
-      // Clear auth state on error
       logout();
       throw error;
     }
   };
 
-  // Logout function
   const logout = async () => {
     clearAuthToken();
 

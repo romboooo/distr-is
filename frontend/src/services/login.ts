@@ -9,7 +9,6 @@ export const loginUser = async (
   try {
     const response = await apiClient.post<LoginResponse>('/login', payload);
 
-    // Automatically store token for axios interceptor
     localStorage.setItem(TOKEN_STORAGE_KEY, response.data.token);
 
     return response.data;
