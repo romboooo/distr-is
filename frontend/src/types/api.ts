@@ -76,11 +76,8 @@ export interface Song {
   parentalAdvisory: boolean;
   streams: number;
   songUpc: number;
-  isrc: string;
   songLengthSeconds: number;
-  moderationState: ModerationState;
-  metadata: Record<string, string>;
-  pathToFile: string;
+  metadata: string;
 }
 
 export interface SongWithDetails extends Song {
@@ -96,13 +93,12 @@ export type CreateReleaseDraftDTO = {
 };
 
 export type AddSongToReleaseDTO = {
+  releaseId: number;
   title: string;
   artistIds: number[];
   musicAuthor: string;
   parentalAdvisory: boolean;
-  isrc: string;
-  songUpc: number;
-  metadata: Record<string, string>;
+  metaData: string;
 };
 
 export interface UpdateReleaseDTO {

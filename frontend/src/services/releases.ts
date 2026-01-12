@@ -44,7 +44,7 @@ export async function uploadSongFile(
   formData.append('file', file);
 
   const response = await apiClient.post<{ path: string }>(
-    `/songs/${songId}/upload`,
+    `/songs/${songId}/file`,
     formData,
     {
       headers: {

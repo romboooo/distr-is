@@ -7,6 +7,7 @@ import java.util.List;
 @Data
 public class SongResponse {
     private Long id;
+    private String title;
     private Long releaseId;
     private String releaseName;
     private List<Long> artistIds;

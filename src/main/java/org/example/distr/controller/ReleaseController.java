@@ -73,20 +73,6 @@ public class ReleaseController {
         return ResponseEntity.ok(songs);
     }
 
-    @PostMapping("/songs/{songId}/file")
-    public ResponseEntity<String> uploadSongFile(
-            @PathVariable Long songId,
-            @RequestParam("file") MultipartFile file) throws Exception {
-
-        validateMp3File(file);
-
-        String fileName = minioService.generateSongFileName(songId, file.getOriginalFilename());
-        String path = minioService.uploadFile(minioService.getSongsBucket(), fileName, file);
-
-        songService.updateSongFile(songId, path);
-        return ResponseEntity.ok(path);
-    }
-
     @PostMapping("/{releaseId}/cover")
     public ResponseEntity<String> uploadCover(
             @PathVariable Long releaseId,
@@ -137,13 +123,6 @@ public class ReleaseController {
     public ResponseEntity<ReleaseResponse> requestModeration(@PathVariable Long releaseId) {
         ReleaseResponse response = releaseService.requestModeration(releaseId);
         return ResponseEntity.ok(response);
-    }
-
-    private void validateMp3File(MultipartFile file) {
-        String contentType = file.getContentType();
-        if (contentType == null || !contentType.equals("audio/mpeg")) {
-            throw new IllegalArgumentException("Only MP3 files are allowed");
-        }
     }
 
     private void validateImageFile(MultipartFile file) {

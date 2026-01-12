@@ -9,6 +9,10 @@ import java.util.List;
 
 @Data
 public class AddSongRequest {
+
+    @NotBlank(message = "Title is required")
+    private String title;
+
     @NotNull(message = "Release ID is required")
     @Positive(message = "Release ID must be positive")
     private Long releaseId;

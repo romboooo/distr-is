@@ -1,6 +1,6 @@
 // src/routes/_artist/artist/releases/$releaseId.tsx
 import { useNavigate, createFileRoute } from '@tanstack/react-router';
-import { Loader2, AlertCircle, ArrowLeft, Pencil } from 'lucide-react';
+import { Loader2, AlertCircle, ArrowLeft, Pencil, Plus, Music } from 'lucide-react';
 import {
   Card,
   CardContent,
@@ -15,11 +15,16 @@ import { Badge } from '@/components/ui/badge';
 import { LabelDisplay } from '@/components/label/label-display';
 import { queryClient } from '@/providers/query-client';
 import { getReleaseById } from '@/services/releases';
-import { useGetReleaseById, useGetReleaseSongs } from '@/hooks/use-release-hooks';
+import {
+  useGetReleaseById,
+  useGetReleaseSongs
+} from '@/hooks/use-release-hooks';
 import { useGetArtistById } from '@/hooks/use-artists';
 import { UploadCoverButton } from '@/components/releases/upload-cover-button';
 import { ReleaseCoverImage } from '@/components/releases/release-cover-image';
 import { Label } from '@/components/ui/label';
+import { useState } from 'react';
+import { AddSongModal } from '@/components/releases/add-song-modal';
 
 export const Route = createFileRoute('/_artist/artist/releases/$releaseId/')({
   component: ReleaseDetailPage,
@@ -42,9 +47,12 @@ export const Route = createFileRoute('/_artist/artist/releases/$releaseId/')({
   },
 });
 
+
+
 function ReleaseDetailPage() {
   const { releaseId } = Route.useLoaderData();
   const navigate = useNavigate();
+  const [isAddSongModalOpen, setIsAddSongModalOpen] = useState(false);
 
   const {
     data: release,
@@ -54,7 +62,11 @@ function ReleaseDetailPage() {
   } = useGetReleaseById(releaseId);
 
   const { data: artist } = useGetArtistById(release?.artistId);
-  const { data: songs } = useGetReleaseSongs(releaseId);
+  const {
+    data: songs,
+    isLoading: songsLoading,
+    refetch: refetchSongs
+  } = useGetReleaseSongs(releaseId);
 
   if (isLoading) {
     return (
@@ -82,8 +94,12 @@ function ReleaseDetailPage() {
     navigate({
       to: '/artist/releases/$releaseId/edit',
       params: { releaseId: releaseId.toString() }
-    })
+    });
   }
+
+  const handleSongAdded = async () => {
+    await refetchSongs();
+  };
 
   return (
     <div className="mx-auto py-8 max-w-4xl container">
@@ -108,8 +124,6 @@ function ReleaseDetailPage() {
             {release.moderationState}
           </Badge>
         </CardHeader>
-
-
 
         <CardContent className="space-y-6">
           <div className="flex justify-start gap-8 px-8">
@@ -148,10 +162,32 @@ function ReleaseDetailPage() {
             </div>
           </div>
 
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h3 className="font-medium text-lg">Songs</h3>
 
-          <div className="space-y-2">
-            <h3 className="font-medium text-lg">Songs</h3>
-            {songs && songs.length > 0 ? (
+              {artist && release.moderationState === 'DRAFT' && (
+                <>
+                  <Button size="sm" className="gap-2" onClick={() => setIsAddSongModalOpen(true)}>
+                    <Plus className="w-4 h-4" />
+                    Add Song
+                  </Button>
+                  <AddSongModal
+                    artistId={artist.id}
+                    releaseId={releaseId}
+                    open={isAddSongModalOpen}
+                    onOpenChange={setIsAddSongModalOpen}
+                    onSuccess={handleSongAdded}
+                  />
+                </>
+              )}
+            </div>
+
+            {songsLoading ? (
+              <div className="flex justify-center py-4">
+                <Loader2 className="w-6 h-6 text-muted-foreground animate-spin" />
+              </div>
+            ) : songs && songs.length > 0 ? (
               <ul className="space-y-2">
                 {songs.map((song) => (
                   <li
@@ -159,21 +195,31 @@ function ReleaseDetailPage() {
                     className="flex justify-between items-center bg-muted p-3 rounded-md"
                   >
                     <div>
-                      <p className="font-medium">{song.title}</p>
+                      <p className="flex items-center gap-2 font-medium">
+                        <Music className="w-4 h-4 text-muted-foreground" />
+                        {song.title}
+                      </p>
                       <p className="text-muted-foreground text-sm">
-                        {Math.floor(song.songLengthSeconds / 60)}:{(song.songLengthSeconds % 60).toString().padStart(2, '0')} • {song.songUpc}
+                        {Math.floor(song.songLengthSeconds / 60)}:{(song.songLengthSeconds % 60).toString().padStart(2, '0')} •{" "}
+                        {song.songUpc ? `UPC: ${song.songUpc}` : 'No UPC assigned'}
+                      </p>
+                      <p className="mt-1 text-muted-foreground text-xs">
+                        Author: {song.musicAuthor}
                       </p>
                     </div>
-                    {song.moderationState !== 'APPROVED' && (
-                      <Badge variant="outline">{song.moderationState}</Badge>
-                    )}
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="text-muted-foreground">
-                No songs added yet
-              </p>
+              <div className="bg-muted py-8 rounded-lg text-center">
+                <Music className="mx-auto mb-2 w-12 h-12 text-muted-foreground" />
+                <p className="text-muted-foreground">
+                  {release.moderationState === 'DRAFT'
+                    ? 'No songs added yet. Click "Add Song" to get started.'
+                    : 'This release has no songs yet.'
+                  }
+                </p>
+              </div>
             )}
           </div>
         </CardContent>
@@ -189,7 +235,7 @@ function ReleaseDetailPage() {
             Submit for Approval
           </Button>
         </CardFooter>
-      </Card >
+      </Card>
     </div >
   );
 }

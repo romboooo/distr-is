@@ -22,6 +22,9 @@ public class Song {
     @Column(name = "\"id\"")
     private Long id;
 
+    @Column(name = "\"title\"", nullable = false, length = 255)
+    private String title;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "\"release_id\"", nullable = false)
     private Release release;
