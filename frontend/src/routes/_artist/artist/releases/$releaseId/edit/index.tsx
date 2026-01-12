@@ -219,6 +219,7 @@ function ReleaseEditPage() {
                   <Label htmlFor="releaseType">Release Type</Label>
                   <Select
                     onValueChange={(value) => form.setValue('releaseType', value as ReleaseFormData['releaseType'])}
+                    // eslint-disable-next-line react-hooks/incompatible-library
                     value={form.watch('releaseType')}
                   >
                     <SelectTrigger>
