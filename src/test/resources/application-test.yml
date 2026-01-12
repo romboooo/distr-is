@@ -23,6 +23,7 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
 minio:
+  auto-create-buckets: false
   url: http://localhost:9000
   access:
     key: minioadmin

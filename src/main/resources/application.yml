@@ -39,6 +39,7 @@ logging:
     org.example.distr: DEBUG
 
 minio:
+  auto-create-buckets: true
   url: ${MINIO_URL}
   access:
     key: ${MINIO_ACCESS_KEY}

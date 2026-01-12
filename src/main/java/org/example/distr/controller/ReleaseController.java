@@ -23,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import io.minio.StatObjectResponse;
+
 @RestController
 @RequestMapping("/releases")
 @RequiredArgsConstructor
@@ -104,14 +106,26 @@ public class ReleaseController {
             return ResponseEntity.notFound().build();
         }
 
-        InputStream inputStream = minioService.downloadFile(minioService.getCoversBucket(), coverPath);
-        String contentType = minioService.getFileContentType(minioService.getCoversBucket(), coverPath);
+        String bucket = minioService.getCoversBucket();
 
-        InputStreamResource resource = new InputStreamResource(inputStream);
+        // Get object metadata to obtain size and content type
+        StatObjectResponse stat = minioService.statObject(bucket, coverPath);
+        long contentLength = stat.size();
+        String contentType = stat.contentType();
+
+        // Download the actual file
+        InputStream inputStream = minioService.downloadFile(bucket, coverPath);
+
+        InputStreamResource resource = new InputStreamResource(inputStream) {
+            @Override
+            public long contentLength() {
+                return contentLength;
+            }
+        };
 
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
-                .contentLength(inputStream.available())
+                .contentLength(contentLength)
                 .body(resource);
     }
 
