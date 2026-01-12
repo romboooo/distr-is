@@ -33,7 +33,12 @@ INSERT INTO release (id, name, artist_id, genre, release_upc, date, moderation_s
                                                                                                                   (2, 'Tokyo Nights', 2, 'J-Pop', 123456789013, '2023-07-15 00:00:00', 'APPROVED', 'SINGLE', 2),
                                                                                                                   (3, 'Urban Dreams', 3, 'Hip-Hop', 123456789014, '2023-08-20 00:00:00', 'ON_REVIEW', 'ALBUM', 3),
                                                                                                                   (4, 'Electric Pulse', 4, 'EDM', 123456789015, '2023-09-10 00:00:00', 'WAITING_FOR_CHANGES', 'EP', 1),
-                                                                                                                  (5, 'Chill Beats', 1, 'Lo-Fi', 123456789016, '2023-10-05 00:00:00', 'APPROVED', 'MIXTAPE', 1);
+                                                                                                                  (5, 'Chill Beats', 1, 'Lo-Fi', 123456789016, '2023-10-05 00:00:00', 'APPROVED', 'MIXTAPE', 1),
+                                                                                                                  (6, 'New Album 1', 1, 'Pop', 123456789025, '2023-11-15 00:00:00', 'ON_MODERATION', 'ALBUM',  1),
+                                                                                                                  (7, 'New Album 2', 2, 'Rock', 123456789023, '2023-11-15 00:00:00', 'ON_MODERATION', 'EP',  2),
+                                                                                                                  (8, 'New Single', 3, 'Hip-Hop', 124256789020, '2023-11-15 00:00:00', 'ON_MODERATION', 'EP',  3),
+                                                                                                                  (9, 'Winter EP', 4, 'EDM', 123456789020, '2023-11-15 00:00:00', 'ON_REVIEW', 'EP', 1),
+                                                                                                                  (10, 'Summer Mix', 5, 'Lo-Fi', 123456789021, '2023-11-20 00:00:00', 'ON_REVIEW', 'MIXTAPE', 1);
 
 INSERT INTO song (release_id, artist_id, music_author, parental_advisory, streams, song_upc, metadata, path_to_file, song_length_seconds) VALUES
                                                                                                                                               (1, '[1]'::jsonb, 'John Beatmaker', false, 150000, 987654321001, '{"bpm": 128, "key": "C major"}', '/2542f/vwcver2.mp3', 180),

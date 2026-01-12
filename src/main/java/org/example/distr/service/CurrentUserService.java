@@ -36,4 +36,9 @@ public class CurrentUserService {
     public boolean isAuthenticated() {
         return getCurrentUser() != null;
     }
+
+    public Long getCurrentUserId() {
+        User user = getCurrentUser();
+        return user != null ? user.getId() : null;
+    }
 }

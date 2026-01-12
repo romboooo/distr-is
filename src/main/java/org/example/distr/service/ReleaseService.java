@@ -137,6 +137,7 @@ public class ReleaseService {
         return response;
     }
 
+    // В ReleaseService, в методе requestModeration:
     public ReleaseResponse requestModeration(Long releaseId) {
         Release release = releaseRepository.findById(releaseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Release not found"));
@@ -153,13 +154,13 @@ public class ReleaseService {
             release.setReleaseUpc(upcGeneratorService.generateUpc());
         }
 
-        release.setModerationState(ModerationState.ON_REVIEW);
+        release.setModerationState(ModerationState.ON_MODERATION);
         Release savedRelease = releaseRepository.save(release);
 
         return mapToResponse(savedRelease);
     }
 
-    private ReleaseResponse mapToResponse(Release release) {
+    ReleaseResponse mapToResponse(Release release) {
         return ReleaseResponse.builder()
                 .id(release.getId())
                 .name(release.getName())
