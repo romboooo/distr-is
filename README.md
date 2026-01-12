@@ -659,6 +659,114 @@ If file retrieval fails:
 }
 ```
 
+
+### GET /moderation/pending
+
+#### Получение списка релизов, ожидающих модерацию (статус ON_MODERATION)
+
+**Response (200 OK):**
+
+```json
+{
+  "content": [
+    {
+      "id": 6,
+      "name": "New Album 1",
+      "artistId": 1,
+      "genre": "Pop",
+      "releaseUpc": 123456789025,
+      "date": "2023-11-15T00:00:00",
+      "moderationState": "ON_MODERATION",
+      "releaseType": "ALBUM",
+      "labelId": 1,
+      "coverPath": null
+    }
+  ],
+  "currentPage": 0,
+  "totalPages": 1,
+  "totalElements": 1,
+  "pageSize": 10
+}
+
+```
+**401 Unauthorized** - если токен не передан или невалиден
+
+**403 Forbidden** - если у пользователя нет роли MODERATOR или ADMIN
+
+
+### POST /api/moderation
+#### роведение модерации релиза. Создает запись в таблице on_moderation и обновляет moderation_state релиза.
+**request body(example):**
+
+```json
+{
+  "releaseId": 6,
+  "moderatorId": 1,
+  "comment": "Отличный релиз, всё соответствует требованиям",
+  "moderationState": "APPROVED"
+}
+```
+
+**201 Created:**
+```json
+{
+  "id": 5,
+  "comment": "Отличный релиз, всё соответствует требованиям",
+  "moderatorId": 1,
+  "moderatorName": "Alex Johnson",
+  "releaseId": 6,
+  "releaseName": "New Album 1",
+  "date": "2026-01-12T20:02:01.247099"
+}
+```
+***400 Bad Request*** - если:
+
+    релиз уже промодерирован (статус не ON_MODERATION или ON_REVIEW)
+
+    пытаются установить некорректный статус (ON_MODERATION, ON_REVIEW, DRAFT)
+
+    не пройдена валидация полей
+
+***401 Unauthorized*** - если токен не передан или невалиден
+
+***403 Forbidden*** - если у пользователя нет роли MODERATOR или ADMIN
+
+***404 Not Found*** - если релиз или модератор не найдены
+
+
+### GET /api/moderation/history/{releaseId}
+
+#### Получение истории модерации для конкретного релиза
+
+releaseId (required) - ID релиза
+
+***200:***
+```json
+[
+  {
+    "id": 5,
+    "comment": "Отличный релиз, всё соответствует требованиям",
+    "moderatorId": 1,
+    "moderatorName": "Alex Johnson",
+    "releaseId": 6,
+    "releaseName": "New Album 1",
+    "date": "2026-01-12T20:02:01.247099"
+  }
+]
+```
+
+***401 Unauthorized*** - если токен не передан или невалиден
+
+***403 Forbidden*** - если у пользователя нет прав на просмотр (MODERATOR/ADMIN/LABEL/ARTIST)
+
+***404 Not Found*** - если релиз не найден (возвращает пустой массив, если нет записей модерации)
+
+
+## Статусы релиза и их переходы
+
+```text
+DRAFT → ON_MODERATION → [APPROVED | REJECTED | WAITING_FOR_CHANGES]
+```
 ## Pagination
 
 ```shell
