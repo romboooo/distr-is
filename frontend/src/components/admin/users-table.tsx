@@ -14,7 +14,6 @@ import { Button } from '@/components/ui/button';
 import { Loader2, Pencil, Trash, Download, UserPlus, Eye } from 'lucide-react';
 import { useUsers, useDeleteUser } from '@/hooks/use-user-hooks';
 import { EditUserDialog } from './edit-user-dialog';
-import { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import {
   Dialog,
@@ -37,6 +36,7 @@ import { CreateUserDialog } from './create-user-dialog';
 import { PaginationControls } from '@/components/ui/pagination-controls';
 import { ConfirmDeleteDialog } from '@/components/ui/confirm-delete-dialog';
 import { Link } from '@tanstack/react-router';
+import type { AxiosErrorResponse } from '@/types/api';
 
 export type UserType = 'ARTIST' | 'LABEL' | 'MODERATOR' | 'ADMIN' | 'PLATFORM';
 
@@ -107,7 +107,7 @@ export function UsersTable({
         setUserToDelete(null);
         toast.success(`User ${userToDelete.login} deleted successfully`);
       },
-      onError: (error: AxiosError<{ error: string; message: string }>) => {
+      onError: (error: AxiosErrorResponse) => {
         const errorMessage =
           error.response?.data?.message || 'Failed to delete user';
         toast.error(errorMessage);
@@ -312,17 +312,16 @@ export function UsersTable({
                   <TableCell>{user.login}</TableCell>
                   <TableCell>
                     <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        user.type === 'ADMIN'
-                          ? 'bg-blue-100 text-blue-800'
-                          : user.type === 'MODERATOR'
-                            ? 'bg-purple-100 text-purple-800'
-                            : user.type === 'ARTIST'
-                              ? 'bg-green-100 text-green-800'
-                              : user.type === 'LABEL'
-                                ? 'bg-yellow-100 text-yellow-800'
-                                : 'bg-gray-100 text-gray-800'
-                      }`}
+                      className={`px-2 py-1 rounded-full text-xs font-medium ${user.type === 'ADMIN'
+                        ? 'bg-blue-100 text-blue-800'
+                        : user.type === 'MODERATOR'
+                          ? 'bg-purple-100 text-purple-800'
+                          : user.type === 'ARTIST'
+                            ? 'bg-green-100 text-green-800'
+                            : user.type === 'LABEL'
+                              ? 'bg-yellow-100 text-yellow-800'
+                              : 'bg-gray-100 text-gray-800'
+                        }`}
                     >
                       {user.type}
                     </span>

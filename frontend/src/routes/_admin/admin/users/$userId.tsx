@@ -18,8 +18,7 @@ import {
 import { toast } from 'sonner';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
-import type { AxiosError } from 'axios';
-import type { UserType } from '@/types/api';
+import type { AxiosErrorResponse, UserType } from '@/types/api';
 import { ConfirmDeleteDialog } from '@/components/ui/confirm-delete-dialog';
 import { EditUserDialog } from '@/components/admin/edit-user-dialog';
 
@@ -88,7 +87,7 @@ function UserDetailPage() {
         toast.success(`User ${user.login} deleted successfully`);
         setIsDeleteDialogOpen(false); // Close dialog after success
       },
-      onError: (error: AxiosError<{ error: string; message: string }>) => {
+      onError: (error: AxiosErrorResponse) => {
         const errorMessage =
           error.response?.data?.message || 'Failed to delete user';
         toast.error(errorMessage);

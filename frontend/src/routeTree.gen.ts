@@ -239,11 +239,7 @@ const ArtistArtistReleasesReleaseIdIndexRoute =
     id: '/artist/releases/$releaseId/',
     path: '/artist/releases/$releaseId/',
     getParentRoute: () => ArtistRoute,
-  } as any).lazy(() =>
-    import('./routes/_artist/artist/releases/$releaseId/index.lazy').then(
-      (d) => d.Route,
-    ),
-  )
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute

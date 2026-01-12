@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = {"release", "royalties"})
+@ToString(exclude = { "release", "royalties" })
 public class Song {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,17 +40,17 @@ public class Song {
     @Column(name = "\"streams\"", nullable = false)
     private Long streams = 0L;
 
-    @Column(name = "\"song_upc\"", nullable = false, unique = true)
+    @Column(name = "\"song_upc\"", nullable = true, unique = true)
     private Long songUpc;
 
     @Type(JsonType.class)
     @Column(name = "\"metadata\"", columnDefinition = "jsonb")
     private JsonNode metadata; // Дополнительные метаданные в JSON
 
-    @Column(name = "\"path_to_file\"", nullable = false, length = 500)
+    @Column(name = "\"path_to_file\"", nullable = true, length = 500)
     private String pathToFile;
 
-    @Column(name = "\"song_length_seconds\"", nullable = false)
+    @Column(name = "\"song_length_seconds\"", nullable = true)
     private Integer songLengthSeconds;
 
     @Builder.Default

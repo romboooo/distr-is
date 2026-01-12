@@ -6,6 +6,9 @@ import type { RouterContext } from '@/providers/router';
 
 const baseGuard = async (allowedRoles: UserType[], context: RouterContext) => {
   const { auth } = context;
+  if (auth.isLoading) {
+    return undefined;
+  }
 
   if (!auth.isAuthenticated || !auth.data) {
     await notLoggedRedirect();

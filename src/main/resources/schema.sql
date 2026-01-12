@@ -64,6 +64,7 @@ CREATE TABLE release (
                          name VARCHAR(255) NOT NULL,
                          artist_id BIGINT NOT NULL,
                          genre VARCHAR(100) NOT NULL,
+                         cover_path VARCHAR(100) NULL,
                          release_upc BIGINT NOT NULL,
                          date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                          moderation_state VARCHAR(50) NOT NULL,

@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 @Data
-public class ReleaseRequest {
+public class DraftReleaseRequest {
     @NotBlank(message = "Release name is required")
     private String name;
 

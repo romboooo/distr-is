@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/labels")
 @RequiredArgsConstructor
@@ -35,6 +33,12 @@ public class LabelController {
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int pageSize) {
         PageResponse<LabelResponse> response = labelService.getAllLabels(pageNumber, pageSize);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/by-user/{userId}")
+    public ResponseEntity<LabelResponse> getLabelByUserId(@PathVariable Long userId) {
+        LabelResponse response = labelService.getLabelByUserId(userId);
         return ResponseEntity.ok(response);
     }
 }
