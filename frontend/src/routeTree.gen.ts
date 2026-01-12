@@ -38,6 +38,7 @@ import { Route as ArtistArtistRoyaltiesReportIdRouteImport } from './routes/_art
 import { Route as AdminAdminUsersUserIdRouteImport } from './routes/_admin/admin/users/$userId'
 import { Route as LabelLabelReleasesReleaseIdIndexRouteImport } from './routes/_label/label/releases/$releaseId/index'
 import { Route as ArtistArtistReleasesReleaseIdIndexRouteImport } from './routes/_artist/artist/releases/$releaseId/index'
+import { Route as ArtistArtistReleasesReleaseIdEditIndexRouteImport } from './routes/_artist/artist/releases/$releaseId/edit/index'
 
 const ModeratorModerationIndexLazyRouteImport = createFileRoute(
   '/_moderator/moderation/',
@@ -240,6 +241,12 @@ const ArtistArtistReleasesReleaseIdIndexRoute =
     path: '/artist/releases/$releaseId/',
     getParentRoute: () => ArtistRoute,
   } as any)
+const ArtistArtistReleasesReleaseIdEditIndexRoute =
+  ArtistArtistReleasesReleaseIdEditIndexRouteImport.update({
+    id: '/artist/releases/$releaseId/edit/',
+    path: '/artist/releases/$releaseId/edit/',
+    getParentRoute: () => ArtistRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -269,6 +276,7 @@ export interface FileRoutesByFullPath {
   '/label/releases/$releaseId': typeof LabelLabelReleasesReleaseIdIndexRoute
   '/artist/releases/new': typeof ArtistArtistReleasesNewIndexLazyRoute
   '/label/releases/new': typeof LabelLabelReleasesNewIndexLazyRoute
+  '/artist/releases/$releaseId/edit': typeof ArtistArtistReleasesReleaseIdEditIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -298,6 +306,7 @@ export interface FileRoutesByTo {
   '/label/releases/$releaseId': typeof LabelLabelReleasesReleaseIdIndexRoute
   '/artist/releases/new': typeof ArtistArtistReleasesNewIndexLazyRoute
   '/label/releases/new': typeof LabelLabelReleasesNewIndexLazyRoute
+  '/artist/releases/$releaseId/edit': typeof ArtistArtistReleasesReleaseIdEditIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -333,6 +342,7 @@ export interface FileRoutesById {
   '/_label/label/releases/$releaseId/': typeof LabelLabelReleasesReleaseIdIndexRoute
   '/_artist/artist/releases/new/': typeof ArtistArtistReleasesNewIndexLazyRoute
   '/_label/label/releases/new/': typeof LabelLabelReleasesNewIndexLazyRoute
+  '/_artist/artist/releases/$releaseId/edit/': typeof ArtistArtistReleasesReleaseIdEditIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -364,6 +374,7 @@ export interface FileRouteTypes {
     | '/label/releases/$releaseId'
     | '/artist/releases/new'
     | '/label/releases/new'
+    | '/artist/releases/$releaseId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -393,6 +404,7 @@ export interface FileRouteTypes {
     | '/label/releases/$releaseId'
     | '/artist/releases/new'
     | '/label/releases/new'
+    | '/artist/releases/$releaseId/edit'
   id:
     | '__root__'
     | '/'
@@ -427,6 +439,7 @@ export interface FileRouteTypes {
     | '/_label/label/releases/$releaseId/'
     | '/_artist/artist/releases/new/'
     | '/_label/label/releases/new/'
+    | '/_artist/artist/releases/$releaseId/edit/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -665,6 +678,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArtistArtistReleasesReleaseIdIndexRouteImport
       parentRoute: typeof ArtistRoute
     }
+    '/_artist/artist/releases/$releaseId/edit/': {
+      id: '/_artist/artist/releases/$releaseId/edit/'
+      path: '/artist/releases/$releaseId/edit'
+      fullPath: '/artist/releases/$releaseId/edit'
+      preLoaderRoute: typeof ArtistArtistReleasesReleaseIdEditIndexRouteImport
+      parentRoute: typeof ArtistRoute
+    }
   }
 }
 
@@ -694,6 +714,7 @@ interface ArtistRouteChildren {
   ArtistArtistReleasesIndexLazyRoute: typeof ArtistArtistReleasesIndexLazyRoute
   ArtistArtistReleasesReleaseIdIndexRoute: typeof ArtistArtistReleasesReleaseIdIndexRoute
   ArtistArtistReleasesNewIndexLazyRoute: typeof ArtistArtistReleasesNewIndexLazyRoute
+  ArtistArtistReleasesReleaseIdEditIndexRoute: typeof ArtistArtistReleasesReleaseIdEditIndexRoute
 }
 
 const ArtistRouteChildren: ArtistRouteChildren = {
@@ -705,6 +726,8 @@ const ArtistRouteChildren: ArtistRouteChildren = {
   ArtistArtistReleasesReleaseIdIndexRoute:
     ArtistArtistReleasesReleaseIdIndexRoute,
   ArtistArtistReleasesNewIndexLazyRoute: ArtistArtistReleasesNewIndexLazyRoute,
+  ArtistArtistReleasesReleaseIdEditIndexRoute:
+    ArtistArtistReleasesReleaseIdEditIndexRoute,
 }
 
 const ArtistRouteWithChildren =

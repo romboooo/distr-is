@@ -7,6 +7,7 @@ import type {
   AddSongToReleaseDTO,
   Release,
   Song,
+  UpdateReleaseDTO,
 } from '@/types/api';
 
 export async function getReleaseById(id: number): Promise<Release> {
@@ -93,3 +94,8 @@ export async function getReleaseCover(releaseId: number): Promise<Blob> {
   });
   return response.data;
 }
+
+export const updateRelease = async (id: number, data: UpdateReleaseDTO) => {
+  const response = await apiClient.patch<Release>(`/releases/${id}`, data);
+  return response.data;
+};

@@ -104,3 +104,10 @@ export type AddSongToReleaseDTO = {
   songUpc: number;
   metadata: Record<string, string>;
 };
+
+export interface UpdateReleaseDTO {
+  name?: string;
+  genre?: string;
+  releaseType?: 'SINGLE' | 'MAXI_SINGLE' | 'EP' | 'ALBUM' | 'MIXTAPE';
+  date?: string | null;
+}
