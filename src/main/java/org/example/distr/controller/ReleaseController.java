@@ -10,6 +10,9 @@ import org.example.distr.dto.request.*;
 import org.example.distr.dto.response.PageResponse;
 import org.example.distr.dto.response.ReleaseResponse;
 import org.example.distr.dto.response.SongResponse;
+import org.example.distr.entity.User;
+import org.example.distr.exception.BusinessLogicException;
+import org.example.distr.service.CurrentUserService;
 import org.example.distr.service.MinioService;
 import org.example.distr.service.ReleaseService;
 import org.example.distr.service.SongService;
@@ -32,6 +35,7 @@ public class ReleaseController {
     private final ReleaseService releaseService;
     private final SongService songService;
     private final MinioService minioService;
+    private final CurrentUserService currentUserService;
 
     @PostMapping("/draft")
     public ResponseEntity<ReleaseResponse> createDraftRelease(@Valid @RequestBody DraftReleaseRequest request) {
@@ -147,5 +151,18 @@ public class ReleaseController {
         if (contentType == null || !contentType.startsWith("image/")) {
             throw new IllegalArgumentException("Only image files are allowed for covers");
         }
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<ReleaseResponse> updateRelease(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateReleaseRequest request) {
+        User currentUser = currentUserService.getCurrentUser();
+        if (currentUser == null) {
+            throw new BusinessLogicException("Authentication required");
+        }
+
+        ReleaseResponse response = releaseService.updateRelease(id, request, currentUser);
+        return ResponseEntity.ok(response);
     }
 }
