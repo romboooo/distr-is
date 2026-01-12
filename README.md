@@ -762,6 +762,26 @@ releaseId (required) - ID релиза
 ***404 Not Found*** - если релиз не найден (возвращает пустой массив, если нет записей модерации)
 
 
+### PATCH /api/users/{id}
+#### Headers: Authorization: Bearer {jwt_token_admin}
+**Body:**
+```json
+{
+"login": "new_login",
+"password": "new_password",
+"type": "ARTIST"
+}
+```
+
+PATCH /api/releases/{id}
+Headers: Authorization: Bearer {jwt_token}
+Body: {
+"name": "New Release Name",
+"genre": "New Genre",
+"releaseType": "ALBUM",
+"type": "EP"
+}
+
 ## Статусы релиза и их переходы
 
 ```text

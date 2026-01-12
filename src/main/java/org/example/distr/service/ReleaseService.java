@@ -2,11 +2,15 @@ package org.example.distr.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.distr.dto.request.DraftReleaseRequest;
+import org.example.distr.dto.request.UpdateReleaseRequest;
 import org.example.distr.dto.response.ReleaseResponse;
 import org.example.distr.entity.Release;
 import org.example.distr.entity.Artist;
 import org.example.distr.entity.Label;
+import org.example.distr.entity.User;
 import org.example.distr.entity.enums.ModerationState;
+import org.example.distr.entity.enums.UserType;
+import org.example.distr.exception.BusinessLogicException;
 import org.example.distr.exception.ResourceNotFoundException;
 import org.example.distr.repository.ReleaseRepository;
 import org.example.distr.repository.ArtistRepository;
@@ -192,5 +196,48 @@ public class ReleaseService {
         response.setPageSize(releasePage.getSize());
 
         return response;
+    }
+
+    @Transactional
+    public ReleaseResponse updateRelease(Long id, UpdateReleaseRequest request, User currentUser) {
+        Release release = releaseRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Release not found"));
+
+        boolean hasAccess = false;
+
+        if (currentUser.getType() == UserType.ADMIN) {
+            hasAccess = true;
+        } else if (currentUser.getType() == UserType.ARTIST) {
+            Artist artist = artistRepository.findByUserId(currentUser.getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Artist not found for current user"));
+            hasAccess = release.getArtist().getId().equals(artist.getId());
+        } else if (currentUser.getType() == UserType.LABEL) {
+            Label label = labelRepository.findByUserId(currentUser.getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Label not found for current user"));
+            hasAccess = release.getLabel().getId().equals(label.getId());
+        }
+
+        if (!hasAccess) {
+            throw new BusinessLogicException("You don't have permission to update this release");
+        }
+
+        if (request.getName() != null && !request.getName().isEmpty()) {
+            release.setName(request.getName());
+        }
+
+        if (request.getGenre() != null && !request.getGenre().isEmpty()) {
+            release.setGenre(request.getGenre());
+        }
+
+        if (request.getDate() != null) {
+            release.setDate(request.getDate());
+        }
+
+        if (request.getReleaseType() != null) {
+            release.setReleaseType(request.getReleaseType());
+        }
+
+        Release updated = releaseRepository.save(release);
+        return mapToResponse(updated);
     }
 }
