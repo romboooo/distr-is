@@ -1,7 +1,7 @@
 package org.example.distr.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.distr.dto.request.ReleaseRequest;
+import org.example.distr.dto.request.DraftReleaseRequest;
 import org.example.distr.dto.response.ReleaseResponse;
 import org.example.distr.entity.Release;
 import org.example.distr.entity.Artist;
@@ -25,9 +25,10 @@ public class ReleaseService {
     private final ReleaseRepository releaseRepository;
     private final ArtistRepository artistRepository;
     private final LabelRepository labelRepository;
+    private final UpcGeneratorService upcGeneratorService;
 
     @Transactional
-    public ReleaseResponse createRelease(ReleaseRequest request) {
+    public ReleaseResponse createDraftRelease(DraftReleaseRequest request) {
         Artist artist = artistRepository.findById(request.getArtistId())
                 .orElseThrow(() -> new ResourceNotFoundException("Artist not found"));
 
@@ -41,33 +42,44 @@ public class ReleaseService {
                 .artist(artist)
                 .genre(request.getGenre())
                 .releaseUpc(releaseUpc)
-                .moderationState(ModerationState.ON_REVIEW)
+                .moderationState(ModerationState.DRAFT)
                 .releaseType(request.getReleaseType())
                 .label(label)
+                .coverPath(null)
                 .build();
 
         Release saved = releaseRepository.save(release);
         return mapToResponse(saved);
     }
 
+    @Transactional(readOnly = true)
     public ReleaseResponse getRelease(Long id) {
         Release release = releaseRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Release not found"));
         return mapToResponse(release);
     }
 
+    @Transactional(readOnly = true)
+    public Release getReleaseById(Long id) {
+        return releaseRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Release not found"));
+    }
+
+    @Transactional(readOnly = true)
     public List<ReleaseResponse> getReleasesByArtist(Long artistId) {
         return releaseRepository.findByArtistId(artistId).stream()
                 .map(this::mapToResponse)
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public List<ReleaseResponse> getReleasesByModerationState(ModerationState state) {
         return releaseRepository.findByModerationState(state).stream()
                 .map(this::mapToResponse)
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public List<ReleaseResponse> getReleasesByLabel(Long labelId) {
         return releaseRepository.findByLabelId(labelId).stream()
                 .map(this::mapToResponse)
@@ -84,36 +96,88 @@ public class ReleaseService {
         return mapToResponse(updated);
     }
 
+    @Transactional
+    public ReleaseResponse updateReleaseCover(Long releaseId, String coverPath) {
+        Release release = releaseRepository.findById(releaseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Release not found"));
+
+        release.setCoverPath(coverPath);
+        Release updated = releaseRepository.save(release);
+        return mapToResponse(updated);
+    }
+
     private Long generateUpc() {
-        // Простая генерация для примера
-        return System.currentTimeMillis() % 1000000000000L;
+        // More robust UPC generation
+        return 600000000000L + (System.currentTimeMillis() % 400000000000L);
     }
 
-    private ReleaseResponse mapToResponse(Release release) {
-        ReleaseResponse response = new ReleaseResponse();
-        response.setId(release.getId());
-        response.setName(release.getName());
-        response.setArtistId(release.getArtist().getId());
-        response.setArtistName(release.getArtist().getName());
-        response.setGenre(release.getGenre());
-        response.setReleaseUpc(release.getReleaseUpc());
-        response.setDate(release.getDate());
-        response.setModerationState(release.getModerationState());
-        response.setReleaseType(release.getReleaseType());
-        response.setLabelId(release.getLabel().getId());
-        response.setLabelName(release.getLabel().getContactName());
-        return response;
-    }
-
+    @Transactional(readOnly = true)
     public List<ReleaseResponse> getAllReleases() {
         return releaseRepository.findAll().stream()
                 .map(this::mapToResponse)
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public PageResponse<ReleaseResponse> getAllReleases(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Page<Release> releasePage = releaseRepository.findAll(pageable);
+
+        List<ReleaseResponse> content = releasePage.getContent().stream()
+                .map(this::mapToResponse)
+                .toList();
+
+        PageResponse<ReleaseResponse> response = new PageResponse<>();
+        response.setContent(content);
+        response.setCurrentPage(releasePage.getNumber());
+        response.setTotalPages(releasePage.getTotalPages());
+        response.setTotalElements(releasePage.getTotalElements());
+        response.setPageSize(releasePage.getSize());
+
+        return response;
+    }
+
+    public ReleaseResponse requestModeration(Long releaseId) {
+        Release release = releaseRepository.findById(releaseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Release not found"));
+
+        if (release.getCoverPath() == null) {
+            throw new IllegalStateException("Cover image must be uploaded before moderation");
+        }
+
+        if (release.getSongs().stream().anyMatch(song -> song.getPathToFile() == null)) {
+            throw new IllegalStateException("All songs must have uploaded files before moderation");
+        }
+
+        if (release.getReleaseUpc() == null) {
+            release.setReleaseUpc(upcGeneratorService.generateUpc());
+        }
+
+        release.setModerationState(ModerationState.ON_REVIEW);
+        Release savedRelease = releaseRepository.save(release);
+
+        return mapToResponse(savedRelease);
+    }
+
+    private ReleaseResponse mapToResponse(Release release) {
+        return ReleaseResponse.builder()
+                .id(release.getId())
+                .name(release.getName())
+                .genre(release.getGenre())
+                .artistId(release.getArtist().getId())
+                .labelId(release.getLabel().getId())
+                .releaseUpc(release.getReleaseUpc())
+                .date(release.getDate())
+                .moderationState(release.getModerationState())
+                .releaseType(release.getReleaseType())
+                .coverPath(release.getCoverPath())
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponse<ReleaseResponse> getReleasesByArtist(Long artistId, int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Release> releasePage = releaseRepository.findByArtistId(artistId, pageable);
 
         List<ReleaseResponse> content = releasePage.getContent().stream()
                 .map(this::mapToResponse)

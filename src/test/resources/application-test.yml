@@ -21,3 +21,13 @@ logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+minio:
+  url: http://localhost:9000
+  access:
+    key: minioadmin
+  secret:
+    key: minioadmin
+  bucket:
+    covers: covers
+    songs: songs

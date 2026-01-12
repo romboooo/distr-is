@@ -18,7 +18,6 @@ public class AuthService {
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-    private final CustomUserDetailsService userDetailsService;
     private final UserService userService;
 
     public AuthResponse authenticate(AuthRequest request) {
@@ -26,9 +25,7 @@ public class AuthService {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             request.getLogin(),
-                            request.getPassword()
-                    )
-            );
+                            request.getPassword()));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();

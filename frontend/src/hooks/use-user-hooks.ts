@@ -5,7 +5,12 @@ import {
   type UseQueryOptions,
 } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import type { PaginatedResponse, User, UserType } from '@/types/api';
+import type {
+  AxiosErrorResponse,
+  PaginatedResponse,
+  User,
+  UserType,
+} from '@/types/api';
 import { apiClient } from '@/services/api';
 import { toast } from 'sonner';
 import { queryClient } from '@/providers/query-client';
@@ -49,7 +54,7 @@ export const useUser = (
 export const useCreateUser = () => {
   return useMutation<
     User,
-    AxiosError<{ error: string; message: string }>,
+    AxiosErrorResponse,
     {
       login: string;
       password: string;
@@ -73,7 +78,7 @@ export const useCreateUser = () => {
 export const useUpdateUser = () => {
   return useMutation<
     User,
-    AxiosError<{ error: string; message: string }>,
+    AxiosErrorResponse,
     {
       id: number;
       login?: string;
@@ -96,11 +101,7 @@ export const useUpdateUser = () => {
 };
 
 export const useDeleteUser = () => {
-  return useMutation<
-    void,
-    AxiosError<{ error: string; message: string }>,
-    number
-  >({
+  return useMutation<void, AxiosErrorResponse, number>({
     mutationFn: (id) => apiClient.delete(`/users/${id}`),
     onSuccess: (_, id) => {
       queryClient.invalidateQueries({ queryKey: ['users'] });

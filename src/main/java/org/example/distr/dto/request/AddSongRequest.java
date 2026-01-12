@@ -8,11 +8,12 @@ import jakarta.validation.constraints.Positive;
 import java.util.List;
 
 @Data
-public class SongRequest {
+public class AddSongRequest {
     @NotNull(message = "Release ID is required")
     @Positive(message = "Release ID must be positive")
     private Long releaseId;
 
+    @NotNull(message = "Release ID is required")
     private List<Long> artistIds;
 
     @NotBlank(message = "Music author is required")
@@ -21,16 +22,5 @@ public class SongRequest {
     @NotNull(message = "Parental advisory flag is required")
     private Boolean parentalAdvisory;
 
-    @NotNull(message = "Song UPC is required")
-    @Positive(message = "Song UPC must be positive")
-    private Long songUpc;
-
     private String metadata; // wip JSON
-
-    @NotBlank(message = "Path to file is required")
-    private String pathToFile;
-
-    @NotNull(message = "Song length is required")
-    @Positive(message = "Song length must be positive")
-    private Integer songLengthSeconds;
 }

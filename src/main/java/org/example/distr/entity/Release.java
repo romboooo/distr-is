@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = {"artist", "label", "songs", "moderationRecords", "royaltyReports"})
+@ToString(exclude = { "artist", "label", "songs", "moderationRecords", "royaltyReports" })
 public class Release {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +32,9 @@ public class Release {
 
     @Column(name = "\"genre\"", nullable = false, length = 100)
     private String genre;
+
+    @Column(name = "\"cover_path\"", nullable = true, length = 100)
+    private String coverPath;
 
     @Column(name = "\"release_upc\"", nullable = false, unique = true)
     private Long releaseUpc;

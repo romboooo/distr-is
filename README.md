@@ -4,331 +4,7 @@
 
 ### Шаблон: $base_url/api/
 
-## --------------------------Users ---------------------------
-
-### POST /users
-
-    Request Body:
-
-```json
-{
-    "login": "string (3-50 chars)",
-    "password": "string (min 6 chars)",
-    "type": "ARTIST | LABEL | MODERATOR | ADMIN | PLATFORM"
-}
-```
-
-    Response (201 Created):
-
-```json
-{
-    "id": 1,
-    "login": "john_doe",
-    "type": "ARTIST",
-    "registrationDate": "2024-01-15T10:30:00"
-}
-```
-
-### GET /users
-
-#### Получение всех пользователей
-
-    Response (200 OK): Массив UserResponse
-
-### GET /users/{id}
-
-#### Получение пользователя по ID
-
-    Path Param: id (Long)
-
-    Response (200 OK): UserResponse
-
-### GET /users/login/{login}
-
-#### Поиск по логину
-
-    Path Param: login (String)
-
-    Response (200 OK): UserResponse
-
-### GET /users/type/{type}
-
-#### Фильтрация по типу пользователя
-
-    Path Param: type (ARTIST/LABEL/MODERATOR/ADMIN/PLATFORM)
-
-    Response (200 OK): Массив UserResponse
-
-### DELETE /users/{id}
-
-#### Удаление пользователя
-
-    Path Param: id (Long)
-
-    Response (204 No Content)
-
-## --------------------------Artists ---------------------------
-
-### POST /artists
-
-#### Создание артиста
-
-#### Request Body:
-
-```json
-{
-    "name": "Artist Name",
-    "country": "USA",
-    "realName": "John Doe",
-    "userId": 1
-}
-```
-
-    Response (201 Created):
-
-```json
-{
-    "id": 1,
-    "name": "Artist Name",
-    "labelName": "Label Contact Name",
-    "country": "USA",
-    "realName": "John Doe",
-    "userId": 1,
-    "userLogin": "john_doe"
-}
-```
-
-### GET /artists
-
-#### Получение всех артистов
-
-    Response (200 OK): Массив ArtistResponse
-
-### GET /artists/{id}
-
-#### Получение артиста по ID
-
-    Path Param: id (Long)
-
-    Response (200 OK): ArtistResponse
-
-### GET /artists/by-user/{userId}
-
-#### Получение артиста по ID пользователя
-
-    Path Param: userId (Long)
-
-    Response (200 OK): ArtistResponse
-
-## --------------------------Labels ---------------------------
-
-### POST /labels
-
-#### Создание нового лейбла
-
-#### Request Body:
-
-```json
-{
-    "country": "Страна",
-    "contactName": "Имя контактного лица",
-    "phone": "Номер телефона",
-    "userId": 1
-}
-```
-
-    Response (201 Created):
-
-```json
-{
-    "id": 1,
-    "country": "Страна",
-    "contactName": "Имя контактного лица",
-    "phone": "Номер телефона",
-    "userId": 1,
-    "userLogin": "логин пользователя"
-}
-```
-
-### GET /labels
-
-#### Получение списка всех лейблов
-
-    Response (200 OK): Массив объектов LabelResponse
-
-### GET /labels/{id}
-
-#### #### Получение лейбла по ID
-
-#### Параметры:
-
-    id (Long) - идентификатор лейбла
-
-    Response (200 OK): Объект LabelResponse
-
-### GET /labels/by-user/{userId}
-
-#### Получение лейбла по ID пользователя
-
-    Path Param: userId (Long)
-
-    Response (200 OK): LabelResponse
-
-```json
-{
-    "id": 1,
-    "country": "Страна",
-    "contactName": "Имя контактного лица",
-    "phone": "Номер телефона",
-    "userId": 1,
-    "userLogin": "логин пользователя"
-}
-```
-
-## --------------------------Releases ------------------------
-
-### POST /releases
-
-#### Создание нового релиза (альбом/сингл)
-
-    Request Body:
-
-```json
-{
-    "name": "Название релиза",
-    "artistId": 1,
-    "genre": "Жанр",
-    "releaseType": "ALBUM | SINGLE | MAXI_SINGLE | EP | MIXTAPE",
-    "labelId": 1
-}
-```
-
-    Response (201 Created):
-
-```json
-{
-    "id": 1,
-    "name": "Название релиза",
-    "artistId": 1,
-    "artistName": "Имя артиста",
-    "genre": "Жанр",
-    "releaseUpc": 123456789012,
-    "date": "2024-01-15T10:30:00",
-    "moderationState": "ON_REVIEW | APPROVED | REJECTED | WAITING_FOR_CHANGES | DRAFT",
-    "releaseType": "ALBUM",
-    "labelId": 1,
-    "labelName": "Название лейбла"
-}
-```
-
-### GET /releases
-
-#### Получение списка всех релизов
-
-    Response (200 OK): Массив объектов ReleaseResponse
-
-### GET /releases/{id}
-
-#### Получение релиза по ID
-
-#### Параметры:
-
-    id (Long) - идентификатор релиза
-
-    Response (200 OK): Объект ReleaseResponse
-
-## --------------------------Songs ---------------------------
-
-### POST /songs
-
-#### Добавление новой песни в релиз
-
-    Request Body:
-
-```json
-{
-    "releaseId": 1,
-    "artistIds": [1, 2],
-    "musicAuthor": "Автор музыки",
-    "parentalAdvisory": false,
-    "songUpc": 987654321098,
-    "metadata": "{\"key\": \"value\"}",
-    "pathToFile": "/path/to/file.mp3",
-    "songLengthSeconds": 240
-}
-```
-
-    Response (201 Created):
-
-```json
-{
-    "id": 1,
-    "releaseId": 1,
-    "releaseName": "Название релиза",
-    "artistIds": [1, 2],
-    "artistNames": ["Имя артиста 1", "Имя артиста 2"],
-    "musicAuthor": "Автор музыки",
-    "parentalAdvisory": false,
-    "streams": 0,
-    "songUpc": 987654321098,
-    "metadata": "{\"key\": \"value\"}",
-    "pathToFile": "/path/to/file.mp3",
-    "songLengthSeconds": 240
-}
-```
-
-### GET /songs
-
-#### Получение списка всех песен
-
-    Response (200 OK): Массив объектов SongResponse
-
-### GET /songs/{id}
-
-#### Получение песни по ID
-
-#### Параметры:
-
-    id (Long) - идентификатор песни
-
-    Response (200 OK): Объект SongResponse
-
-#### Типы данных и перечисления
-
-### UserType
-
-```text
-
-ARTIST    - Артист
-LABEL     - Лейбл
-MODERATOR - Модератор
-ADMIN     - Администратор
-PLATFORM  - Платформа
-```
-
-### ModerationState
-
-```text
-
-REJECTED           - Отклонено
-APPROVED           - Одобрено
-WAITING_FOR_CHANGES - Ожидает изменений
-ON_REVIEW          - На рассмотрении
-DRAFT              - Черновик
-```
-
-### ReleaseType
-
-```text
-
-SINGLE       - Сингл
-MAXI_SINGLE  - Макси-сингл
-EP           - EP (Extended Play)
-ALBUM        - Альбом
-MIXTAPE      - Микстейп
-```
-
-## --------------------------Auth-----------------------
+## Auth
 
 ### POST /register
 
@@ -438,38 +114,609 @@ MIXTAPE      - Микстейп
 }
 ```
 
-## Pagination:
+## --------------------------Artists ---------------------------
+
+### POST /artists
+
+#### Создание артиста
+
+#### Request Body:
+
+```json
+{
+    "name": "Artist Name",
+    "country": "USA",
+    "realName": "John Doe",
+    "userId": 1
+}
+```
+
+    Response (201 Created):
+
+```json
+{
+    "id": 1,
+    "name": "Artist Name",
+    "labelName": "Label Contact Name",
+    "country": "USA",
+    "realName": "John Doe",
+    "userId": 1,
+    "userLogin": "john_doe"
+}
+```
+
+### GET /artists
+
+#### Получение всех артистов
+
+    Response (200 OK): Массив ArtistResponse
+
+### GET /artists/{id}
+
+#### Получение артиста по ID
+
+    Path Param: id (Long)
+
+    Response (200 OK): ArtistResponse
+
+### GET /artists/by-user/{userId}
+
+#### Получение артиста по ID пользователя
+
+    Path Param: userId (Long)
+
+    Response (200 OK): ArtistResponse
+
+## Artists
+
+### GET /artists/{artistId}/releases
+
+**Path Param:** `artistId` (Long)
+
+**Parameters:**
+
+-   `pageNumber`: номер страницы (начинается с 0)
+-   `pageSize`: размер страницы
+
+**Response (200 OK):**
+
+```json
+{
+    "content": [
+        {
+            "id": 1,
+            "name": "Название релиза",
+            "artistId": 1,
+            "artistName": "Имя артиста",
+            "genre": "Жанр",
+            "releaseUpc": 123456789012,
+            "date": "2024-01-15T10:30:00",
+            "moderationState": "DRAFT",
+            "releaseType": "ALBUM",
+            "labelId": 1,
+            "labelName": "Название лейбла",
+            "coverPath": "/path/to/cover.jpg"
+        }
+    ],
+    "currentPage": 0,
+    "totalPages": 1,
+    "totalElements": 1,
+    "pageSize": 10
+}
+```
+
+**Response (404 Not Found):**
+
+```json
+{
+    "timestamp": "2024-01-15T10:30:00",
+    "status": 404,
+    "error": "Not Found",
+    "message": "Artist not found with id: 123"
+}
+```
+
+## Labels
+
+### POST /labels
+
+#### Создание нового лейбла
+
+#### Request Body:
+
+```json
+{
+    "country": "Страна",
+    "contactName": "Имя контактного лица",
+    "phone": "Номер телефона",
+    "userId": 1
+}
+```
+
+**Response (201 Created):**
+
+```json
+{
+    "id": 1,
+    "country": "Страна",
+    "contactName": "Имя контактного лица",
+    "phone": "Номер телефона",
+    "userId": 1,
+    "userLogin": "логин пользователя"
+}
+```
+
+### GET /labels
+
+#### Получение списка всех лейблов (с пагинацией)
+
+**Parameters:**
+
+-   `pageNumber`: номер страницы (начинается с 0)
+-   `pageSize`: размер страницы
+
+**Response (200 OK):**
+
+```json
+{
+    "content": [
+        {
+            "id": 1,
+            "country": "Страна",
+            "contactName": "Имя контактного лица",
+            "phone": "Номер телефона",
+            "userId": 1,
+            "userLogin": "логин пользователя"
+        }
+    ],
+    "currentPage": 0,
+    "totalPages": 1,
+    "totalElements": 1,
+    "pageSize": 10
+}
+```
+
+### GET /labels/{id}
+
+#### Получение лейбла по ID
+
+**Path Param:** `id` (Long)
+
+**Response (200 OK):**
+
+```json
+{
+    "id": 1,
+    "country": "Страна",
+    "contactName": "Имя контактного лица",
+    "phone": "Номер телефона",
+    "userId": 1,
+    "userLogin": "логин пользователя"
+}
+```
+
+### GET /labels/by-user/{userId}
+
+#### Получение лейбла по ID пользователя
+
+**Path Param:** `userId` (Long)
+
+**Response (200 OK):**
+
+```json
+{
+    "id": 1,
+    "country": "Страна",
+    "contactName": "Имя контактного лица",
+    "phone": "Номер телефона",
+    "userId": 1,
+    "userLogin": "логин пользователя"
+}
+```
+
+## Releases -
+
+### POST /releases/draft
+
+#### Создание черновика релиза
+
+**Request Body:**
+
+```json
+{
+    "name": "Название релиза",
+    "artistId": 1,
+    "genre": "Жанр",
+    "releaseType": "ALBUM | SINGLE | MAXI_SINGLE | EP | MIXTAPE",
+    "labelId": 1
+}
+```
+
+**Response (201 Created):**
+
+```json
+{
+    "id": 1,
+    "name": "Название релиза",
+    "artistId": 1,
+    "artistName": "Имя артиста",
+    "genre": "Жанр",
+    "releaseUpc": 123456789012,
+    "date": "2024-01-15T10:30:00",
+    "moderationState": "DRAFT",
+    "releaseType": "ALBUM",
+    "labelId": 1,
+    "labelName": "Название лейбла",
+    "coverPath": null
+}
+```
+
+### GET /releases
+
+#### Получение списка всех релизов (с пагинацией)
+
+**Parameters:**
+
+-   `pageNumber`: номер страницы (начинается с 0)
+-   `pageSize`: размер страницы
+
+**Response (200 OK):**
+
+```json
+{
+    "content": [
+        {
+            "id": 1,
+            "name": "Название релиза",
+            "artistId": 1,
+            "artistName": "Имя артиста",
+            "genre": "Жанр",
+            "releaseUpc": 123456789012,
+            "date": "2024-01-15T10:30:00",
+            "moderationState": "DRAFT",
+            "releaseType": "ALBUM",
+            "labelId": 1,
+            "labelName": "Название лейбла",
+            "coverPath": "/path/to/cover.jpg"
+        }
+    ],
+    "currentPage": 0,
+    "totalPages": 1,
+    "totalElements": 1,
+    "pageSize": 10
+}
+```
+
+### GET /releases/{id}
+
+#### Получение релиза по ID
+
+**Path Param:** `id` (Long)
+
+**Response (200 OK):**
+
+```json
+{
+    "id": 1,
+    "name": "Название релиза",
+    "artistId": 1,
+    "artistName": "Имя артиста",
+    "genre": "Жанр",
+    "releaseUpc": 123456789012,
+    "date": "2024-01-15T10:30:00",
+    "moderationState": "DRAFT",
+    "releaseType": "ALBUM",
+    "labelId": 1,
+    "labelName": "Название лейбла",
+    "coverPath": "/path/to/cover.jpg"
+}
+```
+
+### GET /releases/{releaseId}/songs
+
+#### Получение всех песен релиза
+
+**Path Param:** `releaseId` (Long)
+
+**Response (200 OK):**
+
+```json
+[
+    {
+        "id": 1,
+        "releaseId": 1,
+        "releaseName": "Название релиза",
+        "artistIds": [1, 2],
+        "artistNames": ["Имя артиста 1", "Имя артиста 2"],
+        "musicAuthor": "Автор музыки",
+        "parentalAdvisory": false,
+        "streams": 0,
+        "songUpc": 987654321098,
+        "metadata": "{\"key\": \"value\"}",
+        "pathToFile": "/tmp-songs/song_1_1642345678.mp3",
+        "songLengthSeconds": 240
+    },
+    {
+        "id": 2,
+        "releaseId": 1,
+        "releaseName": "Название релиза",
+        "artistIds": [1],
+        "artistNames": ["Имя артиста 1"],
+        "musicAuthor": "Другой автор",
+        "parentalAdvisory": true,
+        "streams": 15,
+        "songUpc": 876543210987,
+        "metadata": "{}",
+        "pathToFile": "/tmp-songs/song_2_1642345680.mp3",
+        "songLengthSeconds": 198
+    }
+]
+```
+
+**Response (404 Not Found):**
+
+```json
+{
+    "timestamp": "2024-01-15T10:30:00",
+    "status": 404,
+    "error": "Not Found",
+    "message": "Release not found"
+}
+```
+
+### POST /releases/{releaseId}/songs
+
+#### Добавление песни в релиз
+
+**Path Param:** `releaseId` (Long)
+
+**Request Body:**
+
+```json
+{
+    "artistIds": [1, 2],
+    "musicAuthor": "Автор музыки",
+    "parentalAdvisory": false,
+    "metadata": "{\"key\": \"value\"}"
+}
+```
+
+**Response (201 Created):**
+
+```json
+{
+    "id": 1,
+    "releaseId": 1,
+    "releaseName": "Название релиза",
+    "artistIds": [1, 2],
+    "artistNames": ["Имя артиста 1", "Имя артиста 2"],
+    "musicAuthor": "Автор музыки",
+    "parentalAdvisory": false,
+    "streams": 0,
+    "songUpc": 987654321098,
+    "metadata": "{\"key\": \"value\"}",
+    "pathToFile": null,
+    "songLengthSeconds": null
+}
+```
+
+### POST /releases/songs/{songId}/file
+
+#### Загрузка аудиофайла для песни
+
+**Path Param:** `songId` (Long)
+**Form Data:** `file` (MP3 file)
+
+**Response (200 OK):**
+
+```json
+"/tmp-songs/song_1_1642345678.mp3"
+```
+
+### POST /releases/{releaseId}/cover
+
+#### Загрузка обложки для релиза
+
+**Path Param:** `releaseId` (Long)
+**Form Data:** `file` (image file)
+
+**Response (200 OK):**
+
+```json
+"/tmp-covers/cover_release_1_1642345678.jpg"
+```
+
+### GET /releases/{releaseId}/cover
+
+#### Получение обложки релиза
+
+**Path Param:** `releaseId` (Long)
+
+**Response (200 OK):**
+Binary image data. The `Content-Type` header is set to the MIME type of the image (e.g., `image/jpeg`, `image/png`).
+
+**Response (404 Not Found):**
+If release not found or cover image not set:
+
+```json
+{
+    "timestamp": "2024-01-15T10:30:00",
+    "status": 404,
+    "error": "Not Found",
+    "message": "Cover image not found for release with id: 123"
+}
+```
+
+**Response (400 Bad Request):**
+If cover path has invalid format:
+
+```json
+{
+    "timestamp": "2024-01-15T10:30:00",
+    "status": 400,
+    "error": "Bad Request",
+    "message": "Invalid cover path format: invalid_path"
+}
+```
+
+**Response (500 Internal Server Error):**
+If file retrieval fails:
+
+```json
+{
+    "timestamp": "2024-01-15T10:30:00",
+    "status": 500,
+    "error": "Internal Server Error",
+    "message": "Failed to retrieve cover image from storage"
+}
+```
+
+### POST /releases/{releaseId}/request-moderation
+
+#### Отправка релиза на модерацию
+
+**Path Param:** `releaseId` (Long)
+
+**Response (200 OK):**
+
+```json
+{
+    "id": 1,
+    "name": "Название релиза",
+    "artistId": 1,
+    "artistName": "Имя артиста",
+    "genre": "Жанр",
+    "releaseUpc": 123456789012,
+    "date": "2024-01-15T10:30:00",
+    "moderationState": "ON_REVIEW",
+    "releaseType": "ALBUM",
+    "labelId": 1,
+    "labelName": "Название лейбла",
+    "coverPath": "/path/to/cover.jpg"
+}
+```
+
+## Songs -
+
+### GET /songs
+
+#### Получение списка всех песен (с пагинацией)
+
+**Parameters:**
+
+-   `pageNumber`: номер страницы (начинается с 0)
+-   `pageSize`: размер страницы
+
+**Response (200 OK):**
+
+```json
+{
+    "content": [
+        {
+            "id": 1,
+            "releaseId": 1,
+            "releaseName": "Название релиза",
+            "artistIds": [1, 2],
+            "artistNames": ["Имя артиста 1", "Имя артиста 2"],
+            "musicAuthor": "Автор музыки",
+            "parentalAdvisory": false,
+            "streams": 0,
+            "songUpc": 987654321098,
+            "metadata": "{\"key\": \"value\"}",
+            "pathToFile": "/tmp-songs/song_1_1642345678.mp3",
+            "songLengthSeconds": 240
+        }
+    ],
+    "currentPage": 0,
+    "totalPages": 1,
+    "totalElements": 1,
+    "pageSize": 10
+}
+```
+
+### GET /songs/{id}
+
+#### Получение песни по ID
+
+**Path Param:** `id` (Long)
+
+**Response (200 OK):**
+
+```json
+{
+    "id": 1,
+    "releaseId": 1,
+    "releaseName": "Название релиза",
+    "artistIds": [1, 2],
+    "artistNames": ["Имя артиста 1", "Имя артиста 2"],
+    "musicAuthor": "Автор музыки",
+    "parentalAdvisory": false,
+    "streams": 0,
+    "songUpc": 987654321098,
+    "metadata": "{\"key\": \"value\"}",
+    "pathToFile": "/tmp-songs/song_1_1642345678.mp3",
+    "songLengthSeconds": 240
+}
+```
+
+## Pagination
 
 ```shell
 url + "?pageNumber=[integerStartedWithZero]&pageSize=[integer]"
 ```
 
-**Response (200):**
+**Response Structure (200 OK):**
 
 ```json
 {
     "content": [],
-    "currentPage": "x",
-    "totalPages": "x",
-    "totalElements": "x",
-    "pageSize": "x"
+    "currentPage": 0,
+    "totalPages": 1,
+    "totalElements": 1,
+    "pageSize": 10
 }
 ```
 
-### HTTP Коды
+## Типы данных и перечисления
 
-    200 OK: Успешный запрос
+### UserType
 
-    201 Created: Ресурс успешно создан
+```text
+ARTIST    - Артист
+LABEL     - Лейбл
+MODERATOR - Модератор
+ADMIN     - Администратор
+PLATFORM  - Платформа
+```
 
-    204 No Content: Успешный запрос без возвращаемых данных
+### ModerationState
 
-    400 Bad Request: Ошибка валидации или неправильный запрос
+```text
+DRAFT              - Черновик
+ON_REVIEW          - На рассмотрении
+APPROVED           - Одобрено
+REJECTED           - Отклонено
+WAITING_FOR_CHANGES - Ожидает изменений
+```
 
-    401 Unauthorized: Требуется аутентификация или токен недействителен
+### ReleaseType
 
-    404 Not Found: Ресурс не найден
+```text
+SINGLE      - Сингл
+MAXI_SINGLE - Макси-сингл
+EP          - EP (Extended Play)
+ALBUM       - Альбом
+MIXTAPE     - Микстейп
+```
 
-    409 Conflict: Конфликт (например, дублирование уникальных данных)
+## HTTP Коды
 
-    500 Internal Server Error: Внутренняя ошибка сервера
+-   **200 OK**: Успешный запрос
+-   **201 Created**: Ресурс успешно создан
+-   **204 No Content**: Успешный запрос без возвращаемых данных
+-   **400 Bad Request**: Ошибка валидации или неправильный запрос
+-   **401 Unauthorized**: Требуется аутентификация или токен недействителен
+-   **403 Forbidden**: Доступ запрещен
+-   **404 Not Found**: Ресурс не найден
+-   **409 Conflict**: Конфликт (например, дублирование уникальных данных)
+-   **500 Internal Server Error**: Внутренняя ошибка сервера

@@ -95,7 +95,7 @@ function RegisterForm() {
         await createArtistProfile({
           name: values.name,
           country: values.country,
-          realName: values.realName || null,
+          realName: values.realName,
           userId: authResponse.id,
         });
       } else if (values.type === 'LABEL') {

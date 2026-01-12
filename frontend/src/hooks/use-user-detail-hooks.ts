@@ -6,7 +6,13 @@ import {
   type UseQueryOptions,
 } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import type { User, UserType, Artist, Label } from '@/types/api';
+import type {
+  User,
+  UserType,
+  Artist,
+  Label,
+  AxiosErrorResponse,
+} from '@/types/api';
 import { apiClient } from '@/services/api';
 import { queryClient } from '@/providers/query-client';
 
@@ -146,11 +152,7 @@ export const useUserWithDetails = (userId: number) => {
 };
 
 export const useDeleteUser = () => {
-  return useMutation<
-    void,
-    AxiosError<{ error: string; message: string }>,
-    number
-  >({
+  return useMutation<void, AxiosErrorResponse, number>({
     mutationFn: (id) => apiClient.delete(`/users/${id}`),
     onSuccess: (_, id) => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
@@ -162,7 +164,7 @@ export const useDeleteUser = () => {
 export const useUpdateUser = () => {
   return useMutation<
     User,
-    AxiosError<{ error: string; message: string }>,
+    AxiosErrorResponse,
     {
       id: number;
       login?: string;
@@ -174,6 +176,29 @@ export const useUpdateUser = () => {
     onSuccess: (updatedUser) => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       queryClient.invalidateQueries({ queryKey: ['user', updatedUser.id] });
+    },
+  });
+};
+
+// Add this to the bottom of the file
+export const useCreateLabel = () => {
+  return useMutation<
+    Label,
+    AxiosErrorResponse,
+    {
+      country: string;
+      contactName: string;
+      phone: string;
+      userId: number;
+    }
+  >({
+    mutationFn: (data) =>
+      apiClient.post('/labels', data).then((res) => res.data),
+    onSuccess: (newLabel) => {
+      queryClient.invalidateQueries({
+        queryKey: ['label-by-user-id', newLabel.userId],
+      });
+      queryClient.invalidateQueries({ queryKey: ['user', newLabel.userId] });
     },
   });
 };
