@@ -8,6 +8,7 @@ import {
   getReleaseById,
   getReleaseSongs,
   getReleaseCover,
+  updateRelease,
 } from '@/services/releases';
 import type {
   Release,
@@ -16,6 +17,7 @@ import type {
   AddSongToReleaseDTO,
   AxiosErrorResponse,
   PaginatedResponse,
+  UpdateReleaseDTO,
 } from '@/types/api';
 import { queryClient } from '@/providers/query-client';
 import { getArtistReleases } from '@/services/artists';
@@ -120,5 +122,29 @@ export function useGetReleaseCover(releaseId: number) {
     staleTime: 60 * 60 * 1000, // 1 hour cache since cover images rarely change
     retry: 1,
     refetchOnWindowFocus: false,
+  });
+}
+
+export function useUpdateRelease() {
+  return useMutation<
+    Release,
+    AxiosErrorResponse,
+    { id: number; data: UpdateReleaseDTO }
+  >({
+    mutationFn: ({ id, data }) => updateRelease(id, data),
+    onSuccess: (_, { id }) => {
+      // Invalidate all related queries
+      queryClient.invalidateQueries({ queryKey: ['release', id] });
+      queryClient.invalidateQueries({ queryKey: ['artist-releases'] });
+      queryClient.invalidateQueries({ queryKey: ['releases'] });
+
+      // Optional: Invalidate release songs if metadata might affect them
+      queryClient.invalidateQueries({ queryKey: ['release-songs', id] });
+    },
+    onError: (error) => {
+      console.error('Failed to update release:', error);
+      // Convert to standardized error format if needed
+      throw error;
+    },
   });
 }

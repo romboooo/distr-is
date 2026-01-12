@@ -22,11 +22,10 @@ export const ReleaseCoverImage = ({
   height,
   fallback,
 }: ReleaseCoverImageProps) => {
-  const { data: coverUrl, isLoading, error, refetch } = useGetReleaseCover(releaseId);
+  const { data: coverUrl, isLoading, error } = useGetReleaseCover(releaseId);
 
   const handleError = () => {
     toast.error(`Failed to get cover for ${releaseName}`);
-    refetch();
   };
 
   const shouldShowFallback = (!coverUrl && !isLoading) || (error && !coverUrl);

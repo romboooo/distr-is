@@ -78,6 +78,13 @@ function ReleaseDetailPage() {
     );
   }
 
+  function handleEdit(): void {
+    navigate({
+      to: '/artist/releases/$releaseId/edit',
+      params: { releaseId: releaseId.toString() }
+    })
+  }
+
   return (
     <div className="mx-auto py-8 max-w-4xl container">
       <Button
@@ -105,7 +112,6 @@ function ReleaseDetailPage() {
 
 
         <CardContent className="space-y-6">
-          {/* ... existing content unchanged ... */}
           <div className="flex justify-start gap-8 px-8">
             <ReleaseCoverImage
               releaseId={releaseId}
@@ -174,7 +180,7 @@ function ReleaseDetailPage() {
 
         <CardFooter className="flex justify-end gap-4">
           {release.moderationState === 'DRAFT' && (
-            <Button variant="outline">
+            <Button variant="outline" onClick={handleEdit}>
               <Pencil className="mr-2 w-4 h-4" />
               Edit Release
             </Button>

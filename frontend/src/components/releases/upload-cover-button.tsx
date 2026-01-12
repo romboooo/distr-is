@@ -27,15 +27,6 @@ export function UploadCoverButton({ releaseId }: { releaseId: number }) {
     };
   }, [preview]);
 
-  // Reset state when dialog closes
-  // useEffect(() => {
-  //   if (!open) {
-  //     setFile(null);
-  //     setPreview(null);
-  //     setError(null);
-  //     setIsDragging(false);
-  //   }
-  // }, [open]);
 
   const validateFile = (file: File): boolean => {
     if (!file.type.startsWith("image/")) {
@@ -80,7 +71,6 @@ export function UploadCoverButton({ releaseId }: { releaseId: number }) {
   const handleFileInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) handleFileSelect(selectedFile);
-    // Reset input value to allow selecting the same file again
     if (fileInputRef.current) fileInputRef.current.value = "";
   }, [handleFileSelect]);
 
