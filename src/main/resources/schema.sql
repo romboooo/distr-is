@@ -74,7 +74,7 @@ CREATE TABLE release (
                          CONSTRAINT release_upc_unique UNIQUE (release_upc),
                          CONSTRAINT release_artist_fkey FOREIGN KEY (artist_id) REFERENCES artist(id) ON DELETE CASCADE,
                          CONSTRAINT release_label_fkey FOREIGN KEY (label_id) REFERENCES label(id) ON DELETE CASCADE,
-                         CONSTRAINT release_moderation_state_check CHECK (moderation_state IN ('REJECTED', 'APPROVED', 'WAITING_FOR_CHANGES', 'ON_REVIEW', 'DRAFT')),
+                         CONSTRAINT release_moderation_state_check CHECK (moderation_state IN ('REJECTED', 'APPROVED', 'WAITING_FOR_CHANGES', 'ON_MODERATION', 'ON_REVIEW', 'DRAFT')),
                          CONSTRAINT release_type_check CHECK (release_type IN ('SINGLE', 'MAXI_SINGLE', 'EP', 'ALBUM', 'MIXTAPE'))
 );
 

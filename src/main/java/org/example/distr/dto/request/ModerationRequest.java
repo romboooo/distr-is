@@ -2,7 +2,6 @@ package org.example.distr.dto.request;
 
 import lombok.Data;
 import org.example.distr.entity.enums.ModerationState;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

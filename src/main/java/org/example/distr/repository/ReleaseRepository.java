@@ -26,6 +26,7 @@ public interface ReleaseRepository extends JpaRepository<Release, Long> {
 
     List<Release> findByReleaseType(ReleaseType releaseType);
 
+    Page<Release> findByModerationState(ModerationState moderationState, Pageable pageable);
     @Query("SELECT r FROM Release r WHERE r.date BETWEEN :startDate AND :endDate")
     List<Release> findReleasesBetweenDates(@Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate);
