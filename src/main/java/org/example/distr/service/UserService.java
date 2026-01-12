@@ -1,6 +1,7 @@
 package org.example.distr.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.distr.dto.request.UpdateUserRequest;
 import org.example.distr.dto.request.UserRequest;
 import org.example.distr.dto.response.PageResponse;
 import org.example.distr.dto.response.UserResponse;
@@ -147,5 +148,45 @@ public class UserService {
         response.setPageSize(userPage.getSize());
 
         return response;
+    }
+
+    @Transactional
+    public UserResponse updateUser(Long id, UpdateUserRequest request) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+
+        User currentUser = currentUserService.getCurrentUser();
+        if (currentUser == null) {
+            throw new BusinessLogicException("Authentication required");
+        }
+
+        boolean isAdmin = currentUser.getType() == UserType.ADMIN;
+        boolean isUpdatingSelf = currentUser.getId().equals(id);
+
+        if (!isAdmin && !isUpdatingSelf) {
+            throw new BusinessLogicException("You can only update your own account");
+        }
+
+        if (request.getLogin() != null && !request.getLogin().isEmpty()) {
+            if (!user.getLogin().equals(request.getLogin()) &&
+                    userRepository.existsByLogin(request.getLogin())) {
+                throw new ResourceAlreadyExistsException("User with login '" + request.getLogin() + "' already exists");
+            }
+            user.setLogin(request.getLogin());
+        }
+
+        if (request.getPassword() != null && !request.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
+
+        if (request.getType() != null) {
+            if (!isAdmin) {
+                throw new BusinessLogicException("Only ADMIN can change user type");
+            }
+            user.setType(request.getType());
+        }
+
+        User updated = userRepository.save(user);
+        return mapToResponse(updated);
     }
 }

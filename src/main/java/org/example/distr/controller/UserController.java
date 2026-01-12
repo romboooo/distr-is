@@ -2,6 +2,7 @@ package org.example.distr.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.distr.dto.request.UpdateUserRequest;
 import org.example.distr.dto.request.UserRequest;
 import org.example.distr.dto.response.PageResponse;
 import org.example.distr.dto.response.UserResponse;
@@ -10,6 +11,7 @@ import org.example.distr.exception.BusinessLogicException;
 import org.example.distr.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -74,5 +76,13 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<UserResponse> updateUser(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateUserRequest request) {
+        UserResponse response = userService.updateUser(id, request);
+        return ResponseEntity.ok(response);
     }
 }
