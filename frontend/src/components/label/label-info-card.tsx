@@ -21,7 +21,6 @@ export function LabelInfoCard({
   onLabelCreated,
 }: LabelInfoCardProps) {
 
-  // Helper function to get label details for artists
   const getArtistLabelName = (user: UserWithDetails) => {
     if (user.type === 'ARTIST' && user.artistDetails?.labelId) {
       return 'Associated Label';

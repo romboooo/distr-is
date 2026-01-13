@@ -26,7 +26,6 @@ function ReleaseRoyaltiesDetailPage() {
 
   const { data: release, isLoading, error } = useGetReleaseById(parsedReleaseId);
   const { data: label } = useGetLabelById(release?.labelId);
-  // Redirect if releaseId is invalid
   useEffect(() => {
     if (isNaN(parsedReleaseId)) {
       navigate({ to: '/artist/royalties' });

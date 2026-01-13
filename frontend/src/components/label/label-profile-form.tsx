@@ -50,7 +50,6 @@ export function LabelProfileForm({
     setIsSubmitting(true);
 
     try {
-      // Update user login if changed
       if (login !== user.login) {
         await updateUserMutation.mutateAsync({
           id: user.id,
@@ -58,7 +57,6 @@ export function LabelProfileForm({
         });
       }
 
-      // Update label details if changed and label exists
       if (
         labelDetails &&
         (contactName !== labelDetails.contactName ||

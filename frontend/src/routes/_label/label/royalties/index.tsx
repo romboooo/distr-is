@@ -41,7 +41,6 @@ function LabelRoyaltiesPage() {
   const error = labelError || artistsError;
   const artists = artistsData?.content || [];
 
-  // Skeleton loader for the entire page
   if (isLoading) {
     return (
       <div className='py-8 container'>
@@ -81,7 +80,6 @@ function LabelRoyaltiesPage() {
     );
   }
 
-  // Error handling
   if (error || !labelId) {
     return (
       <div className='py-8 text-center container'>
@@ -96,7 +94,6 @@ function LabelRoyaltiesPage() {
     );
   }
 
-  // No artists found
   if (artists.length === 0) {
     return (
       <div className='px-8 py-8 text-center'>
@@ -147,7 +144,6 @@ function LabelRoyaltiesPage() {
   );
 }
 
-// Separate component for each artist's royalty section
 function ArtistRoyaltiesSection({
   artist,
   isExpanded,
@@ -166,7 +162,6 @@ function ArtistRoyaltiesSection({
 
   const releases = releasesData?.content || [];
 
-  // Error state for individual artist section
   if (error) {
     return (
       <Card className='border-destructive/50'>
@@ -283,7 +278,6 @@ function ArtistRoyaltiesSection({
   );
 }
 
-// Component for each release row in the royalties table
 function ReleaseRoyaltyRow({
   release,
   artistName,

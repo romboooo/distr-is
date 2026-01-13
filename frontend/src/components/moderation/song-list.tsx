@@ -10,11 +10,11 @@ import {
 } from '@/components/ui/table';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, AlertTriangle, Music, Download } from 'lucide-react'; // Added Download icon
+import { Loader2, AlertTriangle, Music, Download } from 'lucide-react';
 import { useGetReleaseSongs } from '@/hooks/use-release-hooks';
 import { formatDuration } from '@/lib/utils';
-import { Button } from '@/components/ui/button'; // Added Button import
-import { useState } from 'react'; // Added useState
+import { Button } from '@/components/ui/button';
+import { useState } from 'react';
 import { useDownloadSong } from '@/hooks/use-songs';
 
 interface SongListProps {
@@ -29,7 +29,6 @@ export function SongList({ releaseId }: SongListProps) {
     error,
   } = useGetReleaseSongs(releaseId);
 
-  // Added download functionality
   const { mutateAsync: downloadSong } = useDownloadSong();
   const [downloadingSongId, setDownloadingSongId] = useState<number | null>(
     null,

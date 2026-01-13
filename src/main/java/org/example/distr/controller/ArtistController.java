@@ -51,10 +51,8 @@ public class ArtistController {
             @RequestParam(defaultValue = "0") int pageNumber,
             @RequestParam(defaultValue = "10") int pageSize) {
 
-        // Validate artist exists (throws 404 if not found)
         artistService.getArtist(artistId);
 
-        // Fetch paginated releases
         PageResponse<ReleaseResponse> response = releaseService.getReleasesByArtist(artistId, pageNumber, pageSize);
         return ResponseEntity.ok(response);
     }

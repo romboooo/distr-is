@@ -117,7 +117,6 @@ export function ReleaseEditContent({
     release?.moderationState === 'DRAFT' ||
     release?.moderationState === 'WAITING_FOR_CHANGES';
 
-  // Only allow editing for DRAFT releases unless in readOnly mode
   const isEditable = !readOnly && canEdit;
 
   if (isLoading) {

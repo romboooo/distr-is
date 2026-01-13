@@ -74,25 +74,20 @@ public class SongController {
 
         validateAudioFile(file);
 
-        // Create secure temp file
         Path tempPath = Files.createTempFile("audio_", "_" + cleanFileName(file.getOriginalFilename()));
         File tempFile = tempPath.toFile();
 
         try {
-            // Transfer to OUR temp file (invalidates original MultipartFile)
             file.transferTo(tempFile);
 
-            // Get duration from OUR temp file
             int durationInSeconds = extractDuration(tempFile);
 
             String fileName = minioService.generateSongFileName(songId, file.getOriginalFilename());
-            // Upload OUR temp file instead of original MultipartFile
             String path = minioService.uploadFile(minioService.getSongsBucket(), fileName, tempFile);
 
             songService.updateSongFileAndDuration(songId, path, durationInSeconds);
             return ResponseEntity.ok(path);
         } finally {
-            // Always clean up temp file
             try {
                 Files.deleteIfExists(tempPath);
             } catch (IOException e) {
@@ -101,7 +96,6 @@ public class SongController {
         }
     }
 
-    // Helper to sanitize filenames
     private String cleanFileName(String fileName) {
         return fileName.replaceAll("[\\\\/:*?\"<>|]", "_");
     }
@@ -155,7 +149,6 @@ public class SongController {
                 }
             };
 
-            // Generate safe filename for download
             String originalFilename = extractFilename(objectName);
             ContentDisposition disposition = ContentDisposition.builder("attachment")
                     .filename(originalFilename, StandardCharsets.UTF_8)

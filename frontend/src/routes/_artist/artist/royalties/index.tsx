@@ -37,11 +37,10 @@ function ArtistRoyaltiesPage() {
   const error = artistError || releasesError;
   const releases = releasesData?.content || [];
 
-  // Skeleton loader for the entire page
   if (isLoading) {
     return (
       <div className='py-8 container'>
-        <Skeleton className='mb-8 w-64 h-10' /> {/* Page title skeleton */}
+        <Skeleton className='mb-8 w-64 h-10' />
 
         {/* Releases table skeleton */}
         <Card>
@@ -79,7 +78,6 @@ function ArtistRoyaltiesPage() {
     );
   }
 
-  // Error handling
   if (error || !artistId) {
     return (
       <div className='py-8 text-center container'>
@@ -94,7 +92,6 @@ function ArtistRoyaltiesPage() {
     );
   }
 
-  // No releases found
   if (releases.length === 0) {
     return (
       <div className='px-8 py-8 text-center'>
@@ -218,7 +215,6 @@ function ArtistRoyaltiesPage() {
   );
 }
 
-// Component for each release row in the royalties table
 function ReleaseRoyaltyRow({
   release,
   artistName,
@@ -232,7 +228,7 @@ function ReleaseRoyaltyRow({
     <TableRow className='hover:bg-muted/50 transition-colors'>
       <TableCell>
         <div className='flex items-center gap-3'>
-          <div className='relative shrink-0 w-12 h-12'>
+          <div className='relative w-12 h-12 shrink-0'>
             <ReleaseCoverImage
               releaseId={release.id}
               releaseName={release.name}

@@ -121,17 +121,14 @@ export function useUpdateRelease() {
   >({
     mutationFn: ({ id, data }) => updateRelease(id, data),
     onSuccess: (_, { id }) => {
-      // Invalidate all related queries
       queryClient.invalidateQueries({ queryKey: ['release', id] });
       queryClient.invalidateQueries({ queryKey: ['artist-releases'] });
       queryClient.invalidateQueries({ queryKey: ['releases'] });
 
-      // Optional: Invalidate release songs if metadata might affect them
       queryClient.invalidateQueries({ queryKey: ['release-songs', id] });
     },
     onError: (error) => {
       console.error('Failed to update release:', error);
-      // Convert to standardized error format if needed
       throw error;
     },
   });

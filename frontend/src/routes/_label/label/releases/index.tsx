@@ -46,7 +46,6 @@ function LabelReleasesPage() {
   const error = labelError || artistsError;
   const artists = artistsData?.content || [];
 
-  // Skeleton loader for the entire page
   if (isLoading) {
     return (
       <div className='py-8 container'>
@@ -73,7 +72,6 @@ function LabelReleasesPage() {
     );
   }
 
-  // Error handling
   if (error || !labelId) {
     return (
       <div className='py-8 text-center container'>
@@ -88,7 +86,6 @@ function LabelReleasesPage() {
     );
   }
 
-  // No artists found
   if (artists.length === 0) {
     return (
       <div className='px-8 py-8 text-center'>
@@ -129,7 +126,6 @@ function LabelReleasesPage() {
   );
 }
 
-// Separate component for each artist's section
 function ArtistSection({
   artist,
   isExpanded,
@@ -149,7 +145,6 @@ function ArtistSection({
 
   const releases = releasesData?.content || [];
 
-  // Error state for individual artist section
   if (error) {
     return (
       <div className='p-6 border rounded-lg'>
@@ -226,7 +221,6 @@ function ArtistSection({
   );
 }
 
-// Reusable release card component
 function ReleaseCard({
   release,
   navigate

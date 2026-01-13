@@ -56,7 +56,6 @@ export interface Release {
   coverPath: string | null;
 }
 
-// Extended types with relationships
 export interface ReleaseWithDetails extends Release {
   artist?: Artist;
   label?: LabelData;

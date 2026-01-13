@@ -9,7 +9,6 @@ export function RouterProviderWrapper() {
   return (
     <>
       <RouterProvider router={router} context={{ auth }} />
-      <TanStackRouterDevtoolsInProd router={router} />
     </>
   );
 }

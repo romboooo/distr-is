@@ -101,12 +101,10 @@ public class ReleaseController {
 
         String bucket = minioService.getCoversBucket();
 
-        // Get object metadata to obtain size and content type
         StatObjectResponse stat = minioService.statObject(bucket, coverPath);
         long contentLength = stat.size();
         String contentType = stat.contentType();
 
-        // Download the actual file
         InputStream inputStream = minioService.downloadFile(bucket, coverPath);
 
         InputStreamResource resource = new InputStreamResource(inputStream) {

@@ -79,14 +79,11 @@ export function AddSongModal({
     }
   }, [open, reset]);
 
-  // Handle file validation - allow any audio file
   const validateFile = useCallback((file: File): string | null => {
-    // Check if it's an audio file using the MIME type
     if (!file.type.startsWith('audio/')) {
       return 'Please upload an audio file';
     }
 
-    // Validate file size (50MB limit)
     if (file.size > 50 * 1024 * 1024) {
       return 'File size exceeds 50 MB limit';
     }
@@ -94,7 +91,6 @@ export function AddSongModal({
     return null;
   }, []);
 
-  // Handle file selection (from input or drop)
   const handleFileSelect = useCallback(
     (file: File) => {
       const error = validateFile(file);
@@ -110,7 +106,6 @@ export function AddSongModal({
     [validateFile],
   );
 
-  // Handle file input change
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
@@ -118,7 +113,6 @@ export function AddSongModal({
     }
   };
 
-  // Drag and drop handlers
   const handleDragOver = useCallback(
     (e: React.DragEvent<HTMLDivElement>) => {
       e.preventDefault();
@@ -133,7 +127,6 @@ export function AddSongModal({
   const handleDragLeave = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    // Only set dragging to false if we're leaving the drop zone entirely
     if (e.currentTarget.contains(e.relatedTarget as Node)) {
       return;
     }
@@ -148,7 +141,6 @@ export function AddSongModal({
 
       const files = e.dataTransfer.files;
       if (files.length > 0) {
-        // Get the first audio file from the dropped files
         const audioFiles = Array.from(files).filter((file) =>
           file.type.startsWith('audio/'),
         );
@@ -162,13 +154,11 @@ export function AddSongModal({
     [handleFileSelect],
   );
 
-  // Trigger file input click
   const handleDropZoneClick = () => {
     fileInputRef.current?.click();
   };
 
   const onSubmit = async (formData: SongFormData) => {
-    // Validate file selection
     if (!selectedFile) {
       setFileError('Please select an audio file');
       return;
@@ -177,7 +167,6 @@ export function AddSongModal({
     try {
       setIsUploading(true);
 
-      // Create song stub first
       const newSong = await addSongMutation.mutateAsync({
         releaseId: releaseId,
         title: formData.title,
@@ -187,18 +176,15 @@ export function AddSongModal({
         metaData: formData.metadata || '{}',
       });
 
-      // Upload audio file
       await uploadFileMutation.mutateAsync({
         songId: newSong.id,
         file: selectedFile,
       });
 
-      // Success handling
       toast.success('Song added successfully', {
         description: `${formData.title} has been added to your release`,
       });
 
-      // Close modal and trigger success callback
       onOpenChange(false);
       onSuccess();
     } catch (error) {
@@ -216,7 +202,6 @@ export function AddSongModal({
     }
   };
 
-  // Format file size to human readable format
   const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
@@ -225,7 +210,6 @@ export function AddSongModal({
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
-  // Get audio format from file type or name
   const getAudioFormat = (file: File): string => {
     const type = file.type;
     if (type === 'audio/mpeg') return 'MP3';
@@ -234,7 +218,6 @@ export function AddSongModal({
     if (type === 'audio/flac') return 'FLAC';
     if (type === 'audio/aac') return 'AAC';
 
-    // Fallback to extension if MIME type is not specific enough
     const extension = file.name.split('.').pop()?.toUpperCase() || 'Audio';
     return extension;
   };

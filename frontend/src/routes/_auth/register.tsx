@@ -64,7 +64,6 @@ function RegisterForm() {
     mode: 'onChange',
   });
 
-  // Watch for type changes to show/hide conditional fields
   const userType = form.watch('type');
   useEffect(() => {
     setAccountType(userType);

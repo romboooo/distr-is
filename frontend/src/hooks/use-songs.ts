@@ -18,10 +18,8 @@ export const useUploadSongFile = () => {
   });
 };
 
-// Service function to download song file
 const downloadSongFile = async (songId: number): Promise<void> => {
   try {
-    // Get token from storage (adjust according to your auth implementation)
     const token = localStorage.getItem('auth_token');
 
     if (!token) {
@@ -35,7 +33,6 @@ const downloadSongFile = async (songId: number): Promise<void> => {
       responseType: 'blob', // Important for binary data
     });
 
-    // Extract filename from Content-Disposition header
     const contentDisposition = response.headers['content-disposition'];
     let filename = `song_${songId}.mp3`;
 
@@ -48,7 +45,6 @@ const downloadSongFile = async (songId: number): Promise<void> => {
       }
     }
 
-    // Create blob and trigger download
     const blob = new Blob([response.data], {
       type: response.headers['content-type'] || 'audio/mpeg',
     });
@@ -60,7 +56,6 @@ const downloadSongFile = async (songId: number): Promise<void> => {
     document.body.appendChild(a);
     a.click();
 
-    // Cleanup
     window.URL.revokeObjectURL(url);
     document.body.removeChild(a);
   } catch (error) {
@@ -69,7 +64,6 @@ const downloadSongFile = async (songId: number): Promise<void> => {
   }
 };
 
-// Custom hook for downloading songs
 export const useDownloadSong = () => {
   return useMutation<void, AxiosErrorResponse, number>({
     mutationFn: downloadSongFile,
@@ -102,7 +96,6 @@ export const useDownloadSong = () => {
         duration: 5000,
       });
 
-      // Re-throw error for component-level handling if needed
       throw error;
     },
   });
