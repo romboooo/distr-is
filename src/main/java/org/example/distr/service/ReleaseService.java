@@ -39,7 +39,7 @@ public class ReleaseService {
         Label label = labelRepository.findById(request.getLabelId())
                 .orElseThrow(() -> new ResourceNotFoundException("Label not found"));
 
-        Long releaseUpc = generateUpc();
+        Long releaseUpc = upcGeneratorService.generateUpc();
 
         Release release = Release.builder()
                 .name(request.getName())
@@ -108,11 +108,6 @@ public class ReleaseService {
         release.setCoverPath(coverPath);
         Release updated = releaseRepository.save(release);
         return mapToResponse(updated);
-    }
-
-    private Long generateUpc() {
-        // More robust UPC generation
-        return 600000000000L + (System.currentTimeMillis() % 400000000000L);
     }
 
     @Transactional(readOnly = true)

@@ -7,7 +7,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.val;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -66,19 +69,32 @@ public class MinioService {
         });
     }
 
-    public String uploadFile(String bucket, String objectName, MultipartFile file) throws Exception {
-        try {
-            minioClient.putObject(
-                    PutObjectArgs.builder()
-                            .bucket(bucket)
-                            .object(objectName)
-                            .stream(file.getInputStream(), file.getSize(), -1)
-                            .contentType(file.getContentType())
-                            .build());
-            return objectName;
-        } catch (Exception e) {
-            log.error("Error uploading file to MinIO: {}", e.getMessage());
-            throw new RuntimeException("Failed to upload file", e);
+    public String uploadFile(String bucketName, String fileName, MultipartFile file) throws Exception {
+        return uploadFile(bucketName, fileName, file.getInputStream(), file.getSize(), file.getContentType());
+    }
+
+    private String uploadFile(String bucketName, String fileName,
+            InputStream inputStream,
+            long size,
+            String contentType) throws Exception {
+
+        minioClient.putObject(
+                PutObjectArgs.builder()
+                        .bucket(bucketName)
+                        .object(fileName)
+                        .stream(inputStream, size, -1)
+                        .contentType(contentType)
+                        .build());
+        return fileName;
+    }
+
+    public String uploadFile(String bucketName, String fileName, File file) throws Exception {
+        try (InputStream inputStream = new FileInputStream(file)) {
+            String contentType = Files.probeContentType(file.toPath());
+            if (contentType == null) {
+                contentType = "application/octet-stream";
+            }
+            return uploadFile(bucketName, fileName, inputStream, file.length(), contentType);
         }
     }
 

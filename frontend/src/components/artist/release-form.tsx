@@ -47,12 +47,14 @@ const releaseTypeOptions: { label: string; value: ReleaseType }[] = [
 const formSchema = z.object({
   name: z.string().min(2, 'Release name must be at least 2 characters'),
   genre: z.string().min(2, 'Genre must be at least 2 characters'),
-  releaseType: z.enum(['ALBUM', 'SINGLE', 'MAXI_SINGLE', 'EP', 'MIXTAPE']).refine((val) => !!val, {
-    message: 'Please select a release type',
-  }),
+  releaseType: z
+    .enum(['ALBUM', 'SINGLE', 'MAXI_SINGLE', 'EP', 'MIXTAPE'])
+    .refine((val) => !!val, {
+      message: 'Please select a release type',
+    }),
 });
 
-export function ReleaseForm() {
+export function ArtistReleaseForm() {
   const auth = useAuth();
   const userId = auth.data?.id;
   const navigate = useNavigate();
@@ -75,8 +77,10 @@ export function ReleaseForm() {
     },
   });
 
-  const labelMissing = userData?.type === 'ARTIST' && !userData.artistDetails?.labelId;
-  const labelId = userData?.type === 'ARTIST' ? userData.artistDetails?.labelId : undefined;
+  const labelMissing =
+    userData?.type === 'ARTIST' && !userData.artistDetails?.labelId;
+  const labelId =
+    userData?.type === 'ARTIST' ? userData.artistDetails?.labelId : undefined;
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     if (!userId || !userData) {
@@ -107,29 +111,30 @@ export function ReleaseForm() {
           toast.success('Draft release created successfully');
           navigate({
             to: '/artist/releases/$releaseId',
-            params: { releaseId: newRelease.id.toString() }
+            params: { releaseId: newRelease.id.toString() },
           });
         },
         onError: (error) => {
-          const errorMessage = error.response?.data?.message || 'Failed to create release draft';
+          const errorMessage =
+            error.response?.data?.message || 'Failed to create release draft';
           toast.error(errorMessage);
         },
-      }
+      },
     );
   };
 
   if (isUserLoading) {
     return (
-      <div className="flex justify-center items-center p-8">
-        <Loader2 className="w-8 h-8 text-muted-foreground animate-spin" />
+      <div className='flex justify-center items-center p-8'>
+        <Loader2 className='w-8 h-8 text-muted-foreground animate-spin' />
       </div>
     );
   }
 
   if (isUserError || !userData) {
     return (
-      <Alert variant="destructive">
-        <AlertCircle className="w-4 h-4" />
+      <Alert variant='destructive'>
+        <AlertCircle className='w-4 h-4' />
         <AlertTitle>Error</AlertTitle>
         <AlertDescription>
           {userError?.message || 'Failed to load user information'}
@@ -139,7 +144,7 @@ export function ReleaseForm() {
   }
 
   return (
-    <Card className="mx-auto max-w-2xl">
+    <Card className='mx-auto max-w-2xl'>
       <CardHeader>
         <CardTitle>Create New Release</CardTitle>
         <CardDescription>
@@ -148,31 +153,31 @@ export function ReleaseForm() {
       </CardHeader>
 
       {labelMissing ? (
-        <CardContent className="space-y-4">
-          <Alert variant="destructive">
-            <AlertCircle className="w-4 h-4" />
+        <CardContent className='space-y-4'>
+          <Alert variant='destructive'>
+            <AlertCircle className='w-4 h-4' />
             <AlertTitle>Label Required</AlertTitle>
             <AlertDescription>
-              You need to create a label before you can create releases.
-              Please go to your dashboard to create a label first.
+              You need to create a label before you can create releases. Please
+              go to your dashboard to create a label first.
             </AlertDescription>
           </Alert>
-          <Button onClick={() => navigate({ to: '/artist' })} variant="outline">
+          <Button onClick={() => navigate({ to: '/artist' })} variant='outline'>
             Go to Dashboard
           </Button>
         </CardContent>
       ) : (
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <CardContent className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+            <CardContent className='space-y-4'>
               <FormField
                 control={form.control}
-                name="name"
+                name='name'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Release Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter release name" {...field} />
+                      <Input placeholder='Enter release name' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -181,12 +186,12 @@ export function ReleaseForm() {
 
               <FormField
                 control={form.control}
-                name="genre"
+                name='genre'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Genre</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter genre" {...field} />
+                      <Input placeholder='Enter genre' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -195,7 +200,7 @@ export function ReleaseForm() {
 
               <FormField
                 control={form.control}
-                name="releaseType"
+                name='releaseType'
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Release Type</FormLabel>
@@ -205,7 +210,7 @@ export function ReleaseForm() {
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select release type" />
+                          <SelectValue placeholder='Select release type' />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -221,17 +226,19 @@ export function ReleaseForm() {
                 )}
               />
 
-              {labelId && <div className="space-y-2">
-                <FormLabel>Associated Label</FormLabel>
-                <LabelDisplay labelId={labelId} />
-              </div>}
+              {labelId && (
+                <div className='space-y-2'>
+                  <FormLabel>Associated Label</FormLabel>
+                  <LabelDisplay labelId={labelId} />
+                </div>
+              )}
             </CardContent>
 
-            <CardFooter className="flex justify-end">
-              <Button type="submit" disabled={isPending}>
+            <CardFooter className='flex justify-end'>
+              <Button type='submit' disabled={isPending}>
                 {isPending ? (
                   <>
-                    <Loader2 className="mr-2 w-4 h-4 animate-spin" />
+                    <Loader2 className='mr-2 w-4 h-4 animate-spin' />
                     Creating...
                   </>
                 ) : (

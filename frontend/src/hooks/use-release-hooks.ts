@@ -2,13 +2,13 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   createReleaseDraft,
   addSongToRelease,
-  uploadSongFile,
   uploadReleaseCover,
   requestReleaseModeration,
   getReleaseById,
   getReleaseSongs,
   getReleaseCover,
   updateRelease,
+  getReleaseRoyalties,
 } from '@/services/releases';
 import type {
   Release,
@@ -18,6 +18,7 @@ import type {
   AxiosErrorResponse,
   PaginatedResponse,
   UpdateReleaseDTO,
+  Royalty,
 } from '@/types/api';
 import { queryClient } from '@/providers/query-client';
 import { getArtistReleases } from '@/services/artists';
@@ -46,19 +47,6 @@ export const useAddSongToRelease = (releaseId: number) => {
     onSuccess: (newSong) => {
       queryClient.invalidateQueries({ queryKey: ['release-songs', releaseId] });
       queryClient.setQueryData(['song', newSong.id], newSong);
-    },
-  });
-};
-
-export const useUploadSongFile = () => {
-  return useMutation<
-    { path: string },
-    AxiosErrorResponse,
-    { songId: number; file: File }
-  >({
-    mutationFn: ({ songId, file }) => uploadSongFile(songId, file),
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['song', variables.songId] });
     },
   });
 };
@@ -101,13 +89,13 @@ export function useGetReleaseSongs(releaseId: number) {
 }
 
 export function useGetReleasesByArtistId(
-  artistId: number,
+  artistId?: number,
   page: number = 0,
   size: number = 10,
 ) {
   return useQuery<PaginatedResponse<Release>, AxiosErrorResponse>({
     queryKey: ['artist-releases', artistId, page, size],
-    queryFn: () => getArtistReleases(artistId, page, size),
+    queryFn: () => getArtistReleases(artistId || 0, page, size),
     enabled: !!artistId,
     staleTime: 3 * 60 * 1000, // 3 minutes cache
     retry: 1,
@@ -146,5 +134,19 @@ export function useUpdateRelease() {
       // Convert to standardized error format if needed
       throw error;
     },
+  });
+}
+
+export function useGetReleaseRoyalties(
+  releaseId: number,
+  page: number = 0,
+  size: number = 10,
+) {
+  return useQuery<PaginatedResponse<Royalty>, AxiosErrorResponse>({
+    queryKey: ['release-royalties', releaseId, page, size],
+    queryFn: () => getReleaseRoyalties(releaseId, page, size),
+    enabled: !!releaseId,
+    staleTime: 10 * 60 * 1000, // 10 minutes cache since royalties don't change frequently
+    retry: 1,
   });
 }

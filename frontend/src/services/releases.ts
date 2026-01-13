@@ -8,6 +8,8 @@ import type {
   Release,
   Song,
   UpdateReleaseDTO,
+  PaginatedResponse,
+  Royalty,
 } from '@/types/api';
 
 export async function getReleaseById(id: number): Promise<Release> {
@@ -36,25 +38,6 @@ export async function addSongToRelease(
   return response.data;
 }
 
-export async function uploadSongFile(
-  songId: number,
-  file: File,
-): Promise<{ path: string }> {
-  const formData = new FormData();
-  formData.append('file', file);
-
-  const response = await apiClient.post<{ path: string }>(
-    `/songs/${songId}/upload`,
-    formData,
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    },
-  );
-  return response.data;
-}
-
 export async function uploadReleaseCover(
   releaseId: number,
   file: File,
@@ -78,7 +61,7 @@ export async function requestReleaseModeration(
   releaseId: number,
 ): Promise<ReleaseWithDetails> {
   const response = await apiClient.post<ReleaseWithDetails>(
-    `/releases/${releaseId}/submit-for-moderation`,
+    `/releases/${releaseId}/request-moderation`,
   );
   return response.data;
 }
@@ -98,4 +81,21 @@ export async function getReleaseCover(releaseId: number): Promise<Blob> {
 export const updateRelease = async (id: number, data: UpdateReleaseDTO) => {
   const response = await apiClient.patch<Release>(`/releases/${id}`, data);
   return response.data;
+};
+
+export const getReleaseRoyalties = async (
+  releaseId: number,
+  page: number = 0,
+  size: number = 10,
+): Promise<PaginatedResponse<Royalty>> => {
+  const { data } = await apiClient.get<PaginatedResponse<Royalty>>(
+    `/releases/${releaseId}/royalties`,
+    {
+      params: {
+        pageNumber: page,
+        pageSize: size,
+      },
+    },
+  );
+  return data;
 };

@@ -7,7 +7,7 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
-import { LogOut, Music, DollarSign, User } from 'lucide-react';
+import { LogOut, Music, DollarSign } from 'lucide-react';
 
 export const LabelHeader = () => {
   const { data, logout } = useAuth();
@@ -41,14 +41,6 @@ export const LabelHeader = () => {
                 className={navigationMenuTriggerStyle()}
               >
                 <DollarSign className='mr-2 w-4 h-4' /> Royalties
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link
-                to='/label/profile'
-                className={navigationMenuTriggerStyle()}
-              >
-                <User className='mr-2 w-4 h-4' /> Profile
               </Link>
             </NavigationMenuItem>
           </NavigationMenuList>

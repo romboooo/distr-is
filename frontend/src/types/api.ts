@@ -3,12 +3,7 @@ import type { ErrorResponse } from '@/types/auth';
 import type { AxiosError } from 'axios';
 
 export type UserType = 'ARTIST' | 'LABEL' | 'MODERATOR' | 'ADMIN' | 'PLATFORM';
-export type ModerationState =
-  | 'REJECTED'
-  | 'APPROVED'
-  | 'WAITING_FOR_CHANGES'
-  | 'ON_REVIEW'
-  | 'DRAFT';
+
 export type ReleaseType = 'SINGLE' | 'MAXI_SINGLE' | 'EP' | 'ALBUM' | 'MIXTAPE';
 export type IsoDateString = string;
 export type AxiosErrorResponse = AxiosError<ErrorResponse>;
@@ -28,7 +23,7 @@ export interface User {
   registrationDate: IsoDateString;
 }
 
-export interface Label {
+export interface LabelData {
   id: number;
   country: string;
   contactName: string;
@@ -64,7 +59,7 @@ export interface Release {
 // Extended types with relationships
 export interface ReleaseWithDetails extends Release {
   artist?: Artist;
-  label?: Label;
+  label?: LabelData;
   songs: SongWithDetails[];
 }
 
@@ -76,11 +71,8 @@ export interface Song {
   parentalAdvisory: boolean;
   streams: number;
   songUpc: number;
-  isrc: string;
   songLengthSeconds: number;
-  moderationState: ModerationState;
-  metadata: Record<string, string>;
-  pathToFile: string;
+  metadata: string;
 }
 
 export interface SongWithDetails extends Song {
@@ -96,13 +88,12 @@ export type CreateReleaseDraftDTO = {
 };
 
 export type AddSongToReleaseDTO = {
+  releaseId: number;
   title: string;
   artistIds: number[];
   musicAuthor: string;
   parentalAdvisory: boolean;
-  isrc: string;
-  songUpc: number;
-  metadata: Record<string, string>;
+  metaData: string;
 };
 
 export interface UpdateReleaseDTO {
@@ -111,3 +102,46 @@ export interface UpdateReleaseDTO {
   releaseType?: 'SINGLE' | 'MAXI_SINGLE' | 'EP' | 'ALBUM' | 'MIXTAPE';
   date?: string | null;
 }
+export type ModerationState =
+  | 'DRAFT'
+  | 'ON_REVIEW'
+  | 'ON_MODERATION'
+  | 'APPROVED'
+  | 'REJECTED'
+  | 'WAITING_FOR_CHANGES';
+
+export interface Song {
+  id: number;
+  releaseId: number;
+  releaseName: string;
+  artistIds: number[];
+  artistNames: string[];
+  musicAuthor: string;
+  parentalAdvisory: boolean;
+  streams: number;
+  songUpc: number;
+  metadata: string;
+  pathToFile: string;
+  songLengthSeconds: number;
+  title: string;
+}
+
+export interface ModerationRecord {
+  id: number;
+  comment: string;
+  moderatorId: number;
+  moderatorName: string;
+  releaseId: number;
+  releaseName: string;
+  date: string;
+  moderationState: ModerationState;
+}
+
+export type Royalty = {
+  royaltyId: number;
+  amount: number;
+  songId: number;
+  songTitle: string;
+  platformId: number;
+  platformName: string;
+};

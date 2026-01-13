@@ -9,12 +9,14 @@ import java.util.List;
 import org.example.distr.dto.request.*;
 import org.example.distr.dto.response.PageResponse;
 import org.example.distr.dto.response.ReleaseResponse;
+import org.example.distr.dto.response.RoyaltyResponse;
 import org.example.distr.dto.response.SongResponse;
 import org.example.distr.entity.User;
 import org.example.distr.exception.BusinessLogicException;
 import org.example.distr.service.CurrentUserService;
 import org.example.distr.service.MinioService;
 import org.example.distr.service.ReleaseService;
+import org.example.distr.service.RoyaltyService;
 import org.example.distr.service.SongService;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
@@ -36,6 +38,7 @@ public class ReleaseController {
     private final SongService songService;
     private final MinioService minioService;
     private final CurrentUserService currentUserService;
+    private final RoyaltyService royaltyService;
 
     @PostMapping("/draft")
     public ResponseEntity<ReleaseResponse> createDraftRelease(@Valid @RequestBody DraftReleaseRequest request) {
@@ -71,20 +74,6 @@ public class ReleaseController {
 
         List<SongResponse> songs = songService.getSongsByRelease(releaseId);
         return ResponseEntity.ok(songs);
-    }
-
-    @PostMapping("/songs/{songId}/file")
-    public ResponseEntity<String> uploadSongFile(
-            @PathVariable Long songId,
-            @RequestParam("file") MultipartFile file) throws Exception {
-
-        validateMp3File(file);
-
-        String fileName = minioService.generateSongFileName(songId, file.getOriginalFilename());
-        String path = minioService.uploadFile(minioService.getSongsBucket(), fileName, file);
-
-        songService.updateSongFile(songId, path);
-        return ResponseEntity.ok(path);
     }
 
     @PostMapping("/{releaseId}/cover")
@@ -139,13 +128,6 @@ public class ReleaseController {
         return ResponseEntity.ok(response);
     }
 
-    private void validateMp3File(MultipartFile file) {
-        String contentType = file.getContentType();
-        if (contentType == null || !contentType.equals("audio/mpeg")) {
-            throw new IllegalArgumentException("Only MP3 files are allowed");
-        }
-    }
-
     private void validateImageFile(MultipartFile file) {
         String contentType = file.getContentType();
         if (contentType == null || !contentType.startsWith("image/")) {
@@ -163,6 +145,18 @@ public class ReleaseController {
         }
 
         ReleaseResponse response = releaseService.updateRelease(id, request, currentUser);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{releaseId}/royalties")
+    public ResponseEntity<PageResponse<RoyaltyResponse>> getRoyaltiesForRelease(
+            @PathVariable Long releaseId,
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize) {
+        PageResponse<RoyaltyResponse> response = royaltyService.getRoyaltiesByReleaseId(
+                releaseId,
+                pageNumber,
+                pageSize);
         return ResponseEntity.ok(response);
     }
 }

@@ -7,7 +7,6 @@ import org.example.distr.dto.response.ModerationResponse;
 import org.example.distr.dto.response.PageResponse;
 import org.example.distr.dto.response.ReleaseResponse;
 import org.example.distr.service.ModerationService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +34,7 @@ public class ModerationController {
     public ResponseEntity<ModerationResponse> moderateRelease(
             @Valid @RequestBody ModerationRequest request) {
         ModerationResponse response = moderationService.moderateRelease(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(201).body(response);
     }
 
     @GetMapping("/history/{releaseId}")
@@ -43,5 +42,12 @@ public class ModerationController {
     public ResponseEntity<List<ModerationResponse>> getModerationHistory(@PathVariable Long releaseId) {
         List<ModerationResponse> response = moderationService.getModerationHistory(releaseId);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/moderator-id-by-user-id/{userId}")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    public ResponseEntity<Long> getModeratorIdByUserId(@PathVariable Long userId) {
+        Long moderatorId = moderationService.getModeratorIdByUserId(userId);
+        return ResponseEntity.ok(moderatorId);
     }
 }

@@ -80,15 +80,16 @@ CREATE TABLE release (
 
 CREATE TABLE song (
                       id BIGSERIAL NOT NULL,
+                      title VARCHAR(255) NOT NULL,
                       release_id BIGINT NOT NULL,
                       artist_id JSONB NOT NULL DEFAULT '[]',
                       music_author VARCHAR(255) NOT NULL,
                       parental_advisory BOOLEAN NOT NULL DEFAULT false,
                       streams BIGINT NOT NULL DEFAULT 0,
-                      song_upc BIGINT NOT NULL,
+                      song_upc BIGINT NULL,
                       metadata JSONB NOT NULL DEFAULT '{}',
-                      path_to_file VARCHAR(500) NOT NULL,
-                      song_length_seconds INTEGER NOT NULL,
+                      path_to_file VARCHAR(500) NULL,
+                      song_length_seconds INTEGER NULL,
                       CONSTRAINT song_pkey PRIMARY KEY (id),
                       CONSTRAINT song_upc_unique UNIQUE (song_upc),
                       CONSTRAINT song_release_fkey FOREIGN KEY (release_id) REFERENCES release(id) ON DELETE CASCADE

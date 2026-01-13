@@ -17,6 +17,7 @@ import org.example.distr.repository.ReleaseRepository;
 import org.example.distr.repository.SongRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,6 +46,7 @@ public class SongService {
         long songUpc = upcGeneratorService.generateUpc();
 
         Song song = Song.builder()
+                .title(request.getTitle())
                 .release(release)
                 .artistIds(request.getArtistIds())
                 .musicAuthor(request.getMusicAuthor())
@@ -86,6 +88,7 @@ public class SongService {
 
         SongResponse response = new SongResponse();
         response.setId(song.getId());
+        response.setTitle(song.getTitle());
         response.setReleaseId(song.getRelease().getId());
         response.setReleaseName(song.getRelease().getName());
         response.setArtistIds(song.getArtistIds());
@@ -132,5 +135,28 @@ public class SongService {
         response.setPageSize(songPage.getSize());
 
         return response;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void updateSongFileAndDuration(Long songId, String filePath, int durationInSeconds) {
+        Song song = songRepository.findById(songId)
+                .orElseThrow(() -> new ResourceNotFoundException("Song not found with ID: " + songId));
+
+        // Validate file path update constraints
+        if (song.getPathToFile() != null) {
+            throw new IllegalStateException(
+                    "Cannot update song file: File already exists at path '" + song.getPathToFile() +
+                            "'. Use dedicated file update endpoint instead.");
+        }
+
+        // Validate duration constraints
+        if (durationInSeconds <= 0) {
+            throw new IllegalArgumentException("Invalid song duration: " + durationInSeconds + " seconds");
+        }
+
+        // Update both file path and duration in a single transaction
+        song.setPathToFile(filePath);
+        song.setSongLengthSeconds(durationInSeconds);
+        songRepository.save(song);
     }
 }

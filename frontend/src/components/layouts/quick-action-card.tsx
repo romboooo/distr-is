@@ -6,17 +6,21 @@ interface QuickActionCardProps {
   onClick: () => void;
 }
 
-export function QuickActionCard({ title, description, onClick }: QuickActionCardProps) {
+export function QuickActionCard({
+  title,
+  description,
+  onClick,
+}: QuickActionCardProps) {
   return (
     <Card
-      className="hover:shadow-md transition-shadow cursor-pointer"
+      className='hover:shadow-md transition-shadow cursor-pointer'
       onClick={onClick}
     >
       <CardHeader>
-        <CardTitle className="text-lg">{title}</CardTitle>
+        <CardTitle className='text-lg'>{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="text-muted-foreground text-sm">{description}</p>
+        <p className='text-muted-foreground text-sm'>{description}</p>
       </CardContent>
     </Card>
   );

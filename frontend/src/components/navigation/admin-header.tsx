@@ -7,7 +7,7 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
-import { LogOut, Users, BarChart3, Database } from 'lucide-react';
+import { LogOut, Users } from 'lucide-react';
 
 export const AdminHeader = () => {
   const { data: user, logout } = useAuth();
@@ -30,22 +30,6 @@ export const AdminHeader = () => {
             <NavigationMenuItem>
               <Link to='/admin/users' className={navigationMenuTriggerStyle()}>
                 <Users className='mr-2 w-4 h-4' /> Users
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link
-                to='/admin/platforms'
-                className={navigationMenuTriggerStyle()}
-              >
-                <Database className='mr-2 w-4 h-4' /> Platforms
-              </Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link
-                to='/admin/reports'
-                className={navigationMenuTriggerStyle()}
-              >
-                <BarChart3 className='mr-2 w-4 h-4' /> Reports
               </Link>
             </NavigationMenuItem>
           </NavigationMenuList>
