@@ -136,3 +136,12 @@ export interface ModerationRecord {
   date: string;
   moderationState: ModerationState;
 }
+
+export type Royalty = {
+  royaltyId: number;
+  amount: number;
+  songId: number;
+  songTitle: string;
+  platformId: number;
+  platformName: string;
+};

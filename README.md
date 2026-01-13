@@ -626,7 +626,78 @@ If file retrieval fails:
 }
 ```
 
-## Songs -
+### GET /releases/{releaseId}/royalties
+
+#### Получение списка роялти для релиза (с пагинацией)
+
+**Path Param:** `releaseId` (Long)
+
+**Parameters:**
+
+-   `pageNumber`: номер страницы (начинается с 0, по умолчанию 0)
+-   `pageSize`: размер страницы (по умолчанию 10)
+
+**Response (200 OK):**
+
+```json
+{
+    "content": [
+        {
+            "royaltyId": 1,
+            "amount": 150.75,
+            "songId": 5,
+            "songTitle": "Summer Vibes",
+            "platformId": 2,
+            "platformName": "Spotify"
+        },
+        {
+            "royaltyId": 2,
+            "amount": 85.2,
+            "songId": 6,
+            "songTitle": "Winter Dreams",
+            "platformId": 2,
+            "platformName": "Spotify"
+        }
+    ],
+    "currentPage": 0,
+    "totalPages": 1,
+    "totalElements": 2,
+    "pageSize": 10
+}
+```
+
+**Response (404 Not Found):**
+
+```json
+{
+    "timestamp": "2026-01-13T10:30:00",
+    "status": 404,
+    "error": "Not Found",
+    "message": "Release not found with id: 123"
+}
+```
+
+**Response (401 Unauthorized):**
+
+```json
+{
+    "error": "Unauthorized",
+    "message": "Authentication required"
+}
+```
+
+**Response (403 Forbidden):**
+
+```json
+{
+    "timestamp": "2026-01-13T10:30:00",
+    "status": 403,
+    "error": "Forbidden",
+    "message": "You don't have permission to view royalties for this release"
+}
+```
+
+## Songs
 
 ### GET /songs
 

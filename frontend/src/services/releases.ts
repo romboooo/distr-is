@@ -8,6 +8,8 @@ import type {
   Release,
   Song,
   UpdateReleaseDTO,
+  PaginatedResponse,
+  Royalty,
 } from '@/types/api';
 
 export async function getReleaseById(id: number): Promise<Release> {
@@ -79,4 +81,21 @@ export async function getReleaseCover(releaseId: number): Promise<Blob> {
 export const updateRelease = async (id: number, data: UpdateReleaseDTO) => {
   const response = await apiClient.patch<Release>(`/releases/${id}`, data);
   return response.data;
+};
+
+export const getReleaseRoyalties = async (
+  releaseId: number,
+  page: number = 0,
+  size: number = 10,
+): Promise<PaginatedResponse<Royalty>> => {
+  const { data } = await apiClient.get<PaginatedResponse<Royalty>>(
+    `/releases/${releaseId}/royalties`,
+    {
+      params: {
+        pageNumber: page,
+        pageSize: size,
+      },
+    },
+  );
+  return data;
 };

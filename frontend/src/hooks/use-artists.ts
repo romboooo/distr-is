@@ -35,12 +35,12 @@ export const useGetArtistById = (artistId?: number) => {
   });
 };
 
-export const useGetArtistByUserId = (userId: number) => {
+export const useGetArtistByUserId = (userId?: number) => {
   return useQuery({
     queryKey: ['artist-by-user', userId],
     queryFn: async () => {
       try {
-        return await getArtistByUserId(userId);
+        return await getArtistByUserId(userId || 0);
       } catch (error) {
         if (error instanceof AxiosError && error.response?.status === 404) {
           return null;
