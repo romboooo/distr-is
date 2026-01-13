@@ -1,12 +1,9 @@
-// src/routes/_artist/artist/releases/$releaseId/edit.tsx
-import { useNavigate, createFileRoute } from '@tanstack/react-router';
+import { ReleaseEditContent } from '@/components/releases/release-edit-content';
 import { queryClient } from '@/providers/query-client';
 import { getReleaseById } from '@/services/releases';
-import { ReleaseEditContent } from '@/components/releases/release-edit-content';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 
-export const Route = createFileRoute(
-  '/_artist/artist/releases/$releaseId/edit/',
-)({
+export const Route = createFileRoute('/_label/label/releases/$releaseId/edit')({
   component: ReleaseEditPage,
   loader: async ({ params }) => {
     const { releaseId } = params;
@@ -33,14 +30,14 @@ function ReleaseEditPage() {
 
   const handleCancel = () => {
     navigate({
-      to: '/artist/releases/$releaseId',
+      to: '/label/releases/$releaseId',
       params: { releaseId: releaseId.toString() },
     });
   };
 
   const handleSuccess = () => {
     navigate({
-      to: '/artist/releases/$releaseId',
+      to: '/label/releases/$releaseId',
       params: { releaseId: releaseId.toString() },
     });
   };

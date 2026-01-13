@@ -216,6 +216,49 @@
 }
 ```
 
+### GET /artists/by-label/{labelId}
+
+**Path Param:** `labelId` (Long)
+
+**Parameters:**
+
+-   `pageNumber`: номер страницы (начинается с 0)
+-   `pageSize`: размер страницы
+
+**Response (200 OK):**
+
+```json
+{
+    "content": [
+        {
+            "id": 1,
+            "name": "Artist Name",
+            "labelId": 2,
+            "labelName": "Label Contact Name",
+            "country": "Country",
+            "realName": "Real Name",
+            "userId": 1,
+            "userLogin": "user_login"
+        }
+    ],
+    "currentPage": 0,
+    "totalPages": 1,
+    "totalElements": 1,
+    "pageSize": 10
+}
+```
+
+**Response (404 Not Found):**
+
+```json
+{
+    "timestamp": "2024-01-15T10:30:00",
+    "status": 404,
+    "error": "Not Found",
+    "message": "Label not found with id: 123"
+}
+```
+
 ## Labels
 
 ### POST /labels

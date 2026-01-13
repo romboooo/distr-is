@@ -131,4 +131,26 @@ public class ArtistService {
 
         return mapToResponse(artist);
     }
+
+    public PageResponse<ArtistResponse> getArtistsByLabel(Long labelId, int pageNumber, int pageSize) {
+        if (!labelRepository.existsById(labelId)) {
+            throw new ResourceNotFoundException("Label not found with id: " + labelId);
+        }
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Artist> artistPage = artistRepository.findByLabelId(labelId, pageable);
+
+        List<ArtistResponse> content = artistPage.getContent().stream()
+                .map(this::mapToResponse)
+                .toList();
+
+        PageResponse<ArtistResponse> response = new PageResponse<>();
+        response.setContent(content);
+        response.setCurrentPage(artistPage.getNumber());
+        response.setTotalPages(artistPage.getTotalPages());
+        response.setTotalElements(artistPage.getTotalElements());
+        response.setPageSize(artistPage.getSize());
+
+        return response;
+    }
 }

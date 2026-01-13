@@ -23,7 +23,7 @@ export interface User {
   registrationDate: IsoDateString;
 }
 
-export interface Label {
+export interface LabelData {
   id: number;
   country: string;
   contactName: string;
@@ -59,7 +59,7 @@ export interface Release {
 // Extended types with relationships
 export interface ReleaseWithDetails extends Release {
   artist?: Artist;
-  label?: Label;
+  label?: LabelData;
   songs: SongWithDetails[];
 }
 

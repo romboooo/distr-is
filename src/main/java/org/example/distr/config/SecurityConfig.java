@@ -42,7 +42,6 @@ public class SecurityConfig {
                                 "/login",
                                 "/error")
                         .permitAll()
-                        .requestMatchers("/moderation/**").hasAnyRole("MODERATOR", "ADMIN")
                         .anyRequest().authenticated())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())

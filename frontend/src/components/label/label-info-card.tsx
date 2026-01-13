@@ -7,7 +7,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
-import { useNavigate } from '@tanstack/react-router';
 import { toast } from 'sonner';
 import type { UserWithDetails } from '@/hooks/use-user-detail-hooks';
 import { SelfLabelCreationDialog } from '@/components/artist/self-label-creation-dialog';
@@ -21,7 +20,6 @@ export function LabelInfoCard({
   userData,
   onLabelCreated,
 }: LabelInfoCardProps) {
-  const navigate = useNavigate();
 
   // Helper function to get label details for artists
   const getArtistLabelName = (user: UserWithDetails) => {
@@ -48,8 +46,8 @@ export function LabelInfoCard({
         {hasLabel ? (
           <div className='space-y-3'>
             {isLabelOwner &&
-            userData.type === 'LABEL' &&
-            userData.labelDetails ? (
+              userData.type === 'LABEL' &&
+              userData.labelDetails ? (
               <>
                 <div>
                   <Label className='text-muted-foreground'>Label Name</Label>
@@ -69,13 +67,6 @@ export function LabelInfoCard({
                     {userData.labelDetails.phone || 'N/A'}
                   </p>
                 </div>
-                <Button
-                  variant='outline'
-                  className='mt-2 w-full'
-                  onClick={() => navigate({ to: '/label/profile' })}
-                >
-                  Manage Label
-                </Button>
               </>
             ) : (
               <>

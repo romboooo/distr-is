@@ -7,7 +7,7 @@ import { useUserWithDetails } from '@/hooks/use-user-detail-hooks';
 import { ArtistDashboardHeader } from '@/components/artist/artist-dashboard-header';
 import { ArtistProfileCard } from '@/components/artist/artist-profile-card';
 import { LabelInfoCard } from '@/components/label/label-info-card';
-import { QuickActionCard } from '@/components/artist/quick-action-card';
+import { QuickActionCard } from '@/components/layouts/quick-action-card';
 
 export const Route = createFileRoute('/_artist/artist/')({
   component: ArtistHome,

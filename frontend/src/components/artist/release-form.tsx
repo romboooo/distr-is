@@ -54,7 +54,7 @@ const formSchema = z.object({
     }),
 });
 
-export function ReleaseForm() {
+export function ArtistReleaseForm() {
   const auth = useAuth();
   const userId = auth.data?.id;
   const navigate = useNavigate();

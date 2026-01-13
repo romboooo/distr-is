@@ -8,6 +8,8 @@ import {
   getArtistByUserId,
   getArtistReleases,
 } from '@/services/artists';
+import { apiClient } from '@/services/api';
+import type { Artist, PaginatedResponse } from '@/types/api';
 
 export const useGetAllArtists = (pageNumber = 0, pageSize = 10) => {
   return useQuery({
@@ -61,3 +63,23 @@ export const useGetArtistReleases = (
     enabled: !!artistId,
   });
 };
+
+export function useGetArtistsByLabelId(labelId?: number, page = 0, size = 10) {
+  return useQuery<PaginatedResponse<Artist>, AxiosError>({
+    queryKey: ['artists-by-label', labelId, page, size],
+    queryFn: async () => {
+      const params = {
+        pageNumber: page,
+        pageSize: size,
+      };
+
+      const res = await apiClient.get<PaginatedResponse<Artist>>(
+        `/artists/by-label/${labelId}`,
+        { params },
+      );
+      return res.data;
+    },
+    enabled: !!labelId,
+    staleTime: 5 * 60 * 1000, // 5 minutes cache
+  });
+}

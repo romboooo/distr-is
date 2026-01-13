@@ -58,4 +58,14 @@ public class ArtistController {
         PageResponse<ReleaseResponse> response = releaseService.getReleasesByArtist(artistId, pageNumber, pageSize);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/by-label/{labelId}")
+    public ResponseEntity<PageResponse<ArtistResponse>> getArtistsByLabel(
+            @PathVariable Long labelId,
+            @RequestParam(defaultValue = "0") int pageNumber,
+            @RequestParam(defaultValue = "10") int pageSize) {
+
+        PageResponse<ArtistResponse> response = artistService.getArtistsByLabel(labelId, pageNumber, pageSize);
+        return ResponseEntity.ok(response);
+    }
 }

@@ -10,7 +10,7 @@ import type {
   User,
   UserType,
   Artist,
-  Label,
+  LabelData,
   AxiosErrorResponse,
 } from '@/types/api';
 import { apiClient } from '@/services/api';
@@ -31,7 +31,7 @@ export const useUser = (
 // Discriminated union types for better type safety
 export type UserWithDetails =
   | (User & { type: 'ARTIST'; artistDetails: Artist | null })
-  | (User & { type: 'LABEL'; labelDetails: Label | null })
+  | (User & { type: 'LABEL'; labelDetails: LabelData | null })
   | (User & {
       type: Exclude<UserType, 'ARTIST' | 'LABEL'>;
       artistDetails: null;
@@ -58,11 +58,11 @@ export const useArtistByUserId = (userId: number, enabled: boolean = false) => {
 };
 
 export const useLabelByUserId = (userId: number, enabled: boolean = false) => {
-  return useQuery<Label | null, AxiosError>({
+  return useQuery<LabelData | null, AxiosError>({
     queryKey: ['label-by-user-id', userId],
     queryFn: async () => {
       try {
-        const res = await apiClient.get<Label>(`/labels/by-user/${userId}`);
+        const res = await apiClient.get<LabelData>(`/labels/by-user/${userId}`);
         return res.data;
       } catch (error) {
         if (error instanceof AxiosError && error.response?.status === 404) {
@@ -183,7 +183,7 @@ export const useUpdateUser = () => {
 // Add this to the bottom of the file
 export const useCreateLabel = () => {
   return useMutation<
-    Label,
+    LabelData,
     AxiosErrorResponse,
     {
       country: string;

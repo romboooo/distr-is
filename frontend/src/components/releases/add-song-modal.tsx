@@ -206,7 +206,7 @@ export function AddSongModal({
         error instanceof Error
           ? error.message
           : (error as AxiosError<ErrorResponse>)?.response?.data?.message ||
-            'An error occurred while adding the song';
+          'An error occurred while adding the song';
 
       toast.error('Failed to add song', {
         description: errMsg,
@@ -327,7 +327,7 @@ export function AddSongModal({
                 onChange={handleFileChange}
               />
 
-              <div className='px-2 max-w-full text-center'>
+              <div className='flex flex-col items-center px-2 max-w-full text-center'>
                 {selectedFile ? (
                   <>
                     <FileAudio className='mb-2 w-12 h-12 text-primary' />
