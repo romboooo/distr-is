@@ -28,8 +28,6 @@ import { Route as AdminAdminIndexRouteImport } from './routes/_admin/admin/index
 import { Route as ModeratorModerationReleaseIdRouteImport } from './routes/_moderator/moderation/$releaseId'
 import { Route as LabelLabelProfileRouteImport } from './routes/_label/label/profile'
 import { Route as ArtistArtistProfileRouteImport } from './routes/_artist/artist/profile'
-import { Route as AdminAdminReportsRouteImport } from './routes/_admin/admin/reports'
-import { Route as AdminAdminPlatformsRouteImport } from './routes/_admin/admin/platforms'
 import { Route as LabelLabelRoyaltiesIndexRouteImport } from './routes/_label/label/royalties/index'
 import { Route as ArtistArtistRoyaltiesIndexRouteImport } from './routes/_artist/artist/royalties/index'
 import { Route as AdminAdminUsersIndexRouteImport } from './routes/_admin/admin/users/index'
@@ -145,16 +143,6 @@ const ArtistArtistProfileRoute = ArtistArtistProfileRouteImport.update({
   path: '/artist/profile',
   getParentRoute: () => ArtistRoute,
 } as any)
-const AdminAdminReportsRoute = AdminAdminReportsRouteImport.update({
-  id: '/admin/reports',
-  path: '/admin/reports',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminAdminPlatformsRoute = AdminAdminPlatformsRouteImport.update({
-  id: '/admin/platforms',
-  path: '/admin/platforms',
-  getParentRoute: () => AdminRoute,
-} as any)
 const LabelLabelReleasesIndexLazyRoute =
   LabelLabelReleasesIndexLazyRouteImport.update({
     id: '/label/releases/',
@@ -230,11 +218,7 @@ const LabelLabelReleasesReleaseIdIndexRoute =
     id: '/label/releases/$releaseId/',
     path: '/label/releases/$releaseId/',
     getParentRoute: () => LabelRoute,
-  } as any).lazy(() =>
-    import('./routes/_label/label/releases/$releaseId/index.lazy').then(
-      (d) => d.Route,
-    ),
-  )
+  } as any)
 const ArtistArtistReleasesReleaseIdIndexRoute =
   ArtistArtistReleasesReleaseIdIndexRouteImport.update({
     id: '/artist/releases/$releaseId/',
@@ -255,8 +239,6 @@ export interface FileRoutesByFullPath {
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
   '/reset-password': typeof AuthResetPasswordRoute
-  '/admin/platforms': typeof AdminAdminPlatformsRoute
-  '/admin/reports': typeof AdminAdminReportsRoute
   '/artist/profile': typeof ArtistArtistProfileRoute
   '/label/profile': typeof LabelLabelProfileRoute
   '/moderation/$releaseId': typeof ModeratorModerationReleaseIdRoute
@@ -285,8 +267,6 @@ export interface FileRoutesByTo {
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
   '/reset-password': typeof AuthResetPasswordRoute
-  '/admin/platforms': typeof AdminAdminPlatformsRoute
-  '/admin/reports': typeof AdminAdminReportsRoute
   '/artist/profile': typeof ArtistArtistProfileRoute
   '/label/profile': typeof LabelLabelProfileRoute
   '/moderation/$releaseId': typeof ModeratorModerationReleaseIdRoute
@@ -321,8 +301,6 @@ export interface FileRoutesById {
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
   '/_auth/reset-password': typeof AuthResetPasswordRoute
-  '/_admin/admin/platforms': typeof AdminAdminPlatformsRoute
-  '/_admin/admin/reports': typeof AdminAdminReportsRoute
   '/_artist/artist/profile': typeof ArtistArtistProfileRoute
   '/_label/label/profile': typeof LabelLabelProfileRoute
   '/_moderator/moderation/$releaseId': typeof ModeratorModerationReleaseIdRoute
@@ -353,8 +331,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/reset-password'
-    | '/admin/platforms'
-    | '/admin/reports'
     | '/artist/profile'
     | '/label/profile'
     | '/moderation/$releaseId'
@@ -383,8 +359,6 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/reset-password'
-    | '/admin/platforms'
-    | '/admin/reports'
     | '/artist/profile'
     | '/label/profile'
     | '/moderation/$releaseId'
@@ -418,8 +392,6 @@ export interface FileRouteTypes {
     | '/_auth/login'
     | '/_auth/register'
     | '/_auth/reset-password'
-    | '/_admin/admin/platforms'
-    | '/_admin/admin/reports'
     | '/_artist/artist/profile'
     | '/_label/label/profile'
     | '/_moderator/moderation/$releaseId'
@@ -580,20 +552,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArtistArtistProfileRouteImport
       parentRoute: typeof ArtistRoute
     }
-    '/_admin/admin/reports': {
-      id: '/_admin/admin/reports'
-      path: '/admin/reports'
-      fullPath: '/admin/reports'
-      preLoaderRoute: typeof AdminAdminReportsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/_admin/admin/platforms': {
-      id: '/_admin/admin/platforms'
-      path: '/admin/platforms'
-      fullPath: '/admin/platforms'
-      preLoaderRoute: typeof AdminAdminPlatformsRouteImport
-      parentRoute: typeof AdminRoute
-    }
     '/_label/label/releases/': {
       id: '/_label/label/releases/'
       path: '/label/releases'
@@ -689,16 +647,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteChildren {
-  AdminAdminPlatformsRoute: typeof AdminAdminPlatformsRoute
-  AdminAdminReportsRoute: typeof AdminAdminReportsRoute
   AdminAdminIndexRoute: typeof AdminAdminIndexRoute
   AdminAdminUsersUserIdRoute: typeof AdminAdminUsersUserIdRoute
   AdminAdminUsersIndexRoute: typeof AdminAdminUsersIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
-  AdminAdminPlatformsRoute: AdminAdminPlatformsRoute,
-  AdminAdminReportsRoute: AdminAdminReportsRoute,
   AdminAdminIndexRoute: AdminAdminIndexRoute,
   AdminAdminUsersUserIdRoute: AdminAdminUsersUserIdRoute,
   AdminAdminUsersIndexRoute: AdminAdminUsersIndexRoute,

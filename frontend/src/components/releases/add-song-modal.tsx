@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
-import { useAddSongToRelease, useUploadSongFile } from '@/hooks/use-release-hooks';
+import { useAddSongToRelease } from '@/hooks/use-release-hooks';
 import {
   Dialog,
   DialogContent,
@@ -21,6 +21,7 @@ import { Label } from '@/components/ui/label';
 import { Loader2, Upload, FileAudio, AlertCircle } from 'lucide-react';
 import type { AxiosError } from 'axios';
 import type { ErrorResponse } from '@/types/auth';
+import { useUploadSongFile } from '@/hooks/use-songs';
 
 const songSchema = z.object({
   title: z.string().min(1, 'Song title is required'),
@@ -350,7 +351,7 @@ export function AddSongModal({ releaseId, artistId, open, onOpenChange, onSucces
 
             {fileError && (
               <div className="flex items-start gap-1.5 text-destructive text-sm">
-                <AlertCircle className="flex-shrink-0 mt-0.5 w-4 h-4" />
+                <AlertCircle className="mt-0.5 w-4 h-4 shrink-0" />
                 <span>{fileError}</span>
               </div>
             )}

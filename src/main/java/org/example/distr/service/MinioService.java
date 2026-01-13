@@ -85,7 +85,7 @@ public class MinioService {
                         .stream(inputStream, size, -1)
                         .contentType(contentType)
                         .build());
-        return String.format("%s/%s", bucketName, fileName);
+        return fileName;
     }
 
     public String uploadFile(String bucketName, String fileName, File file) throws Exception {

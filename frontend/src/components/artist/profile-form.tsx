@@ -60,7 +60,7 @@ export function ProfileForm({ user, artistDetails, onProfileUpdated }: ProfileFo
           userId: user.id
         };
 
-        await apiClient.put(`/artists/${artistDetails.id}`, artistUpdate);
+        await apiClient.patch(`/artists/${artistDetails.id}`, artistUpdate);
       }
 
       toast.success('Profile updated successfully!');

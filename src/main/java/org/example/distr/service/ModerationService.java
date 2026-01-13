@@ -56,17 +56,23 @@ public class ModerationService {
     @Transactional
     public ModerationResponse moderateRelease(ModerationRequest request) {
         Release release = releaseRepository.findById(request.getReleaseId())
-                .orElseThrow(() -> new ResourceNotFoundException("Release not found with id: " + request.getReleaseId()));
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Release not found with id: " + request.getReleaseId()));
 
-        if (release.getModerationState() != ModerationState.ON_REVIEW && release.getModerationState() != ModerationState.ON_MODERATION) {
-            throw new BusinessLogicException("Release cannot be moderated. Current state: " + release.getModerationState());
+        if (release.getModerationState() != ModerationState.ON_REVIEW
+                && release.getModerationState() != ModerationState.ON_MODERATION) {
+            throw new BusinessLogicException(
+                    "Release cannot be moderated. Current state: " + release.getModerationState());
         }
 
         Moderator moderator = moderatorRepository.findById(request.getModeratorId())
-                .orElseThrow(() -> new ResourceNotFoundException("Moderator not found with id: " + request.getModeratorId()));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Moderator not found with id: " + request.getModeratorId()));
 
-        if (request.getModerationState() == ModerationState.ON_REVIEW || request.getModerationState() == ModerationState.ON_MODERATION) {
-            throw new BusinessLogicException("Cannot set moderation state to " + request.getModerationState() + " after moderation");
+        if (request.getModerationState() == ModerationState.ON_REVIEW
+                || request.getModerationState() == ModerationState.ON_MODERATION) {
+            throw new BusinessLogicException(
+                    "Cannot set moderation state to " + request.getModerationState() + " after moderation");
         }
 
         if (request.getModerationState() == ModerationState.DRAFT) {
@@ -106,5 +112,13 @@ public class ModerationService {
         return records.stream()
                 .map(this::mapToModerationResponse)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public Long getModeratorIdByUserId(Long userId) {
+        return moderatorRepository.findByUserId(userId)
+                .map(Moderator::getId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "No moderator found for user ID: " + userId));
     }
 }

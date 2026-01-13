@@ -127,16 +127,17 @@ function ReleaseEditPage() {
       </div>
     );
   }
+  const canEdit = release.moderationState === 'DRAFT' || release.moderationState === "WAITING_FOR_CHANGES";
 
   // Only allow editing for DRAFT releases
-  if (release.moderationState !== 'DRAFT') {
+  if (!canEdit) {
     return (
       <div className="mx-auto py-8 max-w-2xl container">
         <Alert variant="destructive">
           <AlertCircle className="w-4 h-4" />
           <AlertTitle>Editing Not Allowed</AlertTitle>
           <AlertDescription>
-            Only releases in DRAFT state can be edited. Current state: {release.moderationState}
+            Only releases in DRAFT or WAITING_FOR_CHANGES state can be edited. Current state: {release.moderationState}
           </AlertDescription>
           <Button
             variant="outline"

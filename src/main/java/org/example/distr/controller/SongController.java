@@ -13,12 +13,21 @@ import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.tag.TagException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
+
+import io.minio.StatObjectResponse;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Set;
@@ -42,7 +51,7 @@ public class SongController {
             "audio/flac",
             "audio/x-flac");
 
-    private Logger logger = LoggerFactory.getLogger(MinioService.class);
+    private final Logger logger = LoggerFactory.getLogger(SongController.class);
 
     @GetMapping("/{id}")
     public ResponseEntity<SongResponse> getSong(@PathVariable Long id) {
@@ -109,8 +118,68 @@ public class SongController {
 
     private void validateAudioFile(MultipartFile file) {
         String contentType = file.getContentType();
-        if (contentType == null || !contentType.equals("audio/mpeg")) {
-            throw new IllegalArgumentException("Only audio files are allowed");
+        if (contentType == null || !ALLOWED_AUDIO_CONTENT_TYPES.contains(contentType)) {
+            throw new IllegalArgumentException("Only audio files of allowed types are allowed");
         }
+    }
+
+    @GetMapping("/{id}/download")
+    public ResponseEntity<StreamingResponseBody> downloadSong(@PathVariable Long id) {
+        SongResponse song = songService.getSong(id);
+        if (song == null || song.getPathToFile() == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String bucket = minioService.getSongsBucket();
+        String objectName = song.getPathToFile();
+
+        StatObjectResponse stat;
+        try {
+            stat = minioService.statObject(bucket, objectName);
+        } catch (Exception e) {
+            logger.error("File not found in MinIO: {}/{}", bucket, objectName, e);
+            return ResponseEntity.notFound().build();
+        }
+
+        try {
+            StreamingResponseBody stream = outputStream -> {
+                try (InputStream inputStream = minioService.downloadFile(bucket, objectName)) {
+                    byte[] buffer = new byte[8192]; // 8KB buffer
+                    int bytesRead;
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                } catch (Exception e) {
+                    logger.error("Error streaming file: {}/{}", bucket, objectName, e);
+                    throw new RuntimeException("Failed to stream file content", e);
+                }
+            };
+
+            // Generate safe filename for download
+            String originalFilename = extractFilename(objectName);
+            ContentDisposition disposition = ContentDisposition.builder("attachment")
+                    .filename(originalFilename, StandardCharsets.UTF_8)
+                    .build();
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(stat.contentType()))
+                    .contentLength(stat.size())
+                    .header(HttpHeaders.CONTENT_DISPOSITION, disposition.toString())
+                    .body(stream);
+        } catch (Exception e) {
+            logger.error("Error preparing download for song ID: {}", id, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    private String extractFilename(String objectName) {
+        int lastUnderscore = objectName.lastIndexOf('_');
+        int lastDot = objectName.lastIndexOf('.');
+        if (lastUnderscore == -1 || lastDot == -1 || lastUnderscore > lastDot) {
+            return objectName; // Fallback to original name if pattern not matched
+        }
+        String baseName = objectName.substring(0, lastUnderscore);
+        String extension = objectName.substring(lastDot);
+        return baseName + extension;
     }
 }

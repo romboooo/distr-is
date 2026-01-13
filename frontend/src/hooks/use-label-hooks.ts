@@ -4,7 +4,7 @@ import type { Label } from '@/types/api';
 import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
-export function useGetLabelById(labelId: number) {
+export function useGetLabelById(labelId?: number) {
   return useQuery({
     queryKey: ['label', labelId],
     queryFn: async () => {

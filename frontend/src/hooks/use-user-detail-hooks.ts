@@ -172,7 +172,7 @@ export const useUpdateUser = () => {
     }
   >({
     mutationFn: ({ id, ...data }) =>
-      apiClient.put(`/users/${id}`, data).then((res) => res.data),
+      apiClient.patch(`/users/${id}`, data).then((res) => res.data),
     onSuccess: (updatedUser) => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       queryClient.invalidateQueries({ queryKey: ['user', updatedUser.id] });

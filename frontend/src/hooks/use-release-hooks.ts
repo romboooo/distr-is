@@ -2,7 +2,6 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   createReleaseDraft,
   addSongToRelease,
-  uploadSongFile,
   uploadReleaseCover,
   requestReleaseModeration,
   getReleaseById,
@@ -46,19 +45,6 @@ export const useAddSongToRelease = (releaseId: number) => {
     onSuccess: (newSong) => {
       queryClient.invalidateQueries({ queryKey: ['release-songs', releaseId] });
       queryClient.setQueryData(['song', newSong.id], newSong);
-    },
-  });
-};
-
-export const useUploadSongFile = () => {
-  return useMutation<
-    { path: string },
-    AxiosErrorResponse,
-    { songId: number; file: File }
-  >({
-    mutationFn: ({ songId, file }) => uploadSongFile(songId, file),
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['song', variables.songId] });
     },
   });
 };

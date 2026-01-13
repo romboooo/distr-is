@@ -500,19 +500,6 @@
 }
 ```
 
-### POST /releases/songs/{songId}/file
-
-#### Загрузка аудиофайла для песни
-
-**Path Param:** `songId` (Long)
-**Form Data:** `file` (MP3 file)
-
-**Response (200 OK):**
-
-```json
-"/tmp-songs/song_1_1642345678.mp3"
-```
-
 ### POST /releases/{releaseId}/cover
 
 #### Загрузка обложки для релиза
@@ -659,6 +646,51 @@ If file retrieval fails:
 }
 ```
 
+### POST /songs/{songId}/file
+
+#### Загрузка аудиофайла для песни
+
+**Path Param:** `songId` (Long)
+**Form Data:** `file` (MP3 file)
+
+**Response (200 OK):**
+
+```json
+"/tmp-songs/song_1_1642345678.mp3"
+```
+
+### GET /songs/{id}/download
+
+#### Скачивание аудиофайла песни
+
+**Path Param:** `id` (Long)
+
+**Response (200 OK):**
+Binary audio data. The `Content-Type` header is set to the MIME type of the audio file (e.g., `audio/mpeg`, `audio/wav`). The `Content-Disposition` header is set to `attachment` with a generated filename (e.g., `song_123.mp3`).
+
+**Response (404 Not Found):**
+If the song does not exist or the audio file is not available:
+
+```json
+{
+    "timestamp": "2024-01-15T10:30:00",
+    "status": 404,
+    "error": "Not Found",
+    "message": "Song file not found for song with id: 123"
+}
+```
+
+**Response (500 Internal Server Error):**
+If an unexpected error occurs during file streaming:
+
+```json
+{
+    "timestamp": "2024-01-15T10:30:00",
+    "status": 500,
+    "error": "Internal Server Error",
+    "message": "Failed to stream song file"
+}
+```
 
 ### GET /moderation/pending
 
@@ -668,82 +700,50 @@ If file retrieval fails:
 
 ```json
 {
-  "content": [
-    {
-      "id": 6,
-      "name": "New Album 1",
-      "artistId": 1,
-      "genre": "Pop",
-      "releaseUpc": 123456789025,
-      "date": "2023-11-15T00:00:00",
-      "moderationState": "ON_MODERATION",
-      "releaseType": "ALBUM",
-      "labelId": 1,
-      "coverPath": null
-    }
-  ],
-  "currentPage": 0,
-  "totalPages": 1,
-  "totalElements": 1,
-  "pageSize": 10
+    "content": [
+        {
+            "id": 6,
+            "name": "New Album 1",
+            "artistId": 1,
+            "genre": "Pop",
+            "releaseUpc": 123456789025,
+            "date": "2023-11-15T00:00:00",
+            "moderationState": "ON_MODERATION",
+            "releaseType": "ALBUM",
+            "labelId": 1,
+            "coverPath": null
+        }
+    ],
+    "currentPage": 0,
+    "totalPages": 1,
+    "totalElements": 1,
+    "pageSize": 10
 }
-
 ```
+
 **401 Unauthorized** - если токен не передан или невалиден
 
 **403 Forbidden** - если у пользователя нет роли MODERATOR или ADMIN
 
-
 ### POST /api/moderation
+
 #### роведение модерации релиза. Создает запись в таблице on_moderation и обновляет moderation_state релиза.
+
 **request body(example):**
 
 ```json
 {
-  "releaseId": 6,
-  "moderatorId": 1,
-  "comment": "Отличный релиз, всё соответствует требованиям",
-  "moderationState": "APPROVED"
+    "releaseId": 6,
+    "moderatorId": 1,
+    "comment": "Отличный релиз, всё соответствует требованиям",
+    "moderationState": "APPROVED"
 }
 ```
 
 **201 Created:**
+
 ```json
 {
-  "id": 5,
-  "comment": "Отличный релиз, всё соответствует требованиям",
-  "moderatorId": 1,
-  "moderatorName": "Alex Johnson",
-  "releaseId": 6,
-  "releaseName": "New Album 1",
-  "date": "2026-01-12T20:02:01.247099"
-}
-```
-***400 Bad Request*** - если:
-
-    релиз уже промодерирован (статус не ON_MODERATION или ON_REVIEW)
-
-    пытаются установить некорректный статус (ON_MODERATION, ON_REVIEW, DRAFT)
-
-    не пройдена валидация полей
-
-***401 Unauthorized*** - если токен не передан или невалиден
-
-***403 Forbidden*** - если у пользователя нет роли MODERATOR или ADMIN
-
-***404 Not Found*** - если релиз или модератор не найдены
-
-
-### GET /api/moderation/history/{releaseId}
-
-#### Получение истории модерации для конкретного релиза
-
-releaseId (required) - ID релиза
-
-***200:***
-```json
-[
-  {
     "id": 5,
     "comment": "Отличный релиз, всё соответствует требованиям",
     "moderatorId": 1,
@@ -751,25 +751,107 @@ releaseId (required) - ID релиза
     "releaseId": 6,
     "releaseName": "New Album 1",
     "date": "2026-01-12T20:02:01.247099"
-  }
+}
+```
+
+**_400 Bad Request_** - если:
+
+    релиз уже промодерирован (статус не ON_MODERATION или ON_REVIEW)
+
+    пытаются установить некорректный статус (ON_MODERATION, ON_REVIEW, DRAFT)
+
+    не пройдена валидация полей
+
+**_401 Unauthorized_** - если токен не передан или невалиден
+
+**_403 Forbidden_** - если у пользователя нет роли MODERATOR или ADMIN
+
+**_404 Not Found_** - если релиз или модератор не найдены
+
+### GET /api/moderation/history/{releaseId}
+
+#### Получение истории модерации для конкретного релиза
+
+releaseId (required) - ID релиза
+
+**_200:_**
+
+```json
+[
+    {
+        "id": 5,
+        "comment": "Отличный релиз, всё соответствует требованиям",
+        "moderatorId": 1,
+        "moderatorName": "Alex Johnson",
+        "releaseId": 6,
+        "releaseName": "New Album 1",
+        "date": "2026-01-12T20:02:01.247099"
+    }
 ]
 ```
 
-***401 Unauthorized*** - если токен не передан или невалиден
+**_401 Unauthorized_** - если токен не передан или невалиден
 
-***403 Forbidden*** - если у пользователя нет прав на просмотр (MODERATOR/ADMIN/LABEL/ARTIST)
+**_403 Forbidden_** - если у пользователя нет прав на просмотр (MODERATOR/ADMIN/LABEL/ARTIST)
 
-***404 Not Found*** - если релиз не найден (возвращает пустой массив, если нет записей модерации)
+**_404 Not Found_** - если релиз не найден (возвращает пустой массив, если нет записей модерации)
 
+### GET /moderation/moderator-id-by-user-id/{userId}
 
-### PATCH /api/users/{id}
-#### Headers: Authorization: Bearer {jwt_token_admin}
-**Body:**
+#### Получение ID модератора по ID пользователя
+
+**Path Param:** `userId` (Long)
+
+**Права доступа:** Только MODERATOR или ADMIN
+
+**Response (200 OK):**
+
+```text
+15
+```
+
+**Response (404 Not Found):**
+
 ```json
 {
-"login": "new_login",
-"password": "new_password",
-"type": "ARTIST"
+    "timestamp": "2026-01-13T10:30:00",
+    "status": 404,
+    "error": "Not Found",
+    "message": "No moderator found for user ID: 123"
+}
+```
+
+**Response (401 Unauthorized):**
+
+```json
+{
+    "error": "Unauthorized",
+    "message": "Invalid or missing authentication token"
+}
+```
+
+**Response (403 Forbidden):**
+
+```json
+{
+    "timestamp": "2026-01-13T10:30:00",
+    "status": 403,
+    "error": "Forbidden",
+    "message": "Access denied: Requires MODERATOR or ADMIN role"
+}
+```
+
+### PATCH /api/users/{id}
+
+#### Headers: Authorization: Bearer {jwt_token_admin}
+
+**Body:**
+
+```json
+{
+    "login": "new_login",
+    "password": "new_password",
+    "type": "ARTIST"
 }
 ```
 
@@ -787,6 +869,7 @@ Body: {
 ```text
 DRAFT → ON_MODERATION → [APPROVED | REJECTED | WAITING_FOR_CHANGES]
 ```
+
 ## Pagination
 
 ```shell

@@ -3,12 +3,7 @@ import type { ErrorResponse } from '@/types/auth';
 import type { AxiosError } from 'axios';
 
 export type UserType = 'ARTIST' | 'LABEL' | 'MODERATOR' | 'ADMIN' | 'PLATFORM';
-export type ModerationState =
-  | 'REJECTED'
-  | 'APPROVED'
-  | 'WAITING_FOR_CHANGES'
-  | 'ON_REVIEW'
-  | 'DRAFT';
+
 export type ReleaseType = 'SINGLE' | 'MAXI_SINGLE' | 'EP' | 'ALBUM' | 'MIXTAPE';
 export type IsoDateString = string;
 export type AxiosErrorResponse = AxiosError<ErrorResponse>;
@@ -106,4 +101,38 @@ export interface UpdateReleaseDTO {
   genre?: string;
   releaseType?: 'SINGLE' | 'MAXI_SINGLE' | 'EP' | 'ALBUM' | 'MIXTAPE';
   date?: string | null;
+}
+export type ModerationState =
+  | 'DRAFT'
+  | 'ON_REVIEW'
+  | 'ON_MODERATION'
+  | 'APPROVED'
+  | 'REJECTED'
+  | 'WAITING_FOR_CHANGES';
+
+export interface Song {
+  id: number;
+  releaseId: number;
+  releaseName: string;
+  artistIds: number[];
+  artistNames: string[];
+  musicAuthor: string;
+  parentalAdvisory: boolean;
+  streams: number;
+  songUpc: number;
+  metadata: string;
+  pathToFile: string;
+  songLengthSeconds: number;
+  title: string;
+}
+
+export interface ModerationRecord {
+  id: number;
+  comment: string;
+  moderatorId: number;
+  moderatorName: string;
+  releaseId: number;
+  releaseName: string;
+  date: string;
+  moderationState: ModerationState;
 }
