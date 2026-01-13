@@ -12,12 +12,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import {
-  Eye,
-  CheckCircle,
-  Loader2,
-  RefreshCw,
-} from 'lucide-react';
+import { Eye, CheckCircle, Loader2, RefreshCw } from 'lucide-react';
 import type { Release } from '@/types/api';
 import { PaginationControls } from '@/components/ui/pagination-controls';
 import { cn } from '@/lib/utils';
@@ -37,7 +32,10 @@ export function PendingReleasesTable({
     null,
   );
 
-  const { data, isLoading, isError, error, refetch } = usePendingReleases(page, pageSize);
+  const { data, isLoading, isError, error, refetch } = usePendingReleases(
+    page,
+    pageSize,
+  );
 
   const handleModerateClick = (release: Release) => {
     setSelectedRelease(release);
@@ -71,7 +69,6 @@ export function PendingReleasesTable({
         return 'bg-gray-100 text-gray-800';
     }
   };
-
 
   return (
     <div className='space-y-6'>
@@ -184,9 +181,7 @@ export function PendingReleasesTable({
                         className='w-8 h-8'
                       >
                         <CheckCircle className='w-4 h-4 text-green-500' />
-                        <span className='sr-only'>
-                          Moderate {release.name}
-                        </span>
+                        <span className='sr-only'>Moderate {release.name}</span>
                       </Button>
                     </div>
                   </TableCell>
@@ -198,7 +193,9 @@ export function PendingReleasesTable({
                   colSpan={7}
                   className='h-32 text-muted-foreground text-center'
                 >
-                  {isLoading ? 'Loading releases...' : 'No pending releases found'}
+                  {isLoading
+                    ? 'Loading releases...'
+                    : 'No pending releases found'}
                 </TableCell>
               </TableRow>
             )}

@@ -21,8 +21,9 @@ import { Label } from '@/components/ui/label';
 import { Loader2, AlertTriangle } from 'lucide-react';
 import { toast } from 'sonner';
 import type { Release, ModerationState } from '@/types/api';
-import { useModerateRelease } from '@/hooks/use-moderation-release-hooks';
+import { useGetModeratorIdByUserId, useModerateRelease } from '@/hooks/use-moderation-release-hooks';
 import { useGetArtistById } from '@/hooks/use-artists';
+import { useAuth } from '@/hooks/use-auth';
 
 interface ModerationDialogProps {
   release: Release | null;
@@ -68,7 +69,8 @@ export function ModerationDialog({
     React.useState<ModerationState>('APPROVED');
   const { mutate: moderateRelease, isPending } = useModerateRelease();
   const { data: artistData } = useGetArtistById(release?.artistId);
-
+  const { data: auth } = useAuth();
+  const { data: moderatorId } = useGetModeratorIdByUserId(auth?.id);
   React.useEffect(() => {
     if (open && release) {
       setComment('');
@@ -78,7 +80,7 @@ export function ModerationDialog({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!release) return;
+    if (!release || !moderatorId) return;
 
     if (!comment.trim()) {
       toast.error('Please provide a comment explaining your decision');
@@ -87,6 +89,7 @@ export function ModerationDialog({
 
     moderateRelease(
       {
+        moderatorId: moderatorId,
         releaseId: release.id,
         comment: comment.trim(),
         moderationState,
@@ -166,9 +169,9 @@ export function ModerationDialog({
                 <div className='text-sm'>
                   <p className='font-medium'>Important:</p>
                   <p>
-                    Clearly specify what changes are needed in your comment.
-                    The release owner will need to make these changes and
-                    resubmit for review.
+                    Clearly specify what changes are needed in your comment. The
+                    release owner will need to make these changes and resubmit
+                    for review.
                   </p>
                 </div>
               </div>

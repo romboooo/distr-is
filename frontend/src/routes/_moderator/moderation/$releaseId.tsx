@@ -54,20 +54,21 @@ function ReleaseDetails() {
   const { data: auth } = useAuth();
   const { data: moderatorId } = useGetModeratorIdByUserId(auth?.id);
   const parsedReleaseId = parseInt(releaseId);
-  const { data: release, isLoading: isLoadingRelease } = useRelease(
-    parsedReleaseId,
-  );
-  const { data: history, isLoading: isLoadingHistory } = useModerationHistory(
-    parsedReleaseId,
-  );
+  const { data: release, isLoading: isLoadingRelease } =
+    useRelease(parsedReleaseId);
+  const { data: history, isLoading: isLoadingHistory } =
+    useModerationHistory(parsedReleaseId);
   const { data: artistData } = useGetArtistById(release?.artistId);
   const { data: labelData } = useGetLabelById(release?.labelId);
-  const { mutate: moderateRelease, isPending: isModerating } = useModerateRelease();
+  const { mutate: moderateRelease, isPending: isModerating } =
+    useModerateRelease();
   const navigate = useNavigate();
 
   // Dialog state
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedState, setSelectedState] = useState<'APPROVED' | 'REJECTED' | 'WAITING_FOR_CHANGES'>('APPROVED');
+  const [selectedState, setSelectedState] = useState<
+    'APPROVED' | 'REJECTED' | 'WAITING_FOR_CHANGES'
+  >('APPROVED');
   const [comment, setComment] = useState('');
 
   const handleModerationSubmit = () => {
@@ -85,10 +86,10 @@ function ReleaseDetails() {
           setIsDialogOpen(false);
           setComment('');
         },
-      }
+      },
     );
 
-    navigate({ to: "/moderation" });
+    navigate({ to: '/moderation' });
   };
 
   if (isLoadingRelease || isLoadingHistory) {
@@ -195,7 +196,9 @@ function ReleaseDetails() {
   }
 
   // Only show moderation actions if the release is in a modifiable state
-  const canModerate = ['ON_MODERATION', 'ON_REVIEW'].includes(release.moderationState);
+  const canModerate = ['ON_MODERATION', 'ON_REVIEW'].includes(
+    release.moderationState,
+  );
 
   return (
     <div className='p-8 container'>
@@ -266,15 +269,11 @@ function ReleaseDetails() {
               <CardContent className='space-y-4'>
                 <div className='gap-4 grid grid-cols-1 md:grid-cols-2'>
                   <div className='space-y-2'>
-                    <Label className='text-muted-foreground'>
-                      Genre
-                    </Label>
+                    <Label className='text-muted-foreground'>Genre</Label>
                     <p className='font-medium'>{release.genre || 'N/A'}</p>
                   </div>
                   <div className='space-y-2'>
-                    <Label className='text-muted-foreground'>
-                      UPC/EAN
-                    </Label>
+                    <Label className='text-muted-foreground'>UPC/EAN</Label>
                     <p className='font-mono font-medium'>
                       {release.releaseUpc || 'N/A'}
                     </p>
@@ -288,9 +287,7 @@ function ReleaseDetails() {
                     </p>
                   </div>
                   <div className='space-y-2'>
-                    <Label className='text-muted-foreground'>
-                      Label
-                    </Label>
+                    <Label className='text-muted-foreground'>Label</Label>
                     <p className='font-medium'>{labelData?.contactName}</p>
                   </div>
                 </div>
@@ -311,7 +308,7 @@ function ReleaseDetails() {
                     releaseId={release.id}
                     releaseName={release.name}
                     alt={`Cover for ${release.name}`}
-                    className=""
+                    className=''
                     width={240}
                     height={240}
                     fallback={release.name}
@@ -368,7 +365,10 @@ function ReleaseDetails() {
                             value={selectedState}
                             onValueChange={(value) =>
                               setSelectedState(
-                                value as 'APPROVED' | 'REJECTED' | 'WAITING_FOR_CHANGES'
+                                value as
+                                | 'APPROVED'
+                                | 'REJECTED'
+                                | 'WAITING_FOR_CHANGES',
                               )
                             }
                             className='space-y-3'
@@ -489,10 +489,7 @@ function ReleaseDetails() {
                 {history && history.length > 0 ? (
                   <div className='space-y-4'>
                     {history.map((record) => (
-                      <ModerationHistoryCard
-                        key={record.id}
-                        record={record}
-                      />
+                      <ModerationHistoryCard key={record.id} record={record} />
                     ))}
                   </div>
                 ) : (

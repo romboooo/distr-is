@@ -58,7 +58,7 @@ export const ReleaseCoverImage = ({
       width={width}
       height={height}
       onError={handleError}
-      loading="lazy"
+      loading='lazy'
     />
   );
 };

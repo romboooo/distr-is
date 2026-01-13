@@ -1,6 +1,12 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useCreateLabel } from '@/hooks/use-user-detail-hooks';
@@ -13,7 +19,11 @@ interface SelfLabelCreationDialogProps {
   onLabelCreated: () => void;
 }
 
-export function SelfLabelCreationDialog({ userId, artistDetails, onLabelCreated }: SelfLabelCreationDialogProps) {
+export function SelfLabelCreationDialog({
+  userId,
+  artistDetails,
+  onLabelCreated,
+}: SelfLabelCreationDialogProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [country, setCountry] = useState(artistDetails?.country || '');
   const [contactName, setContactName] = useState(artistDetails?.name || '');
@@ -29,7 +39,7 @@ export function SelfLabelCreationDialog({ userId, artistDetails, onLabelCreated 
         country,
         contactName,
         phone,
-        userId
+        userId,
       });
 
       toast.success('Self-label created successfully!');
@@ -43,17 +53,17 @@ export function SelfLabelCreationDialog({ userId, artistDetails, onLabelCreated 
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button className="w-full">Create Self-Label</Button>
+        <Button className='w-full'>Create Self-Label</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Create Your Self-Label</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="contactName">Label Contact Name</Label>
+        <form onSubmit={handleSubmit} className='space-y-4'>
+          <div className='space-y-2'>
+            <Label htmlFor='contactName'>Label Contact Name</Label>
             <Input
-              id="contactName"
+              id='contactName'
               value={contactName}
               onChange={(e) => setContactName(e.target.value)}
               placeholder={artistDetails?.name || 'Your Artist Name'}
@@ -61,10 +71,10 @@ export function SelfLabelCreationDialog({ userId, artistDetails, onLabelCreated 
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="country">Country</Label>
+          <div className='space-y-2'>
+            <Label htmlFor='country'>Country</Label>
             <Input
-              id="country"
+              id='country'
               value={country}
               onChange={(e) => setCountry(e.target.value)}
               placeholder={artistDetails?.country || 'Country'}
@@ -72,21 +82,21 @@ export function SelfLabelCreationDialog({ userId, artistDetails, onLabelCreated 
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="phone">Contact Phone</Label>
+          <div className='space-y-2'>
+            <Label htmlFor='phone'>Contact Phone</Label>
             <Input
-              id="phone"
-              type="tel"
+              id='phone'
+              type='tel'
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              placeholder="+1 (555) 123-4567"
+              placeholder='+1 (555) 123-4567'
               required
             />
           </div>
 
           <Button
-            type="submit"
-            className="w-full"
+            type='submit'
+            className='w-full'
             disabled={createLabelMutation.isPending}
           >
             {createLabelMutation.isPending ? 'Creating...' : 'Create Label'}

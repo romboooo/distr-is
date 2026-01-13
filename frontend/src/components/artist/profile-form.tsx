@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
@@ -15,7 +21,11 @@ interface ProfileFormProps {
   onProfileUpdated: () => void;
 }
 
-export function ProfileForm({ user, artistDetails, onProfileUpdated }: ProfileFormProps) {
+export function ProfileForm({
+  user,
+  artistDetails,
+  onProfileUpdated,
+}: ProfileFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [name, setName] = useState(artistDetails?.name || '');
   const [realName, setRealName] = useState(artistDetails?.realName || '');
@@ -47,17 +57,18 @@ export function ProfileForm({ user, artistDetails, onProfileUpdated }: ProfileFo
       }
 
       // Update artist details if changed and artist exists
-      if (artistDetails && (
-        name !== artistDetails.name ||
-        realName !== artistDetails.realName ||
-        country !== artistDetails.country
-      )) {
+      if (
+        artistDetails &&
+        (name !== artistDetails.name ||
+          realName !== artistDetails.realName ||
+          country !== artistDetails.country)
+      ) {
         const artistUpdate = {
           id: artistDetails.id,
           name,
           realName,
           country,
-          userId: user.id
+          userId: user.id,
         };
 
         await apiClient.patch(`/artists/${artistDetails.id}`, artistUpdate);
@@ -68,7 +79,9 @@ export function ProfileForm({ user, artistDetails, onProfileUpdated }: ProfileFo
     } catch (error) {
       console.error('Error updating profile:', error);
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data?.message || 'Failed to update profile');
+        toast.error(
+          error.response?.data?.message || 'Failed to update profile',
+        );
       } else {
         toast.error('Failed to update profile. Please try again.');
       }
@@ -81,57 +94,59 @@ export function ProfileForm({ user, artistDetails, onProfileUpdated }: ProfileFo
     <Card>
       <CardHeader>
         <CardTitle>Edit Profile</CardTitle>
-        <CardDescription>Update your artist information and account details</CardDescription>
+        <CardDescription>
+          Update your artist information and account details
+        </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="login">Login</Label>
+        <form onSubmit={handleSubmit} className='space-y-6'>
+          <div className='space-y-4'>
+            <div className='space-y-2'>
+              <Label htmlFor='login'>Login</Label>
               <Input
-                id="login"
+                id='login'
                 value={login}
                 onChange={(e) => setLogin(e.target.value)}
-                placeholder="Your login"
+                placeholder='Your login'
                 minLength={3}
                 maxLength={50}
                 required
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="name">Artist Name</Label>
+            <div className='space-y-2'>
+              <Label htmlFor='name'>Artist Name</Label>
               <Input
-                id="name"
+                id='name'
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Your artist name"
+                placeholder='Your artist name'
                 required
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="realName">Real Name</Label>
+            <div className='space-y-2'>
+              <Label htmlFor='realName'>Real Name</Label>
               <Input
-                id="realName"
+                id='realName'
                 value={realName}
                 onChange={(e) => setRealName(e.target.value)}
-                placeholder="Your real name"
+                placeholder='Your real name'
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="country">Country</Label>
+            <div className='space-y-2'>
+              <Label htmlFor='country'>Country</Label>
               <Input
-                id="country"
+                id='country'
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
-                placeholder="Your country"
+                placeholder='Your country'
               />
             </div>
           </div>
 
-          <Button type="submit" disabled={isSubmitting} className="w-full">
+          <Button type='submit' disabled={isSubmitting} className='w-full'>
             {isSubmitting ? 'Updating...' : 'Update Profile'}
           </Button>
         </form>

@@ -8,8 +8,8 @@ export const Route = createLazyFileRoute('/_artist/artist/releases/new/')({
 
 function ReleaseNewPage() {
   return (
-    <div className="py-8 container">
-      <div className="mx-auto max-w-4xl">
+    <div className='py-8 container'>
+      <div className='mx-auto max-w-4xl'>
         <ReleaseForm />
       </div>
     </div>

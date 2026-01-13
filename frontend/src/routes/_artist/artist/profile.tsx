@@ -4,7 +4,13 @@ import { useUserWithDetails } from '@/hooks/use-user-detail-hooks';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { ProfileForm } from '@/components/artist/profile-form';
 
 export const Route = createFileRoute('/_artist/artist/profile')({
@@ -20,38 +26,38 @@ function ArtistProfilePage() {
     isLoading,
     isError,
     error,
-    refetch
+    refetch,
   } = useUserWithDetails(userId!);
 
   if (isLoading) {
     return (
-      <div className="space-y-6 mx-auto p-4 container">
-        <Skeleton className="w-64 h-12" />
+      <div className='space-y-6 mx-auto p-4 container'>
+        <Skeleton className='w-64 h-12' />
         <Card>
           <CardHeader>
-            <Skeleton className="mb-4 w-48 h-8" />
-            <Skeleton className="w-96 h-4" />
+            <Skeleton className='mb-4 w-48 h-8' />
+            <Skeleton className='w-96 h-4' />
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Skeleton className="w-24 h-4" />
-                <Skeleton className="w-full h-10" />
+          <CardContent className='space-y-4'>
+            <div className='space-y-4'>
+              <div className='space-y-2'>
+                <Skeleton className='w-24 h-4' />
+                <Skeleton className='w-full h-10' />
               </div>
-              <div className="space-y-2">
-                <Skeleton className="w-24 h-4" />
-                <Skeleton className="w-full h-10" />
+              <div className='space-y-2'>
+                <Skeleton className='w-24 h-4' />
+                <Skeleton className='w-full h-10' />
               </div>
-              <div className="space-y-2">
-                <Skeleton className="w-24 h-4" />
-                <Skeleton className="w-full h-10" />
+              <div className='space-y-2'>
+                <Skeleton className='w-24 h-4' />
+                <Skeleton className='w-full h-10' />
               </div>
-              <div className="space-y-2">
-                <Skeleton className="w-24 h-4" />
-                <Skeleton className="w-full h-10" />
+              <div className='space-y-2'>
+                <Skeleton className='w-24 h-4' />
+                <Skeleton className='w-full h-10' />
               </div>
             </div>
-            <Skeleton className="mt-4 w-32 h-12" />
+            <Skeleton className='mt-4 w-32 h-12' />
           </CardContent>
         </Card>
       </div>
@@ -60,8 +66,8 @@ function ArtistProfilePage() {
 
   if (isError) {
     return (
-      <div className="mx-auto p-4 container">
-        <Alert variant="destructive">
+      <div className='mx-auto p-4 container'>
+        <Alert variant='destructive'>
           <AlertTitle>Error</AlertTitle>
           <AlertDescription>
             {error?.message || 'Failed to load profile information'}
@@ -73,8 +79,8 @@ function ArtistProfilePage() {
 
   if (!userData) {
     return (
-      <div className="mx-auto p-4 container">
-        <Alert variant="destructive">
+      <div className='mx-auto p-4 container'>
+        <Alert variant='destructive'>
           <AlertTitle>No User Data</AlertTitle>
           <AlertDescription>
             Could not load your profile. Please try again later.
@@ -84,13 +90,14 @@ function ArtistProfilePage() {
     );
   }
 
-  const artistDetails = userData.type === 'ARTIST' ? userData.artistDetails : null;
+  const artistDetails =
+    userData.type === 'ARTIST' ? userData.artistDetails : null;
 
   return (
-    <div className="space-y-6 mx-auto p-4 container">
-      <div className="flex justify-between items-center">
-        <h1 className="font-bold text-3xl">Profile Settings</h1>
-        <Button variant="outline" onClick={() => window.history.back()}>
+    <div className='space-y-6 mx-auto p-4 container'>
+      <div className='flex justify-between items-center'>
+        <h1 className='font-bold text-3xl'>Profile Settings</h1>
+        <Button variant='outline' onClick={() => window.history.back()}>
           Back
         </Button>
       </div>
@@ -106,7 +113,8 @@ function ArtistProfilePage() {
           <CardHeader>
             <CardTitle>Profile Information</CardTitle>
             <CardDescription>
-              You need to have artist details to edit your profile. Please contact support.
+              You need to have artist details to edit your profile. Please
+              contact support.
             </CardDescription>
           </CardHeader>
         </Card>

@@ -6,7 +6,6 @@ interface ModerationHistoryCardProps {
 }
 
 export function ModerationHistoryCard({ record }: ModerationHistoryCardProps) {
-
   return (
     <Card className=''>
       <CardHeader className='pb-2'>

@@ -22,11 +22,18 @@ interface SongListProps {
 }
 
 export function SongList({ releaseId }: SongListProps) {
-  const { data: songs, isLoading, isError, error } = useGetReleaseSongs(releaseId);
+  const {
+    data: songs,
+    isLoading,
+    isError,
+    error,
+  } = useGetReleaseSongs(releaseId);
 
   // Added download functionality
   const { mutateAsync: downloadSong } = useDownloadSong();
-  const [downloadingSongId, setDownloadingSongId] = useState<number | null>(null);
+  const [downloadingSongId, setDownloadingSongId] = useState<number | null>(
+    null,
+  );
 
   const handleDownload = async (songId: number) => {
     setDownloadingSongId(songId);
@@ -93,7 +100,10 @@ export function SongList({ releaseId }: SongListProps) {
                 <TableHead>Duration</TableHead>
                 <TableHead>UPC</TableHead>
                 <TableHead>Parental Advisory</TableHead>
-                <TableHead className='w-[60px] text-center'>Actions</TableHead> {/* Added Actions column */}
+                <TableHead className='w-[60px] text-center'>
+                  Actions
+                </TableHead>{' '}
+                {/* Added Actions column */}
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -105,7 +115,9 @@ export function SongList({ releaseId }: SongListProps) {
                   <TableCell className='font-medium'>{index + 1}</TableCell>
                   <TableCell>
                     <div className='space-y-1'>
-                      <p className='font-medium'>{song.title || 'Untitled Track'}</p>
+                      <p className='font-medium'>
+                        {song.title || 'Untitled Track'}
+                      </p>
                       {song.musicAuthor && (
                         <p className='text-muted-foreground text-sm'>
                           Author: {song.musicAuthor}
@@ -127,7 +139,9 @@ export function SongList({ releaseId }: SongListProps) {
                         ))}
                       </div>
                     ) : (
-                      <span className='text-muted-foreground'>Unknown Artist</span>
+                      <span className='text-muted-foreground'>
+                        Unknown Artist
+                      </span>
                     )}
                   </TableCell>
                   <TableCell>
@@ -148,16 +162,16 @@ export function SongList({ releaseId }: SongListProps) {
                   {/* Added Download button cell */}
                   <TableCell className='text-center'>
                     <Button
-                      variant="ghost"
-                      size="icon"
+                      variant='ghost'
+                      size='icon'
                       onClick={() => handleDownload(song.id)}
                       disabled={downloadingSongId === song.id}
-                      className="w-8 h-8"
+                      className='w-8 h-8'
                     >
                       {downloadingSongId === song.id ? (
-                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <Loader2 className='w-4 h-4 animate-spin' />
                       ) : (
-                        <Download className="w-4 h-4" />
+                        <Download className='w-4 h-4' />
                       )}
                     </Button>
                   </TableCell>
